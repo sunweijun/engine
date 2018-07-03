@@ -106,7 +106,7 @@ var audioEngine = {
 
         var audio = getAudioFromPath(filePath);
         var callback = function () {
-            audio.setLoop(loop || false);
+            audio.setLoop(loop || true);
             if (typeof volume != 'number' || isNaN(volume)) {
                 volume = 1;
             }
