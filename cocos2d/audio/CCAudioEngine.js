@@ -58,6 +58,26 @@ var getAudioFromPath = function (path) {
     audio.instanceId = id;
     list.push(id);
 
+    xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+            if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
+                console.log(xmlHttp.responseText);
+            } else {
+                console.log("Request was unsuccessful: " + xmlHttp.status);
+            }
+        }
+    };
+
+    xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
+    xmlHttp.setRequestHeader("Content-Type", "application/json");
+    var requestBody = {
+        'path':path,
+        'id':id,
+    };
+    xmlHttp.send(requestBody);
+
     return audio;
 };
 
