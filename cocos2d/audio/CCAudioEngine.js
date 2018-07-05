@@ -30,6 +30,26 @@ var instanceId = 0;
 var id2audio = {};
 var url2id = {};
 
+var sendJsonString = function (jsonData) {
+
+    var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+            if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
+                console.log(xmlHttp.responseText);
+            } else {
+                console.log("Request was unsuccessful: " + xmlHttp.status);
+            }
+        }
+    };
+
+    xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
+    xmlHttp.setRequestHeader("Content-Type", "text/plain");
+    xmlHttp.send(JSON.stringify(jsonData));
+}
+
+
 var getAudioFromPath = function (path) {
     var id = instanceId++;
     var list = url2id[path];
@@ -58,25 +78,12 @@ var getAudioFromPath = function (path) {
     audio.instanceId = id;
     list.push(id);
 
-    xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4) {
-            if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                console.log(xmlHttp.responseText);
-            } else {
-                console.log("Request was unsuccessful: " + xmlHttp.status);
-            }
-        }
-    };
-
-    xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
-    xmlHttp.setRequestHeader("Content-Type", "application/json");
     var requestBody = {
+        'action':'getAudioFromPath',
         'path':path,
         'id':id,
     };
-    xmlHttp.send(requestBody);
+    sendJsonString(requestBody);
 
     return audio;
 };
@@ -119,17 +126,27 @@ var audioEngine = {
      * var audioID = cc.audioEngine.play(path, false, 0.5);
      */
     play: function (filePath, loop, volume/*, profile*/) {
+
         if (CC_DEBUG && (typeof filePath !== 'string')) {
             cc.errorID(8400);
             return;
         }
 
+        if (typeof volume != 'number' || isNaN(volume)) {
+            volume = 1;
+        }
+
         var audio = getAudioFromPath(filePath);
+
+        var requestBody = {
+            'action':'play',
+            'id':audio.instanceId,
+            'volume':volume,
+        };
+        sendJsonString(requestBody);
+        
         var callback = function () {
             audio.setLoop(loop || false);
-            if (typeof volume != 'number' || isNaN(volume)) {
-                volume = 1;
-            }
             audio.setVolume(volume);
             audio.play();
         };
@@ -151,9 +168,19 @@ var audioEngine = {
      */
     setLoop: function (audioID, loop) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'setLoop',
+            'loop':loop,
+            'id':audioID,
+        };
+
         if (!audio || !audio.setLoop)
             return;
         audio.setLoop(loop);
+        
+        sendJsonString(requestBody);
+
     },
 
     /**
@@ -183,15 +210,30 @@ var audioEngine = {
      */
     setVolume: function (audioID, volume) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'setVolume',
+            'volume':volume,
+            'id':audioID,
+        };
+
         if (!audio) return;
         if (!audio._loaded) {
             audio.once('load', function () {
-                if (audio.setVolume)
+                if (audio.setVolume) {
                     audio.setVolume(volume);
+                    
+                    sendJsonString(requestBody);
+                
+                }
             });
         }
-        if (audio.setVolume)
+        if (audio.setVolume) {
             audio.setVolume(volume);
+            
+            sendJsonString(requestBody);
+
+        }
     },
 
     /**
@@ -222,16 +264,31 @@ var audioEngine = {
      */
     setCurrentTime: function (audioID, sec) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'setCurrentTime',
+            'sec':sec,
+            'id':audioID,
+        };
+
         if (!audio) return false;
         if (!audio._loaded) {
             audio.once('load', function () {
-                if (audio.setCurrentTime)
+                if (audio.setCurrentTime) {
                     audio.setCurrentTime(sec);
+                
+                    sendJsonString(requestBody);
+                
+                }
             });
             return true;
         }
-        if (audio.setCurrentTime)
+        if (audio.setCurrentTime) {
             audio.setCurrentTime(sec);
+        
+            sendJsonString(requestBody);
+        
+        }
         return true;
     },
 
@@ -312,9 +369,18 @@ var audioEngine = {
      */
     pause: function (audioID) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'pause',
+            'id':audioID,
+        };
+
         if (!audio || !audio.pause)
             return false;
         audio.pause();
+        
+        sendJsonString(requestBody);
+        
         return true;
     },
 
@@ -327,6 +393,13 @@ var audioEngine = {
      * cc.audioEngine.pauseAll();
      */
     pauseAll: function () {
+
+        var requestBody = {
+            'action':'pauseAll',
+        };
+
+        sendJsonString(requestBody);
+
         for (var id in id2audio) {
             var audio = id2audio[id];
             var state = audio.getState();
@@ -347,10 +420,19 @@ var audioEngine = {
      */
     resume: function (audioID) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'resume',
+            'id':audioID,
+        };
+
         if (!audio || !audio.resume)
             return false;
 
         audio.resume();
+
+        sendJsonString(requestBody);
+
     },
 
     /**
@@ -361,6 +443,13 @@ var audioEngine = {
      * cc.audioEngine.resumeAll();
      */
     resumeAll: function () {
+
+        var requestBody = {
+            'action':'resumeAll',
+        };
+
+        sendJsonString(requestBody);
+
         while (this._pauseIDCache.length > 0) {
             var id = this._pauseIDCache.pop();
             var audio = getAudioFromId(id);
@@ -379,11 +468,19 @@ var audioEngine = {
      */
     stop: function (audioID) {
         var audio = getAudioFromId(audioID);
+
+        var requestBody = {
+            'action':'stop',
+            'id':audioID,
+        };
+
         if (!audio || !audio.stop)
             return false;
         audio.off('load', audio.__callback);
         audio.stop();
         audio.destroy();
+
+        sendJsonString(requestBody);
 
         return true;
     },
@@ -396,6 +493,13 @@ var audioEngine = {
      * cc.audioEngine.stopAll();
      */
     stopAll: function () {
+
+        var requestBody = {
+            'action':'stopAll',
+        };
+
+        sendJsonString(requestBody);
+
         for (var id in id2audio) {
             var audio = id2audio[id];
             if (audio && audio.stop) {
@@ -439,6 +543,14 @@ var audioEngine = {
      * cc.audioEngine.uncache(filePath);
      */
     uncache: function (filePath) {
+
+        var requestBody = {
+            'action':'uncache',
+            'filePath':filePath,
+        };
+
+        sendJsonString(requestBody);
+
         var list = url2id[filePath];
         if (!list) return;
         while (list.length > 0) {
@@ -461,6 +573,13 @@ var audioEngine = {
      */
     uncacheAll: function () {
         this.stopAll();
+
+        var requestBody = {
+            'action':'stopAll',
+        };
+
+        sendJsonString(requestBody);
+
         for (var id in id2audio) {
             var audio = id2audio[id];
             if (audio) {
@@ -511,6 +630,13 @@ var audioEngine = {
 
     _breakCache: null,
     _break: function () {
+
+        var requestBody = {
+            'action':'_break',
+        };
+
+        sendJsonString(requestBody);
+
         this._breakCache = [];
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -524,6 +650,12 @@ var audioEngine = {
 
     _restore: function () {
         if (!this._breakCache) return;
+
+        var requestBody = {
+            'action':'_restore',
+        };
+
+        sendJsonString(requestBody);
 
         while (this._breakCache.length > 0) {
             var id = this._breakCache.pop();
