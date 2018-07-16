@@ -30,8 +30,32 @@ var instanceId = 0;
 var id2audio = {};
 var url2id = {};
 
-var sendJsonString = function (jsonData) {
+var RedisSMQ = require("rsmq");
+var rsmq = new RedisSMQ( {host: "127.0.0.1", port: 3322, ns: "rsmq"} );
+// create queue
+rsmq.createQueue({qname:"source_queue"}, function (err, resp) {
+    if (resp == 1) {
+      console.log("queue created");
+    }
+});
+// send message
+rsmq.sendMessage({qname:"source_queue", message:"Hello World"}, function (err, resp) {
+  if (resp) {
+    console.log("Message sent. ID:", resp);
+  }
+});
+// receive message
+rsmq.receiveMessage({qname:"source_queue"}, function (err, resp) {
+  if (resp.id) {
+    console.log("Message received.", resp)  
+  }
+  else {
+    console.log("No messages for me...")
+  }
+});
 
+var sendJsonString = function (jsonData) {
+/*
     var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
 
     xmlHttp.onreadystatechange = function() {
@@ -46,7 +70,10 @@ var sendJsonString = function (jsonData) {
 
     xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
     xmlHttp.setRequestHeader("Content-Type", "text/plain");
-    xmlHttp.send(JSON.stringify(jsonData));
+    xmlHttp.send(JSON.stringify(jsonData));*/
+    
+    //console.log(JSON.stringify(jsonData));
+    rsmq.sendMessage();
 }
 
 
