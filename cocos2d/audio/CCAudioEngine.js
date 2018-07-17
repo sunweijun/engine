@@ -156,6 +156,8 @@ var audioEngine = {
         var requestBody = {
             'action':'play',
             'id':audio.instanceId,
+            'path':filePath,
+            'loop':loop,
             'volume':volume,
         };
         sendJsonString(requestBody);
