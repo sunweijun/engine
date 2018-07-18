@@ -561,12 +561,12 @@ var audioEngine = {
      */
     uncache: function (filePath) {
 
-        var requestBody = {
+        /*var requestBody = {
             'action':'uncache',
             'filePath':filePath,
         };
 
-        sendJsonString(requestBody);
+        sendJsonString(requestBody);*/
 
         var list = url2id[filePath];
         if (!list) return;
@@ -591,11 +591,11 @@ var audioEngine = {
     uncacheAll: function () {
         this.stopAll();
 
-        var requestBody = {
+        /*var requestBody = {
             'action':'stopAll',
         };
 
-        sendJsonString(requestBody);
+        sendJsonString(requestBody);*/
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -647,12 +647,12 @@ var audioEngine = {
 
     _breakCache: null,
     _break: function () {
-
+/*
         var requestBody = {
             'action':'_break',
         };
 
-        sendJsonString(requestBody);
+        sendJsonString(requestBody);*/
 
         this._breakCache = [];
         for (var id in id2audio) {
@@ -667,12 +667,12 @@ var audioEngine = {
 
     _restore: function () {
         if (!this._breakCache) return;
-
+/*
         var requestBody = {
             'action':'_restore',
         };
 
-        sendJsonString(requestBody);
+        sendJsonString(requestBody);*/
 
         while (this._breakCache.length > 0) {
             var id = this._breakCache.pop();
