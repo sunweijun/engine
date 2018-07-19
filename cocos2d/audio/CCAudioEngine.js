@@ -48,7 +48,7 @@ var sendJsonString = function (jsonData) {
     xmlHttp.setRequestHeader("Content-Type", "text/plain");
     xmlHttp.send(JSON.stringify(jsonData));
     
-    console.log(JSON.stringify(jsonData));
+    //console.log(JSON.stringify(jsonData));
     /*rsmq.sendMessage();
     var sendData = {
         'time':new Date().getCurrentTime(),
@@ -211,9 +211,9 @@ var audioEngine = {
      */
     isLoop: function (audioID) {
         var audio = getAudioFromId(audioID);
-        if (!audio || !audio.isLoop)
+        if (!audio || !audio.getLoop)
             return false;
-        return audio.isLoop();
+        return audio.getLoop();
     },
 
     /**
