@@ -44,7 +44,7 @@ var sendJsonString = function (jsonData) {
         }
     };
 
-    xmlHttp.open('POST', 'http://192.168.10.32:4000', true);
+    xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
     xmlHttp.setRequestHeader("Content-Type", "text/plain");
     xmlHttp.send(JSON.stringify(jsonData));
     
