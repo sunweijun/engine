@@ -267,6 +267,10 @@ Audio.State = {
         return this._element ? this._element.currentTime : 0;
     };
 
+    proto.getCurrentPath = function () {
+        return this._element ? this._element.src : '';
+    };
+
     proto.getDuration = function () {
         return this._element ? this._element.duration : 0;
     };

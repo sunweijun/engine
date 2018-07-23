@@ -44,7 +44,7 @@ var sendJsonString = function (jsonData) {
         }
     };
 
-    xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
+    xmlHttp.open('POST', 'http://192.168.10.32:4000', true);
     xmlHttp.setRequestHeader("Content-Type", "text/plain");
     xmlHttp.send(JSON.stringify(jsonData));
     
@@ -324,6 +324,23 @@ var audioEngine = {
             return 0;
         return audio.getCurrentTime();
     },
+
+        /**
+     * !#en Get current path
+     * !#zh 获取当前的音频播放时间。
+     * @method getCurrentPath
+     * @param {Number} audioID - audio id.
+     * @return {Number} audio current path.
+     * @example
+     * var path = cc.audioEngine.getCurrentPath(id);
+     */
+    getCurrentPath: function (audioID) {
+        var audio = getAudioFromId(audioID);
+        if (!audio || !audio.getCurrentPath)
+            return 0;
+        return audio.getCurrentPath();
+    },
+
 
     /**
      * !#en Get audio duration
