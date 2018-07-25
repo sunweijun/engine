@@ -284,10 +284,10 @@ cc.rendererWebGL = {
         if (this._isCacheToBufferOn) {
             var currentId = this._currentID, locCmdBuffer = this._cacheToBufferCmds;
             var cmdList = locCmdBuffer[currentId];
-            if (cmdList.indexOf(cmd) === -1)
-                cmdList.push(cmd);
+            //if (cmdList.indexOf(cmd) === -1)
+                //cmdList.push(cmd);
         } else {
-            this._renderCmds.push(cmd);
+            //this._renderCmds.push(cmd);
         }
     },
 
