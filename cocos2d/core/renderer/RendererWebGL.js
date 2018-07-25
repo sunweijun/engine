@@ -470,7 +470,7 @@ cc.rendererWebGL = {
                 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, _indexData.subarray(0, _indexSize), gl.DYNAMIC_DRAW);
             }
         }
-        //gl.drawElements(gl.TRIANGLES, _indexSize, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, _indexSize, gl.UNSIGNED_SHORT, 0);
 
         cc.g_NumberOfDraws++;
 
