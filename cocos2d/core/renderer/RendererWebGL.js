@@ -418,9 +418,13 @@ cc.rendererWebGL = {
     },
 
     _batchRendering: function () {
+        var count_Rendering = 0;
         if (_batchingSize === 0 || !_batchedInfo.texture) {
             return;
         }
+
+        ++count_Rendering;
+        console.log('Rendering Total:' + count_Rendering.toString());
 
         var gl = cc._renderContext;
         var texture = _batchedInfo.texture;
