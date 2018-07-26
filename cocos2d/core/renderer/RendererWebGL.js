@@ -56,6 +56,8 @@ var _batchedInfo = {
     _prevIndexSize = 0,
     _pureQuad = true,
     _IS_IOS = false;
+    
+    count_Rendering = 0;
 
 
 // Inspired from @Heishe's gotta-batch-them-all branch
@@ -418,7 +420,6 @@ cc.rendererWebGL = {
     },
 
     _batchRendering: function () {
-        var count_Rendering = 0;
         if (_batchingSize === 0 || !_batchedInfo.texture) {
             return;
         }
