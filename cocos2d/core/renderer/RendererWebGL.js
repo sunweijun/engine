@@ -425,7 +425,16 @@ cc.rendererWebGL = {
         }
 
         ++count_Rendering;
-        console.log('Rendering Total:' + count_Rendering.toString());
+
+        if(count_Rendering % 1000 == 0) {
+            var time = new Date();
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var second = time.getSeconds();
+            var milliseconds = time.getMilliseconds();
+            console.log( hours.toString() + ':' + minutes.toString() + ':' + (second + milliseconds / 1000).toString());
+            console.log('Rendering Total:' + count_Rendering.toString());
+        }
 
         var gl = cc._renderContext;
         var texture = _batchedInfo.texture;
