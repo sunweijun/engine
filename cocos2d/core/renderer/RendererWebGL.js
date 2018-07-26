@@ -485,6 +485,9 @@ cc.rendererWebGL = {
             }
         }
         gl.drawElements(gl.TRIANGLES, _indexSize, gl.UNSIGNED_SHORT, 0);
+        /*console.log(gl.TRIANGLES.toString());
+        console.log(_indexSize.toString());
+        console.log(gl.UNSIGNED_SHORT.toString());*/
 
         cc.g_NumberOfDraws++;
 
