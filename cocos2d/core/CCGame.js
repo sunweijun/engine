@@ -818,6 +818,9 @@ var game = {
         this.on(game.EVENT_SHOW, function () {
             game.resume();
         });
+        this.on(game.EVENT_GAME_INITED, function() {
+            game.pause();
+        });
     }
 };
 
