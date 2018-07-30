@@ -1440,7 +1440,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
 
             this.emit(cc.Director.EVENT_AFTER_UPDATE);
         }
-
+/*
         this.emit(cc.Director.EVENT_BEFORE_VISIT);
         // update the scene
         this._visitScene();
@@ -1453,7 +1453,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         cc.renderer.rendering(cc._renderContext);
         this._totalFrames++;
 
-        this.emit(cc.Director.EVENT_AFTER_DRAW);
+        this.emit(cc.Director.EVENT_AFTER_DRAW);*/
 
     } : function () {
         if (this._purgeDirectorInNextLoop) {
@@ -1485,7 +1485,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             if (this._nextScene) {
                 this.setNextScene();
             }
-
+/*
             this.emit(cc.Director.EVENT_BEFORE_VISIT);
             // update the scene
             this._visitScene();
@@ -1498,7 +1498,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             cc.renderer.rendering(cc._renderContext);
             this._totalFrames++;
 
-            this.emit(cc.Director.EVENT_AFTER_DRAW);
+            this.emit(cc.Director.EVENT_AFTER_DRAW);*/
             eventManager.frameUpdateListeners();
         }
     },
