@@ -480,7 +480,7 @@ cc.rendererWebGL = {
             'blendDst': _batchedInfo.blendDst,
             'texture_url': texture.url,
             'uploadAll': uploadAll,
-            'vertexData': postData,
+            'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
         }
 
         this.sendWebGL(jsonData);
