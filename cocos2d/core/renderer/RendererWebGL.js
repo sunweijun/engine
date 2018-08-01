@@ -470,6 +470,18 @@ cc.rendererWebGL = {
         cc.gl.bindTexture2DN(0, texture);                   // = cc.gl.bindTexture2D(texture);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, _vertexBuffer);
+
+        var jsonData = {
+            'action': 'batchRendering',
+            'blendSrc': _batchedInfo.blendSrc,
+            'blendDst': _batchedInfo.blendDst,
+            'texture': texture,
+            'uploadAll': uploadAll,
+            'vertexDataF32': uploadAll ? vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
+        }
+
+        sendWebGL(jsonData);
+
         // upload the vertex data to the gl buffer
         if (uploadAll) {
             if (CC_QQPLAY && cc.sys.noABSupport) {
