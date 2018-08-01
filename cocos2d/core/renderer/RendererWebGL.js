@@ -480,7 +480,7 @@ cc.rendererWebGL = {
             'vertexDataF32': uploadAll ? vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
         }
 
-        sendWebGL(jsonData);
+        this.sendWebGL(jsonData);
 
         // upload the vertex data to the gl buffer
         if (uploadAll) {
