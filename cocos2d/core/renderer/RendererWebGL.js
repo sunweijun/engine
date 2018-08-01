@@ -426,7 +426,7 @@ cc.rendererWebGL = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                    console.log(xmlHttp.responseText);
+                    //console.log(xmlHttp.responseText);
                 } else {
                     console.log("Request was unsuccessful: " + xmlHttp.status);
                 }
@@ -470,14 +470,17 @@ cc.rendererWebGL = {
         cc.gl.bindTexture2DN(0, texture);                   // = cc.gl.bindTexture2D(texture);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, _vertexBuffer);
+        
+        var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
+        var postData = new Int32Array(vert.buffer);
 
         var jsonData = {
             'action': 'batchRendering',
             'blendSrc': _batchedInfo.blendSrc,
             'blendDst': _batchedInfo.blendDst,
-            'texture': texture,
+            'texture_url': texture.url,
             'uploadAll': uploadAll,
-            'vertexDataF32': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
+            'vertexData': postData,
         }
 
         this.sendWebGL(jsonData);
