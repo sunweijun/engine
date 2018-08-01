@@ -426,7 +426,7 @@ cc.rendererWebGL = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                    //console.log(xmlHttp.responseText);
+                    console.log(xmlHttp.responseText);
                 } else {
                     console.log("Request was unsuccessful: " + xmlHttp.status);
                 }
