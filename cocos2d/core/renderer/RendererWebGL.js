@@ -509,7 +509,7 @@ cc.rendererWebGL = {
         /*console.log(gl.TRIANGLES.toString());
         console.log(_indexSize.toString());
         console.log(gl.UNSIGNED_SHORT.toString());*/
-        if(false) {
+        if(count_Rendering % 1000 == 0) {
 
             var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
             var postData = new Int32Array(vert.buffer);
