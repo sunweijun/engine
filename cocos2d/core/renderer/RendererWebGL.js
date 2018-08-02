@@ -509,22 +509,24 @@ cc.rendererWebGL = {
         /*console.log(gl.TRIANGLES.toString());
         console.log(_indexSize.toString());
         console.log(gl.UNSIGNED_SHORT.toString());*/
-/*
-        var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
-        var postData = new Int32Array(vert.buffer);
+        if(false) {
 
-        var jsonData = {
-            'action': 'batchRendering',
-            'blendSrc': _batchedInfo.blendSrc,
-            'blendDst': _batchedInfo.blendDst,
-            'texture_url': texture.url,
-            'uploadAll': uploadAll,
-            'vertexData': postData,
-            'indexData': indexData,
-            'indexSize': _indexSize,
+            var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
+            var postData = new Int32Array(vert.buffer);
+
+            var jsonData = {
+                'action': 'batchRendering',
+                'blendSrc': _batchedInfo.blendSrc,
+                'blendDst': _batchedInfo.blendDst,
+                'texture_url': texture.url,
+                'uploadAll': uploadAll,
+                'vertexData': postData,
+                'indexData': indexData,
+                'indexSize': _indexSize,
+            }
+
+            this.sendWebGL(jsonData);
         }
-
-        this.sendWebGL(jsonData);*/
 
         cc.g_NumberOfDraws++;
 
