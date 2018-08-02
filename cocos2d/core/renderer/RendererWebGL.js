@@ -511,7 +511,7 @@ cc.rendererWebGL = {
         /*console.log(gl.TRIANGLES.toString());
         console.log(_indexSize.toString());
         console.log(gl.UNSIGNED_SHORT.toString());*/
-
+/*
         var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
         var postData = new Int32Array(vert.buffer);
 
@@ -524,7 +524,7 @@ cc.rendererWebGL = {
             'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
             'indexData': indexData,
         }
-
+*/
         cc.g_NumberOfDraws++;
 
         if (_pureQuad) {
