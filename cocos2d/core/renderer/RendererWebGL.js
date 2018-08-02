@@ -470,18 +470,6 @@ cc.rendererWebGL = {
         cc.gl.bindTexture2DN(0, texture);                   // = cc.gl.bindTexture2D(texture);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, _vertexBuffer);
-        
-        var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
-        var postData = new Int32Array(vert.buffer);
-
-        var jsonData = {
-            'action': 'batchRendering',
-            'blendSrc': _batchedInfo.blendSrc,
-            'blendDst': _batchedInfo.blendDst,
-            'texture_url': texture.url,
-            'uploadAll': uploadAll,
-            'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
-        }
 
         this.sendWebGL(jsonData);
 
@@ -523,6 +511,19 @@ cc.rendererWebGL = {
         /*console.log(gl.TRIANGLES.toString());
         console.log(_indexSize.toString());
         console.log(gl.UNSIGNED_SHORT.toString());*/
+
+        var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
+        var postData = new Int32Array(vert.buffer);
+
+        var jsonData = {
+            'action': 'batchRendering',
+            'blendSrc': _batchedInfo.blendSrc,
+            'blendDst': _batchedInfo.blendDst,
+            'texture_url': texture.url,
+            'uploadAll': uploadAll,
+            'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
+            'indexData': indexData,
+        }
 
         cc.g_NumberOfDraws++;
 
