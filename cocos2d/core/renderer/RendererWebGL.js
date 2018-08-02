@@ -521,7 +521,7 @@ cc.rendererWebGL = {
                 'texture_url': texture.url,
                 'uploadAll': uploadAll,
                 'vertexData': postData,
-                'indexData': indexData,
+                'indexData': _indexData,
                 'indexSize': _indexSize,
             }
 
