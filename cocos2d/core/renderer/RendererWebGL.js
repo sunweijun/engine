@@ -471,8 +471,6 @@ cc.rendererWebGL = {
 
         gl.bindBuffer(gl.ARRAY_BUFFER, _vertexBuffer);
 
-        this.sendWebGL(jsonData);
-
         // upload the vertex data to the gl buffer
         if (uploadAll) {
             if (CC_QQPLAY && cc.sys.noABSupport) {
@@ -524,6 +522,8 @@ cc.rendererWebGL = {
             'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
             'indexData': indexData,
         }
+
+        this.sendWebGL(jsonData);
 */
         cc.g_NumberOfDraws++;
 
