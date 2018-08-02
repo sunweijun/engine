@@ -519,12 +519,13 @@ cc.rendererWebGL = {
             'blendDst': _batchedInfo.blendDst,
             'texture_url': texture.url,
             'uploadAll': uploadAll,
-            'vertexData': uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex),
+            'vertexData': postData,
             'indexData': indexData,
+            'indexSize': _indexSize,
         }
 
-        this.sendWebGL(jsonData);
-*/
+        this.sendWebGL(jsonData);*/
+
         cc.g_NumberOfDraws++;
 
         if (_pureQuad) {
