@@ -310,14 +310,17 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
             }
         }*/
         var renderer = cc.renderer;
-        if(this._scene) {
+        /*if(this._scene) {
             this._scene._updateSgNode();
             renderer.clearRenderCommands();
             cc.renderer.assignedZ = 0;
             this._runningScene._renderCmd._curLevel = 0; //level start from 0;
             this._runningScene.visit();
             renderer.resetFlag();
-        }
+        }*/
+        var scene = this._scene = new cc.Scene("game");
+        var canvas = new cc.Node("Canvas");
+        scene.addChild(canvas, 0);
     },
 
     /**
