@@ -318,9 +318,16 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
             this._runningScene.visit();
             renderer.resetFlag();
         }*/
-        var scene = this._scene = new cc.Scene("game");
+        this._scene = new cc.Scene("game");
+        var scene = this._scene;
         var canvas = new cc.Node("Canvas");
         scene.addChild(canvas, 0);
+        this._scene._updateSgNode();
+        renderer.clearRenderCommands();
+        cc.renderer.assignedZ = 0;
+        this._runningScene._renderCmd._curLevel = 0; //level start from 0;
+        this._runningScene.visit();
+        renderer.resetFlag();
     },
 
     /**
