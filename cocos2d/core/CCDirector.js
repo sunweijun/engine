@@ -294,7 +294,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
     },
 
     _visitScene: function () {
-        if (this._runningScene) {
+       /* if (this._runningScene) {
             var renderer = cc.renderer;
             if (renderer.childrenOrderDirty) {
                 // update the whole scene
@@ -308,15 +308,15 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
                 // only need to update transformPool
                 renderer.transform();
             }
-        }
-        /*if(this._scene) {
+        }*/
+        if(this._scene) {
             _scene._updateSGNode();
             renderer.clearRenderCommands();
             cc.renderer.assignedZ = 0;
             this._runningScene._renderCmd._curLevel = 0; //level start from 0;
             this._runningScene.visit();
             renderer.resetFlag();
-        }*/
+        }
     },
 
     /**
