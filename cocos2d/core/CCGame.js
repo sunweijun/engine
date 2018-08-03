@@ -816,10 +816,10 @@ var game = {
             //game.pause();
         });
         this.on(game.EVENT_SHOW, function () {
-            //game.resume();
+            game.resume();
         });
         this.on(game.EVENT_GAME_INITED, function() {
-            game.pause();
+            //game.pause();
         });
     }
 };

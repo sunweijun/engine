@@ -294,7 +294,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
     },
 
     _visitScene: function () {
-        if (this._runningScene) {
+       /* if (this._runningScene) {
             var renderer = cc.renderer;
             if (renderer.childrenOrderDirty) {
                 // update the whole scene
@@ -308,6 +308,14 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
                 // only need to update transformPool
                 renderer.transform();
             }
+        }*/
+        if(this._scene) {
+            _scene._updateSGNode();
+            renderer.clearRenderCommands();
+            cc.renderer.assignedZ = 0;
+            this._runningScene._renderCmd._curLevel = 0; //level start from 0;
+            this._runningScene.visit();
+            renderer.resetFlag();
         }
     },
 
@@ -1426,7 +1434,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
      * Run main loop of director
      */
     mainLoop: CC_EDITOR ? function (deltaTime, updateAnimate) {
-        if (!this._paused) {
+     /*   if (!this._paused) {
             this.emit(cc.Director.EVENT_BEFORE_UPDATE);
 
             this._compScheduler.startPhase();
@@ -1439,8 +1447,8 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             this._compScheduler.lateUpdatePhase(deltaTime);
 
             this.emit(cc.Director.EVENT_AFTER_UPDATE);
-        }
-/*
+        }*/
+
         this.emit(cc.Director.EVENT_BEFORE_VISIT);
         // update the scene
         this._visitScene();
@@ -1453,7 +1461,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         cc.renderer.rendering(cc._renderContext);
         this._totalFrames++;
 
-        this.emit(cc.Director.EVENT_AFTER_DRAW);*/
+        this.emit(cc.Director.EVENT_AFTER_DRAW);
 
     } : function () {
         if (this._purgeDirectorInNextLoop) {
@@ -1463,7 +1471,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         else if (!this.invalid) {
             // calculate "global" dt
             this.calculateDeltaTime();
-
+/*
             if (!this._paused) {
                 this.emit(cc.Director.EVENT_BEFORE_UPDATE);
                 // Call start for new added components
@@ -1478,14 +1486,14 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
                 this.emit(cc.Director.EVENT_AFTER_UPDATE);
                 // Destroy entities that have been removed recently
                 cc.Object._deferredDestroy();
-            }
+            }*/
 
             /* to avoid flickr, nextScene MUST be here: after tick and before draw.
              XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
             if (this._nextScene) {
                 this.setNextScene();
             }
-/*
+
             this.emit(cc.Director.EVENT_BEFORE_VISIT);
             // update the scene
             this._visitScene();
@@ -1498,7 +1506,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             cc.renderer.rendering(cc._renderContext);
             this._totalFrames++;
 
-            this.emit(cc.Director.EVENT_AFTER_DRAW);*/
+            this.emit(cc.Director.EVENT_AFTER_DRAW);
             eventManager.frameUpdateListeners();
         }
     },
