@@ -813,7 +813,7 @@ var game = {
         }
 
         this.on(game.EVENT_HIDE, function () {
-            game.pause();
+            //game.pause();
         });
         this.on(game.EVENT_SHOW, function () {
             //game.resume();
