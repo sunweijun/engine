@@ -309,8 +309,9 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
                 renderer.transform();
             }
         }*/
+        var renderer = cc.renderer;
         if(this._scene) {
-            _scene._updateSGNode();
+            this._scene._updateSgNode();
             renderer.clearRenderCommands();
             cc.renderer.assignedZ = 0;
             this._runningScene._renderCmd._curLevel = 0; //level start from 0;
