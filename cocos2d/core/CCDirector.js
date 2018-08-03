@@ -319,10 +319,19 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
             renderer.resetFlag();
         }*/
         this._scene = new cc.Scene("game");
+        this._runningScene = this._scene._sgNode;
         var scene = this._scene;
+
         var canvas = new cc.Node("Canvas");
         scene.addChild(canvas, 0);
-        this._scene._updateSgNode();
+
+        var background = new cc.Node('background');
+        canvas.addChild(background, background);
+
+        var sprite = new cc.Sprite('res/raw-assets/textures/background.jpg');
+        background.addComponent(sprite);
+
+        scene._updateSgNode();
         renderer.clearRenderCommands();
         cc.renderer.assignedZ = 0;
         this._runningScene._renderCmd._curLevel = 0; //level start from 0;
