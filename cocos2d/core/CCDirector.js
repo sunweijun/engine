@@ -294,30 +294,33 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
     },
 
     _visitScene: function () {
-       /* if (this._runningScene) {
+       
+       if (this._runningScene) {
             var renderer = cc.renderer;
-            if (renderer.childrenOrderDirty) {
+            //if (renderer.childrenOrderDirty) {
                 // update the whole scene
                 renderer.clearRenderCommands();
                 cc.renderer.assignedZ = 0;
                 this._runningScene._renderCmd._curLevel = 0; //level start from 0;
                 this._runningScene.visit();
                 renderer.resetFlag();
-            }
+            /*}
             else if (renderer.transformDirty()) {
                 // only need to update transformPool
                 renderer.transform();
-            }
-        }*/
+            }*/
+        }
+
+        /*
         var renderer = cc.renderer;
-        /*if(this._scene) {
+        if(this._scene) {
             this._scene._updateSgNode();
             renderer.clearRenderCommands();
             cc.renderer.assignedZ = 0;
             this._runningScene._renderCmd._curLevel = 0; //level start from 0;
             this._runningScene.visit();
             renderer.resetFlag();
-        }*/
+        }
         this._scene = new cc.Scene("game");
         this._runningScene = this._scene._sgNode;
         var scene = this._scene;
@@ -337,6 +340,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         this._runningScene._renderCmd._curLevel = 0; //level start from 0;
         this._runningScene.visit();
         renderer.resetFlag();
+        */
     },
 
     /**
