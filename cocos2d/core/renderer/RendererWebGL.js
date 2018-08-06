@@ -419,26 +419,6 @@ cc.rendererWebGL = {
         }
     },
 
-    sendWebGL : function (jsonData) {
-
-        var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
-    
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4) {
-                if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                    //console.log(xmlHttp.responseText);
-                } else {
-                    console.log("Request was unsuccessful: " + xmlHttp.status);
-                }
-            }
-        };
-    
-        xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
-        xmlHttp.setRequestHeader("Content-Type", "text/plain");
-        xmlHttp.send(JSON.stringify(jsonData));
-    
-    },
-
     _batchRendering: function () {
         if (_batchingSize === 0 || !_batchedInfo.texture) {
             return;
@@ -506,27 +486,6 @@ cc.rendererWebGL = {
             }
         }
         gl.drawElements(gl.TRIANGLES, _indexSize, gl.UNSIGNED_SHORT, 0);
-        /*console.log(gl.TRIANGLES.toString());
-        console.log(_indexSize.toString());
-        console.log(gl.UNSIGNED_SHORT.toString());*/
-     /*   if(count_Rendering % 1000 == 0) {
-
-            var vert = uploadAll ? _vertexDataF32:_vertexDataF32.subarray(0, _batchingSize * _sizePerVertex);
-            var postData = new Int32Array(vert.buffer);
-
-            var jsonData = {
-                'action': 'batchRendering',
-                'blendSrc': _batchedInfo.blendSrc,
-                'blendDst': _batchedInfo.blendDst,
-                'texture_url': texture.url,
-                'uploadAll': uploadAll,
-                'vertexData': postData,
-                'indexData': _indexData,
-                'indexSize': _indexSize,
-            }
-
-            this.sendWebGL(jsonData);
-        }*/
 
         cc.g_NumberOfDraws++;
 
