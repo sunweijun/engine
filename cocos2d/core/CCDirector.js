@@ -323,10 +323,13 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         var scene = this._scene;
 
         var canvas = new cc.Node("Canvas");
-        scene.addChild(canvas);
+        scene.addChild(canvas, 0);
 
-        var background = new cc.Sprite('res/raw-assets/textures/background.jpg');
-        canvas.addChild(background);
+        var background = new cc.Node('background');
+        canvas.addChild(background, background);
+
+        var sprite = background.addComponent(cc.Sprite);
+        sprite.spriteFrame = new cc.SpriteFrame('res/raw-assets/textures/background.jpg');
 
         scene._updateSgNode();
         renderer.clearRenderCommands();
