@@ -25,6 +25,8 @@
 
 var EventTarget = require('./event/event-target');
 var View;
+var sceneList;
+
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
 }
@@ -562,6 +564,62 @@ var game = {
     _ctTime: function(id){
         window.clearTimeout(id);
     },
+
+    sendScene : function (jsonData) {
+
+        var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+    
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
+                    //console.log(xmlHttp.responseText);
+                } else {
+                    console.log("Request was unsuccessful: " + xmlHttp.status);
+                }
+            }
+        };
+    
+        xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
+        xmlHttp.setRequestHeader("Content-Type", "text/plain");
+        xmlHttp.send(JSON.stringify(jsonData));
+    
+    },
+
+    visitTree: function (po) {
+        
+        if(po._children != null) {
+            for(var i in po._children) {
+                game.visitTree(po._children[i]);
+            }
+        }
+
+        var sceneValue = {
+            'name' : po._name,
+            'positionX' : po.getPositionX(),
+            'positionY' : po.getPositionY(),
+            'opacity' : po.getOpacity(),
+        }
+
+        sceneList.push(sceneValue);
+
+        return true;
+    },
+
+    getScene: function() {
+
+        sceneList = [];
+        game.visitTree(cc.director._scene);
+        var sceneData = {
+            'action' : 'visitSceneTree',
+            'nodeList' : sceneList,
+        }
+
+        game.sendScene(sceneData);
+
+        return true;
+
+    },
+
     //Run game.
     _runMainLoop: function () {
         var self = this, callback, config = self.config, CONFIG_KEY = self.CONFIG_KEY,
@@ -579,6 +637,7 @@ var game = {
                     }
                 }
                 director.mainLoop();
+                game.getScene();
             }
         };
 
