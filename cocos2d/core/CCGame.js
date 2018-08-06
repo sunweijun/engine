@@ -586,6 +586,9 @@ var game = {
     },
 
     visitTree: function (po) {
+        if(po == null) {
+            return false;
+        }
         
         if(po._children != null) {
             for(var i in po._children) {
