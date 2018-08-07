@@ -602,6 +602,17 @@ var game = {
             'positionY' : po.getPositionY(),
             'opacity' : po.getOpacity(),
         }
+        var item = {};
+
+        if(po._components != null) {
+            var item = {};
+            for(var i in po._components) {
+                if(po._components[i] instanceof cc.Label) {
+                    item['label'] = po._components[i].string;
+                }
+            }
+            sceneValue['components'] = item;
+        }
 
         sceneList.push(sceneValue);
 
