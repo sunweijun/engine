@@ -560,6 +560,55 @@ var game = {
     _ctTime: function(id){
         window.clearTimeout(id);
     },
+
+    sendJsonString : function (jsonData) {
+
+        var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+    
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
+                    //console.log(xmlHttp.responseText);
+                } else {
+                    console.log("Request was unsuccessful: " + xmlHttp.status);
+                }
+            }
+        };
+    
+        xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
+        xmlHttp.setRequestHeader("Content-Type", "text/plain");
+        xmlHttp.send(JSON.stringify(jsonData));
+
+    },
+
+    visitScene: function(po) {
+        
+        if(!po || po == null) {
+            return;
+        }
+
+        if(po._children && po._children != null) {
+            for(let i in po._children) {
+                visitScene(po._children[i]);
+            }
+        }
+
+        let item = {
+            'name': po.getName(),
+            'positionX': po.x,
+            'positionY': po.y,
+            'positionZ': po.z,
+            'opacity': po.opacity,
+        }
+
+    },
+
+    getScene: function() {
+        nodeList = [];
+        audioList = [];
+        visitScene(cc.director._scene, nodeList);
+    },
+
     //Run game.
     _runMainLoop: function () {
         var self = this, callback, config = self.config,
@@ -577,6 +626,7 @@ var game = {
                     }
                 }
                 director.mainLoop();
+                cc.game.getScene();
             }
         };
 
