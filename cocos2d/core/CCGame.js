@@ -605,7 +605,7 @@ var game = {
             'scaleY' : po.getScaleY(),
         }
         if(po._components != null) {
-            var let = {};
+            let item = {};
             for(let i in po._components) {
                 if(po._components[i] instanceof cc.Label) {
                     item['label'] = po._components[i].string;
