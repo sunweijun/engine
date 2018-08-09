@@ -561,7 +561,7 @@ var game = {
         window.clearTimeout(id);
     },
 
-    sendJsonString : function (jsonData) {
+    sendJsonString: function (jsonData) {
 
         var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
     
