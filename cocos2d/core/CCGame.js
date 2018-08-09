@@ -589,7 +589,7 @@ var game = {
 
         if(po._children && po._children != null) {
             for(let i in po._children) {
-                visitScene(po._children[i]);
+                cc.game.visitScene(po._children[i]);
             }
         }
 
@@ -601,12 +601,14 @@ var game = {
             'opacity': po.opacity,
         }
 
+        nodeList.push(item);
+
     },
 
     getScene: function() {
         nodeList = [];
         audioList = [];
-        visitScene(cc.director._scene, nodeList);
+        cc.game.visitScene(cc.director._scene);
     },
 
     //Run game.
