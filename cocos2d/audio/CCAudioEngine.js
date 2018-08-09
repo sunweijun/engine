@@ -30,9 +30,9 @@ var instanceId = 0;
 var id2audio = {};
 var url2id = {};
 
-var sendJsonString = function (jsonData) {
+let sendJsonString = function (jsonData) {
 
-    var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+    let xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4) {

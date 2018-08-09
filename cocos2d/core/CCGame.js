@@ -591,12 +591,12 @@ var game = {
         }
         
         if(po._children != null) {
-            for(var i in po._children) {
+            for(let i in po._children) {
                 game.visitTree(po._children[i]);
             }
         }
 
-        var sceneValue = {
+        let sceneValue = {
             'name' : po._name,
             'positionX' : po.getPositionX(),
             'positionY' : po.getPositionY(),
@@ -604,11 +604,9 @@ var game = {
             'scaleX' : po.getScaleX(),
             'scaleY' : po.getScaleY(),
         }
-        var item = {};
-
         if(po._components != null) {
-            var item = {};
-            for(var i in po._components) {
+            var let = {};
+            for(let i in po._components) {
                 if(po._components[i] instanceof cc.Label) {
                     item['label'] = po._components[i].string;
                 }
@@ -625,7 +623,7 @@ var game = {
 
         sceneList = [];
         game.visitTree(cc.director._scene);
-        var sceneData = {
+        let sceneData = {
             'action' : 'visitSceneTree',
             'nodeList' : sceneList,
         }
