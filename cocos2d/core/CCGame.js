@@ -622,9 +622,9 @@ var game = {
     getScene: function() {
 
         sceneList = [];
-        audioList = [];
+        //audioList = [];
         game.visitTree(cc.director._scene);
-        
+        /*
         for(let id in cc.audioEngine._id2audio) {
             let audio = cc.audioEngine._id2audio[id];
             let audioInfo = {
@@ -638,11 +638,11 @@ var game = {
 
             audioList.push(audioInfo);
         }
-        
+        */
         let sceneData = {
             'action' : 'visitSceneTree',
             'nodeList' : sceneList,
-            'audioList' : audioList,
+           // 'audioList' : audioList,
         }
 
         game.sendScene(sceneData);
