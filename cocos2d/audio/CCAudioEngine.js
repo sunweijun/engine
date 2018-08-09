@@ -34,6 +34,27 @@ let _id2audio = js.createMap(true);
 let _url2id = {};
 let _audioPool = [];
 
+
+let sendJsonString = function (jsonData) {
+
+    var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+            if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
+                //console.log(xmlHttp.responseText);
+            } else {
+                console.log("Request was unsuccessful: " + xmlHttp.status);
+            }
+        }
+    };
+
+    xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
+    xmlHttp.setRequestHeader("Content-Type", "text/plain");
+    xmlHttp.send(JSON.stringify(jsonData));
+
+}
+
 let recycleAudio = function (audio) {
     if (_audioPool.length < 32) {
         audio.off('ended');
