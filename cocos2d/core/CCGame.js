@@ -601,6 +601,8 @@ var game = {
             'positionX' : po.getPositionX(),
             'positionY' : po.getPositionY(),
             'opacity' : po.getOpacity(),
+            'scaleX' : po.getScaleX(),
+            'scaleY' : po.getScaleY(),
         }
         var item = {};
 
