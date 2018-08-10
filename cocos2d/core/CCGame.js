@@ -612,7 +612,7 @@ var game = {
             'action': 'visitSceneTree',
             'nodeList': nodeList,
         };
-        this.sendJsonString();
+        this.sendJsonString(jsonData);
     },
 
     //Run game.
