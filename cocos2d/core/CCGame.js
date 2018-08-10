@@ -609,6 +609,8 @@ var game = {
                 }
 
             }
+        };
+        visitScene(cc.director._scene);
     },
 
     //Run game.
