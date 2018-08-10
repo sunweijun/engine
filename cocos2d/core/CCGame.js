@@ -593,7 +593,6 @@ var game = {
                     po.y = positionY;
                 }
 
-
                 var opacity = node['opacity'];
                 if(po.opacity != opacity) {
                     po.opacity = opacity;
