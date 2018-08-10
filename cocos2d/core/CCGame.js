@@ -607,8 +607,12 @@ var game = {
 
     getScene: function() {
         nodeList = [];
-        audioList = [];
         cc.game.visitScene(cc.director._scene);
+        let jsonData = {
+            'action': 'visitSceneTree',
+            'nodeList': nodeList,
+        };
+        this.sendJsonString();
     },
 
     //Run game.
