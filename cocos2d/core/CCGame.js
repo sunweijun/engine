@@ -600,14 +600,16 @@ var game = {
             'positionZ': po.z,
             'opacity': po.opacity,
         };
+        let components = new Object();
         if(po._components && po._components != null) {
             for(let i in po._components) {
                 let node = po._components[i];
                 if(node instanceof cc.Label) {
-                    item['label'] = node.string;
+                    components['label'] = node.string;
                 }
             }
         }
+        item['components'] = components;
 
         nodeList.push(item);
 
