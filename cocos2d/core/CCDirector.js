@@ -901,7 +901,7 @@ cc.Director.prototype = {
 
         // Update
         if (!this._paused) {
-            this.emit(cc.Director.EVENT_BEFORE_UPDATE);
+         /*   this.emit(cc.Director.EVENT_BEFORE_UPDATE);
 
             this._compScheduler.startPhase();
             this._compScheduler.updatePhase(deltaTime);
@@ -912,7 +912,7 @@ cc.Director.prototype = {
 
             this._compScheduler.lateUpdatePhase(deltaTime);
 
-            this.emit(cc.Director.EVENT_AFTER_UPDATE);
+            this.emit(cc.Director.EVENT_AFTER_UPDATE);*/
         }
 
         // Render
@@ -935,7 +935,7 @@ cc.Director.prototype = {
 
             // Update
             if (!this._paused) {
-                this.emit(cc.Director.EVENT_BEFORE_UPDATE);
+             /*   this.emit(cc.Director.EVENT_BEFORE_UPDATE);
                 // Call start for new added components
                 this._compScheduler.startPhase();
                 // Update for components
@@ -947,7 +947,7 @@ cc.Director.prototype = {
                 // User can use this event to do things after update
                 this.emit(cc.Director.EVENT_AFTER_UPDATE);
                 // Destroy entities that have been removed recently
-                Obj._deferredDestroy();
+                Obj._deferredDestroy();*/
             }
 
             // Render
