@@ -560,6 +560,58 @@ var game = {
     _ctTime: function(id){
         window.clearTimeout(id);
     },
+
+    updateScene: function(nodeList) {
+
+        var dict = new Object();
+        for(let i in data) {
+            dict[data[i].name] = data[i];
+        };
+
+        let visitScene = function(po) {
+
+            if(po == null) {
+                return;
+            }
+
+            if(po._children != null) {
+                for(let i in po._children) {
+                    visitScene(po._children[i]);
+                }
+            }
+
+            if(po._name in dict) {
+                var node = dict[po._name];
+
+                var positionX = node['positionX'];
+                if(po.x != positionX) {
+                    po.x = positionX;
+                }
+
+                var positionY = node['positionY'];
+                if(po.y != positionY) {
+                    po.y = positionY;
+                }
+
+
+                var opacity = node['opacity'];
+                if(po.opacity != opacity) {
+                    po.opacity = opacity;
+                }
+
+                if('components' in node) {
+                    var components = node['components'];
+                    var labelString = components['label'];
+                    for(let i in po._components) {
+                        if(po._components[i] instanceof cc.Label) {
+                            po._components[i].string = labelString;
+                        }
+                    }
+                }
+
+            }
+    },
+
     //Run game.
     _runMainLoop: function () {
         var self = this, callback, config = self.config,
