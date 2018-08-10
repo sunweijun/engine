@@ -561,7 +561,7 @@ var game = {
         window.clearTimeout(id);
     },
 
-    updateScene: function(nodeList) {
+    updateScene: function(data) {
 
         var dict = new Object();
         for(let i in data) {
