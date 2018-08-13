@@ -912,7 +912,7 @@ var game = {
                 
             // send audio data
 
-            var id = cc.audioEngine.play('test.mp3', true, 1.0);
+            let id = cc.audioEngine.play('test.mp3', true, 1.0);
             cc.audioEngine.setCurrentTime(id, 20);
 
             if(window.WebSocket){
@@ -938,7 +938,7 @@ var game = {
                         var volume = [];
                         var loop = [];
 
-                        for(var id in cc.audioEngine._id2audio) {
+                        for(let id in cc.audioEngine._id2audio) {
                             path.push(cc.audioEngine.getPath(id));
                             id_list.push(id);
                             currentTime.push(cc.audioEngine.getCurrentTime(id));
