@@ -845,7 +845,7 @@ var game = {
                     }
                     
                     var use = JSON.parse(e['data']);
-                    /*if(use['action'] == 'preload') {
+                    if(use['action'] == 'preload') {
                         console.log('preload');
                         var path = use['path'];
                         var loop = use['loop'];
@@ -869,7 +869,7 @@ var game = {
                         console.log(cc.audioEngine.getCurrentTime(id2id[id], sec).toString());
                         ws.send('loadtest');
 
-                    } else */if(use['action'] == 'visitSceneTree') { 
+                    } else if(use['action'] == 'visitSceneTree') { 
                         
                         var updateScene = function (data) {
                             
