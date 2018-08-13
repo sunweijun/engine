@@ -911,10 +911,10 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function () {
                 
             // send audio data
-
+/*
             let id = cc.audioEngine.play('test.mp3', true, 1.0);
             cc.audioEngine.setCurrentTime(id, 20);
-
+*/
             if(window.WebSocket){
                 var ws = new WebSocket('ws://192.168.10.32:4000');
             
