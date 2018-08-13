@@ -853,13 +853,16 @@ var game = {
                         var loop = use['loop'];
                         var id_list = use['id'];
                         var sec = use['currentTime'];
-                        id2id[id] = cc.audioEngine.play(path, loop, volume);
-                        cc.audioEngine.setCurrentTime(id2id[id], sec);
+                        for(let i = 0; i < id_list.length; ++i) {
+                            let id = id_list[i];
+                            id2id[id] = cc.audioEngine.play(path[i], loop[i], volume[i]);
+                            cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
+                        }
                         
                         ws.send('repreload');
 
 
-                    } else if(use['action'] == 'repreload') {
+                    }/*/ else if(use['action'] == 'repreload') {
 
                         console.log('repreload');
                         var sec = use['currentTime'];
@@ -869,7 +872,7 @@ var game = {
                         console.log(cc.audioEngine.getCurrentTime(id2id[id], sec).toString());
                         ws.send('loadtest');
 
-                    } else if(use['action'] == 'visitSceneTree') { 
+                    }*/ else if(use['action'] == 'visitSceneTree') { 
                         
                         var updateScene = function (data) {
                             
