@@ -819,7 +819,180 @@ var game = {
             game.resume();
         });
         this.on(game.EVENT_GAME_INITED, function() {
-            //game.pause();
+            console.log('game inited');
+            
+            var id2id = {}
+
+            if(window.WebSocket){
+                var ws = new WebSocket('ws://192.168.10.32:4000');
+
+                ws.onopen = function(e){
+                    console.log("ws connect successfully");
+                    ws.send("client");
+                }
+                ws.onclose = function(e){
+                    console.log("ws connect close");
+                }
+                ws.onerror = function(){
+                    console.log("ws connect error");
+                }
+
+                ws.onmessage = function(e) {
+                    var str = e['data'];
+                    if(str == 'ready') {
+                        ws.send('preload');
+                        return;
+                    }
+                    
+                    var use = JSON.parse(e['data']);
+                    /*if(use['action'] == 'preload') {
+                        console.log('preload');
+                        var path = use['path'];
+                        var loop = use['loop'];
+                        var volume = use['volume'];
+                        var loop = use['loop'];
+                        var id_list = use['id'];
+                        var sec = use['currentTime'];
+                        id2id[id] = cc.audioEngine.play(path, loop, volume);
+                        cc.audioEngine.setCurrentTime(id2id[id], sec);
+                        
+                        ws.send('repreload');
+
+
+                    } else if(use['action'] == 'repreload') {
+
+                        console.log('repreload');
+                        var sec = use['currentTime'];
+                        var id = use['id'];
+                        console.log(sec.toString());
+                        cc.audioEngine.setCurrentTime(id2id[id], sec);
+                        console.log(cc.audioEngine.getCurrentTime(id2id[id], sec).toString());
+                        ws.send('loadtest');
+
+                    } else */if(use['action'] == 'visitSceneTree') { 
+                        
+                        var updateScene = function (data) {
+                            
+                            var dict = new Object();
+                            for(let i in data) {
+                                dict[data[i].name] = data[i];
+                            };
+
+                            var visitScene = function(po) {
+
+                                if(po == null) {
+                                    return;
+                                }
+
+                                if(po._children != null) {
+                                    for(let i in po._children) {
+                                        visitScene(po._children[i]);
+                                    }
+                                }
+
+                                if(po._name in dict) {
+                                    var node = dict[po._name];
+
+                                    var positionX = node['positionX'];
+                                    if(po.getPositionX() != positionX) {
+                                        po.setPositionX(positionX);
+                                    }
+
+                                    var positionY = node['positionY'];
+                                    if(po.getPositionY() != positionY) {
+                                        po.setPositionY(positionY);
+                                    }
+
+                                    var scaleX = node['scaleX'];
+                                    if(po.getScaleX() != scaleX) {
+                                        po.setScaleX(scaleX);
+                                    }
+
+                                    var scaleY = node['scaleY'];
+                                    if(po.getScaleY() != scaleY) {
+                                        po.setScaleY(scaleY);
+                                    }
+
+                                    var opacity = node['opacity'];
+                                    if(po.getOpacity() != opacity) {
+                                        po.setOpacity(opacity);
+                                    }
+
+                                    if('components' in node) {
+                                        var components = node['components'];
+                                        var labelString = components['label'];
+                                        for(let i in po._components) {
+                                            if(po._components[i] instanceof cc.Label) {
+                                                po._components[i].string = labelString;
+                                            }
+                                        }
+                                    }
+
+                                }
+                            };
+
+                            visitScene(cc.director._scene);
+                        } 
+                        updateScene(use['nodeList']);
+
+                    } else if(use['action'] == 'loadScene') {
+                        
+                        let scene = use['scene'];
+                        cc.director.loadScene(scene);
+
+                    }else if(use['action'] == 'play') {
+                        
+                        path = use['path'];
+                        loop = use['loop'];
+                        path = use['path'];
+                        id = use['id'];
+                        volume = use['volume'];
+                        id2id[id] = cc.audioEngine.play(path, loop, volume);
+
+                    } else if(use['action'] == 'setLoop') {
+                        
+                        id = use['id'];
+                        loop = use['loop'];
+                        cc.audioEngine.setLoop(id2id[id], loop);
+                    
+                    } else if(use['action'] == 'setVolume') {
+
+                        id = use['id'];
+                        volume = use['volume'];
+                        cc.audioEngine.setVolume(id2id[id], volume);
+
+                    } else if(use['action'] == 'setCurrentTime') {
+
+                        id = use['id'];
+                        sec = use['sec'];
+                        cc.audioEngine.setCurrentTime(id2id[id], sec);
+
+                    } else if(use['action'] == 'stop') {
+                    
+                        id = use['id'];
+                        cc.audioEngine.stop(id2id[id]);
+                    
+                    } else if(use['action'] == 'pause') {
+                        
+                        id = use['id'];
+                        cc.audioEngine.pause(id2id[id]);
+
+                    } else if(use['action'] == 'resume') {
+
+                        id = use['id'];
+                        cc.audioEngine.resume(id2id[id]);
+
+                    }else if(use['action'] == 'pauseAll') {
+
+                        cc.audioEngine.pauseAll();
+
+                    } else if(use['action'] == 'resumeAll') {
+
+                        cc.audioEngine.resumeAll();
+
+                    }
+                }
+            }
         });
     }
 };
