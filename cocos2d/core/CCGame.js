@@ -939,7 +939,7 @@ var game = {
                         var loop = [];
 
                         for(let id in cc.audioEngine._id2audio) {
-                            path.push(cc.audioEngine.getPath(id));
+                            path.push(cc.audioEngine._id2audio[i]._src);
                             id_list.push(id);
                             currentTime.push(cc.audioEngine.getCurrentTime(id));
                             volume.push(cc.audioEngine.getVolume(id));
