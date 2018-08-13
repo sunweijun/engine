@@ -943,7 +943,7 @@ var game = {
                             id_list.push(id);
                             currentTime.push(cc.audioEngine.getCurrentTime(id));
                             volume.push(cc.audioEngine.getVolume(id));
-                            loop.push(cc.audioEngine.getLoop(id));
+                            loop.push(cc.audioEngine.isLoop(id));
                         }
 
                         var jsonData = {
