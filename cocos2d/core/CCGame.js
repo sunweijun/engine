@@ -932,15 +932,6 @@ var game = {
                 ws.onmessage = function(e) {
                     var use = e['data'];
                     if(use == 'preload') {
-                        var jsonData = {
-                            'action':'preload',
-                            'path':'test.mp3',
-                            'currentTime':cc.audioEngine.getCurrentTime(id),
-                            'id':id,
-                            'volume':cc.audioEngine.getVolume(id),
-                            'loop':cc.audioEngine.isLoop(id),
-                        }
-    /*
                         var path = [];
                         var id_list = [];
                         var currentTime = [];
@@ -962,31 +953,17 @@ var game = {
                             'id':id_list,
                             'volume':volume,
                             'loop':loop,
-                        }*/
+                        }
 
                         ws.send(JSON.stringify(jsonData));
 
-                        // save screen shots by visit scene tree
-                        var size = cc.director.getWinSize();
-                        var fileName = "picture_when_preload.jpg";
-                        /*var fullPath = cc.fileUtils.getWritablePath() + fileName;
-                        if (cc.fileUtils.isFileExist(fullPath)) {
-                            cc.fileUtils.removeFile(fullPath);
-                        }*/
-                        var texture = new cc.RenderTexture(Math.floor(size.width), Math.floor(size.height));
-                        texture.setPosition(cc.p(size.width / 2, size.height / 2));
-                        texture.begin();
-                        cc.director.getRunningScene().visit();
-                        texture.end();
-                        //texture.saveToFile(fileName, cc.IMAGE_FORMAT_JPG);
-                        
-                    } else if(use == 'repreload') {
+                    }/* else if(use == 'repreload') {
                         var jsonData = {
                             'action':'repreload',
                             'currentTime':cc.audioEngine.getCurrentTime(id),
                         }
                         ws.send(JSON.stringify(jsonData));
-                    } else if(use =='loadtest') {
+                    } */else if(use =='loadtest') {
                         console.log(cc.audioEngine.getCurrentTime(id).toString());
                     }
                 }
