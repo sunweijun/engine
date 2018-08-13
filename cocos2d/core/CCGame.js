@@ -939,11 +939,11 @@ var game = {
                         var loop = [];
 
                         for(let id in cc.audioEngine._id2audio) {
-                            path.push(cc.audioEngine._id2audio[i]._src);
+                            path.push(cc.audioEngine._id2audio[id]._src);
                             id_list.push(id);
                             currentTime.push(cc.audioEngine.getCurrentTime(id));
                             volume.push(cc.audioEngine.getVolume(id));
-                            loop.push(cc.audioEngine.getLoop());
+                            loop.push(cc.audioEngine.getLoop(i));
                         }
 
                         var jsonData = {
