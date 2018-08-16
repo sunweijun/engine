@@ -930,10 +930,10 @@ var game = {
                                     }
 
                                     if('components' in node) {
-                                        var components = node['components'];
-                                        var labelString = components['label'];
+                                        let components = node['components'];
                                         for(let i in po._components) {
-                                            if(po._components[i] instanceof cc.Label) {
+                                            if(po._components[i] instanceof cc.Label) {    
+                                                let labelString = components['label'];
                                                 po._components[i].string = labelString;
                                             }
                                         }
