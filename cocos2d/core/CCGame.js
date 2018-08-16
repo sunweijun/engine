@@ -598,6 +598,7 @@ var game = {
 
         let sceneValue = {
             'name' : po._name,
+            'active': po.active,
             'positionX' : po.getPositionX(),
             'positionY' : po.getPositionY(),
             'opacity' : po.getOpacity(),
