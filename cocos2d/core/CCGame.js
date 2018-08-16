@@ -901,6 +901,8 @@ var game = {
                                 if(po._name in dict) {
                                     var node = dict[po._name];
 
+                                    po.active = node['active'];
+
                                     var positionX = node['positionX'];
                                     if(po.getPositionX() != positionX) {
                                         po.setPositionX(positionX);
