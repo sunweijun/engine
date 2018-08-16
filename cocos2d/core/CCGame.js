@@ -881,7 +881,7 @@ var game = {
                             
                             var dict = new Object();
                             for(let i in data) {
-                                dict[data[i].name] = data[i];
+                                dict[data[i]['tree_id']] = data[i];
                             };
 
                             var visitScene = function(po) {
@@ -897,8 +897,9 @@ var game = {
                                         visitScene(po._children[i]);
                                     }
                                 }
+                                let id = treeSize;
 
-                                if(po._name in dict) {
+                                if(id in dict && po._name == dict[id]['name']) {
                                     var node = dict[po._name];
 
                                     po.active = node['active'];
