@@ -598,6 +598,7 @@ var game = {
         }
 
         let sceneValue = {
+            'tree_id': treeSize,
             'name' : po._name,
             'active': po.active,
             'positionX' : po.getPositionX(),
