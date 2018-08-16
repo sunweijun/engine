@@ -900,7 +900,7 @@ var game = {
                                 let id = treeSize;
 
                                 if(id in dict && po._name == dict[id]['name']) {
-                                    var node = dict[po._name];
+                                    var node = dict[id];
 
                                     po.active = node['active'];
 
