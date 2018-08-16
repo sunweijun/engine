@@ -820,6 +820,7 @@ var game = {
         });
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
+            cc.director.pause();
             
             var id2id = {}
 

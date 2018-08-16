@@ -1494,8 +1494,8 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         }
         else if (!this.invalid) {
             // calculate "global" dt
-            this.calculateDeltaTime();
-/*
+/*            this.calculateDeltaTime();
+
             if (!this._paused) {
                 this.emit(cc.Director.EVENT_BEFORE_UPDATE);
                 // Call start for new added components
