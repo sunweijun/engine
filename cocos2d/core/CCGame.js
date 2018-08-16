@@ -875,6 +875,8 @@ var game = {
 
                     }*/ else if(use['action'] == 'visitSceneTree') { 
                         
+                        treeSize = 0;
+
                         var updateScene = function (data) {
                             
                             var dict = new Object();
@@ -883,6 +885,8 @@ var game = {
                             };
 
                             var visitScene = function(po) {
+
+                                ++treeSize;
 
                                 if(po == null) {
                                     return;
@@ -938,6 +942,8 @@ var game = {
                             visitScene(cc.director._scene);
                         } 
                         updateScene(use['nodeList']);
+                        console.log('Source: Tree Size = ' + use['treeSize']);
+                        console.log('Client: Tree Size = ' + treeSize);
 
                     } else if(use['action'] == 'loadScene') {
                         
