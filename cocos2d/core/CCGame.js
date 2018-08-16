@@ -586,6 +586,7 @@ var game = {
     },
 
     visitTree: function (po) {
+        treeSize = treeSize + 1;
         if(po == null) {
             return false;
         }
@@ -624,6 +625,7 @@ var game = {
 
         sceneList = [];
         //audioList = [];
+        treeSize = 0;
         game.visitTree(cc.director._scene);
         /*
         for(let id in cc.audioEngine._id2audio) {
@@ -643,6 +645,7 @@ var game = {
         let sceneData = {
             'action' : 'visitSceneTree',
             'nodeList' : sceneList,
+            'treeSize' : treeSize,
            // 'audioList' : audioList,
         }
 
