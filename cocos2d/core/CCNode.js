@@ -1008,7 +1008,15 @@ var Node = cc.Class({
 
     _mySetParent(value) {
         if(this._parent) {
-            this._parent._children.remove(this);
+            let child = this._parent._children;
+            for(let i in child) {
+                if(value === child[i]) {
+                    let s1 = child.slice(0, i);
+                    let s2 = child.slive(i + 1, child.length);
+                    this._parent._children = s1.concat(s1);
+                    break;
+                }
+            }
         }
         if(value) {
             value._children.push(this);
