@@ -1006,7 +1006,7 @@ var Node = cc.Class({
         }
     },
 
-    _mySetParent(value) {
+    _mySetParent(value) {/*
         if(this._parent) {
             let child = this._parent._children;
             for(let i in child) {
@@ -1020,7 +1020,7 @@ var Node = cc.Class({
         }
         if(value) {
             value._children.push(this);
-        }  
+        }  */
     },
 
     _onSiblingIndexChanged (index) {
