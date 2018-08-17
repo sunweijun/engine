@@ -832,14 +832,29 @@ var game = {
 
             if('components' in node) {
                 let components = node['components'];
+                if(!po._components) {
+                    continue;
+                }
+                if(po.components == null) {
+                    po.components = [];
+                }
+
+                if('textureUrl' in components) {
+                    if(po.getComponent(cc.Sprite) == null)
+                        po.addComponent(cc.Sprite);
+                }
+
                 for(let i in po._components) {
                     if(po._components[i] instanceof cc.Label) {    
                         let labelString = components['label'];
                         po._components[i].string = labelString;
-                    } else if(po._compoennts[i] instanceof cc.Sprite) {
+                    } else if(po._components[i] instanceof cc.Sprite) {
                         let url = components['textureUrl'];
-                        if(url != po._components[i].spriteFrame._textureFileNanme)
+                        if(po._components[i].spriteFrame == null) {
                             po._components[i].spriteFrame = new cc.SpriteFrame(url);
+                        } else if(url != po._components[i].spriteFrame._textureFilename) {
+                            po._components[i].spriteFrame = new cc.SpriteFrame(url);
+                        }
                     }
                 }
             }
