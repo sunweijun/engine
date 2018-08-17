@@ -605,6 +605,7 @@ var game = {
         }
 
         let sceneValue = {
+            'parent_id': po._parent.tree_id,
             'tree_id': po.tree_id,
             'name' : po._name,
             'active': po.active,
