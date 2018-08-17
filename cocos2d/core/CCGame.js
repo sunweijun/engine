@@ -880,10 +880,6 @@ var game = {
 
                         var updateScene = function (data) {
                             
-                            var dict = new Object();
-                            for(let i in data) {
-                                dict[data[i]['tree_id']] = data[i];
-                            };
 
                             var visitScene = function(po) {
 
@@ -902,52 +898,60 @@ var game = {
                                         visitScene(po._children[i]);
                                     }
                                 }
-                                let id = treeSize;
+                            };
+                            if(cc.game.treeSize == 0)
+                                visitScene(cc.director._scene);
+                            for(let i in data) {
 
-                                if(id in dict && po._name == dict[id]['name']) {
-                                    var node = dict[id];
+                                let node = data[i];
+                                let id = node.tree_id;
+                                let po = id2CCNode[id];
 
-                                    po.active = node['active'];
 
-                                    var positionX = node['positionX'];
-                                    if(po.getPositionX() != positionX) {
-                                        po.setPositionX(positionX);
-                                    }
+                                po.active = node['active'];
 
-                                    var positionY = node['positionY'];
-                                    if(po.getPositionY() != positionY) {
-                                        po.setPositionY(positionY);
-                                    }
+                                var parentID = node['parent_id'];
 
-                                    var scaleX = node['scaleX'];
-                                    if(po.getScaleX() != scaleX) {
-                                        po.setScaleX(scaleX);
-                                    }
+                                if(po._parent.tree_id != parentID) {
+                                    cc.game.id2CCNode(parentID).addChild(po);
+                                }
 
-                                    var scaleY = node['scaleY'];
-                                    if(po.getScaleY() != scaleY) {
-                                        po.setScaleY(scaleY);
-                                    }
+                                var positionX = node['positionX'];
+                                if(po.getPositionX() != positionX) {
+                                    po.setPositionX(positionX);
+                                }
 
-                                    var opacity = node['opacity'];
-                                    if(po.getOpacity() != opacity) {
-                                        po.setOpacity(opacity);
-                                    }
+                                var positionY = node['positionY'];
+                                if(po.getPositionY() != positionY) {
+                                    po.setPositionY(positionY);
+                                }
 
-                                    if('components' in node) {
-                                        let components = node['components'];
-                                        for(let i in po._components) {
-                                            if(po._components[i] instanceof cc.Label) {    
-                                                let labelString = components['label'];
-                                                po._components[i].string = labelString;
-                                            }
+                                var scaleX = node['scaleX'];
+                                if(po.getScaleX() != scaleX) {
+                                    po.setScaleX(scaleX);
+                                }
+
+                                var scaleY = node['scaleY'];
+                                if(po.getScaleY() != scaleY) {
+                                    po.setScaleY(scaleY);
+                                }
+
+                                var opacity = node['opacity'];
+                                if(po.getOpacity() != opacity) {
+                                    po.setOpacity(opacity);
+                                }
+
+                                if('components' in node) {
+                                    let components = node['components'];
+                                    for(let i in po._components) {
+                                        if(po._components[i] instanceof cc.Label) {    
+                                            let labelString = components['label'];
+                                            po._components[i].string = labelString;
                                         }
                                     }
-
                                 }
-                            };
 
-                            visitScene(cc.director._scene);
+                            }
                         } 
                         updateScene(use['nodeList']);
                         console.log('Source: Tree Size = ' + use['treeSize']);
