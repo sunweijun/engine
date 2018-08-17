@@ -26,9 +26,6 @@
 var EventTarget = require('./event/event-target');
 var View;
 var sceneList;
-var treeSize = 0;
-var id2CCNode = {}
-
 
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
@@ -44,6 +41,9 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  * @extends EventTarget
  */
 var game = {
+
+    treeSize = 0,
+    id2CCNode = {},
 
     /**
      * !#en Event triggered when game hide to background.
