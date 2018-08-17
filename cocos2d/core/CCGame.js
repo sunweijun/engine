@@ -42,8 +42,8 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  */
 var game = {
 
-    treeSize = 0,
-    id2CCNode = {},
+    treeSize : 0,
+    id2CCNode : {},
 
     /**
      * !#en Event triggered when game hide to background.
