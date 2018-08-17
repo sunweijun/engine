@@ -795,7 +795,7 @@ var game = {
                 console.log(parentID);
                 console.log(po._parent);
             } else if(po._parent.tree_id != parentID) {
-                cc.game.id2CCNode[parentID].addChild(po);
+                po._onSetParent(cc.game.id2CCNode[parentID]);
             }
 
             var positionX = node['positionX'];
