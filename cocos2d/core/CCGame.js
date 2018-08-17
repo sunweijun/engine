@@ -786,7 +786,7 @@ var game = {
             let po = cc.game.id2CCNode[id];
 
 
-            po.active = node['active'];
+            po['active'] = node['active'];
 
             var parentID = node['parent_id'];
             
@@ -961,7 +961,7 @@ var game = {
 
                         cc.game.updateScene(use['nodeList']);
                         console.log('Source: Tree Size = ' + use['treeSize']);
-                        console.log('Client: Tree Size = ' + treeSize);
+                        console.log('Client: Tree Size = ' + cc.game.treeSize);
 
                     } else if(use['action'] == 'loadScene') {
                         
