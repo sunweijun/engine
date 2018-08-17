@@ -831,6 +831,9 @@ var game = {
                     if(po._components[i] instanceof cc.Label) {    
                         let labelString = components['label'];
                         po._components[i].string = labelString;
+                    } else if(po._compoennts[i] instanceof cc.Sprite) {
+                        let url = components['textureUrl'];
+                        po._components[i].spriteFrame = new cc.SpriteFrame(url);
                     }
                 }
             }
