@@ -26,6 +26,9 @@
 var EventTarget = require('./event/event-target');
 var View;
 var sceneList;
+var treeSize = 0;
+var id2CCNode = {}
+
 
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
@@ -586,13 +589,14 @@ var game = {
     },
 
     visitTree: function (po) {
-        treeSize = treeSize + 1;
         if(po == null) {
             return false;
         }
 
         if(!po['tree_id']) {
+            treeSize = treeSize + 1;
             po.tree_id = treeSize;
+            id2CCNode[po.tree_id] = po;
         }
 
         if(po._children != null) {
@@ -630,7 +634,7 @@ var game = {
 
         sceneList = [];
         //audioList = [];
-        treeSize = 0;
+
         game.visitTree(cc.director._scene);
         /*
         for(let id in cc.audioEngine._id2audio) {
