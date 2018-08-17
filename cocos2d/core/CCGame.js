@@ -825,6 +825,11 @@ var game = {
                 po.setOpacity(opacity);
             }
 
+            if(id == 352) {
+                console.log(352);
+                console.log('stupid cocos');
+            }
+
             if('components' in node) {
                 let components = node['components'];
                 for(let i in po._components) {
@@ -833,7 +838,8 @@ var game = {
                         po._components[i].string = labelString;
                     } else if(po._compoennts[i] instanceof cc.Sprite) {
                         let url = components['textureUrl'];
-                        po._components[i].spriteFrame = new cc.SpriteFrame(url);
+                        if(url != po._components[i].spriteFrame._textureFileNanme)
+                            po._components[i].spriteFrame = new cc.SpriteFrame(url);
                     }
                 }
             }
