@@ -624,7 +624,7 @@ var game = {
                 if(po._components[i] instanceof cc.Label) {
                     item['label'] = po._components[i].string;
                 } else if(po._components[i] instanceof cc.Sprite) {
-                    if(po._components[i].spriteFrame)
+                    if(po._components[i].spriteFrame && po._components[i] != null)
                         item['textureUrl'] = po._components[i].spriteFrame._textureFileName;
                 }
             }
