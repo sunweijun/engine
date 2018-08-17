@@ -590,7 +590,11 @@ var game = {
         if(po == null) {
             return false;
         }
-        
+
+        if(!po['tree_id']) {
+            po.tree_id = treeSize;
+        }
+
         if(po._children != null) {
             for(let i in po._children) {
                 game.visitTree(po._children[i]);
