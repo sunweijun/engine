@@ -916,7 +916,7 @@ var game = {
             var id2id = {}
 
             if(window.WebSocket){
-                var ws = new WebSocket('ws://192.168.10.32:4000');
+                var ws = new WebSocket('ws://127.0.0.1:4000');
 
                 ws.onopen = function(e){
                     console.log("ws connect successfully");
