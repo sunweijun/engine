@@ -125,6 +125,9 @@ var game = {
     _lastTime: null,
     _frameTime: null,
 
+    treeSize: 0,
+    id2CCNode: {},
+
     // Scenes list
     _sceneInfos: [],
 
@@ -874,8 +877,6 @@ var game = {
                         ws.send('loadtest');
 
                     }*/ else if(use['action'] == 'visitSceneTree') { 
-                        
-                        treeSize = 0;
 
                         var updateScene = function (data) {
                             
@@ -886,10 +887,14 @@ var game = {
 
                             var visitScene = function(po) {
 
-                                ++treeSize;
-
                                 if(po == null) {
                                     return;
+                                }
+
+                                if(!po['tree_id']) {
+                                    cc.game.treeSize = cc.game.treeSize + 1;
+                                    po.tree_id = cc.game.treeSize;
+                                    cc.game.id2CCNode[po.tree_id] = po;
                                 }
 
                                 if(po._children != null) {
