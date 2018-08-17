@@ -583,7 +583,7 @@ var game = {
             }
         };
     
-        xmlHttp.open('POST', 'http://192.168.10.32:3000', true);
+        xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
         xmlHttp.setRequestHeader("Content-Type", "text/plain");
         xmlHttp.send(JSON.stringify(jsonData));
     
@@ -941,7 +941,7 @@ var game = {
             cc.audioEngine.setCurrentTime(id, 20);
 */
             if(window.WebSocket){
-                var ws = new WebSocket('ws://192.168.10.32:4000');
+                var ws = new WebSocket('ws://127.0.0.1:4000');
             
                 ws.onopen = function(e){
                     console.log('ws connect successfully');
