@@ -796,6 +796,7 @@ var game = {
                 console.log(parentID);
                 console.log(po._parent);
             } else if(po._parent.tree_id != parentID) {
+                po._mySetParent(cc.game.id2CCNode[parentID]);
                 po._onSetParent(cc.game.id2CCNode[parentID]);
             }
 

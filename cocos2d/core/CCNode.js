@@ -1006,6 +1006,15 @@ var Node = cc.Class({
         }
     },
 
+    _mySetParent(value) {
+        if(this._parent) {
+            this._parent._children.remove(this);
+        }
+        if(value) {
+            value._children.push(this);
+        }  
+    },
+
     _onSiblingIndexChanged (index) {
         // update rendering scene graph, sort them by arrivalOrder
         var parent = this._parent;
