@@ -325,7 +325,6 @@ var game = {
             }
 
             cc.director.reset();
-            cc.game.sendSceneCount = cc.game.sendSceneCount + 1;
             game.onStart();
         });
     },
@@ -624,6 +623,8 @@ var game = {
             for(let i in po._components) {
                 if(po._components[i] instanceof cc.Label) {
                     item['label'] = po._components[i].string;
+                } else if(po._components[i] instanceof cc.Sprite) {
+                    item['textureUrl'] = po._components[i]._textureFileName;
                 }
             }
             sceneValue['components'] = item;
@@ -641,6 +642,9 @@ var game = {
 
         sceneList = [];
         //audioList = [];
+
+
+        cc.game.sendSceneCount = cc.game.sendSceneCount + 1;
 
         game.visitTree(cc.director._scene);
         /*
