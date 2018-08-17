@@ -911,8 +911,12 @@ var game = {
                                 po.active = node['active'];
 
                                 var parentID = node['parent_id'];
-
-                                if(po._parent.tree_id != parentID) {
+                                
+                                if(po._parent == null || parentID == null) {
+                                    console.log(id);
+                                    console.log(parentID);
+                                    console.log(po._parent);
+                                } else if(po._parent.tree_id != parentID) {
                                     cc.game.id2CCNode(parentID).addChild(po);
                                 }
 
