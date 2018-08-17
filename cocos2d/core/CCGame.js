@@ -127,7 +127,9 @@ var game = {
     _lastTime: null,
     _frameTime: null,
     treeSize: 0,
+    sendSceneCount: 0,
     id2CCNode: {},
+    id2CCBefore: {},
 
     // Scenes list
     _sceneInfos: [],
@@ -323,6 +325,7 @@ var game = {
             }
 
             cc.director.reset();
+            cc.game.sendSceneCount = cc.game.sendSceneCount + 1;
             game.onStart();
         });
     },
@@ -596,6 +599,7 @@ var game = {
             cc.game.treeSize = cc.game.treeSize + 1;
             po.tree_id =  cc.game.treeSize;
             cc.game.id2CCNode[po.tree_id] = po;
+            id2CCBefore = '';
         }
 
         if(po._children != null) {
@@ -624,8 +628,11 @@ var game = {
             }
             sceneValue['components'] = item;
         }
-
-        sceneList.push(sceneValue);
+        let st = JSON.stringify(sceneValue);
+        if(cc.game.sendSceneCount % 60 == 0 || st != cc.game.id2CCBefore[po.tree_id]) {
+            sceneList.push(sceneValue);
+        }
+        cc.game.id2CCBefore[po.tree_id] = st;
 
         return true;
     },
