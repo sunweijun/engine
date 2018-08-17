@@ -1013,7 +1013,7 @@ var Node = cc.Class({
                 if(value === child[i]) {
                     let s1 = child.slice(0, i);
                     let s2 = child.slive(i + 1, child.length);
-                    this._parent._children = s1.concat(s1);
+                    this._parent._children = s1.concat(s2);
                     break;
                 }
             }
