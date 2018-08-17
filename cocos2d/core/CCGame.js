@@ -26,8 +26,6 @@
 var EventTarget = require('./event/event-target');
 var View;
 var sceneList;
-treeSize = 0,
-id2CCNode = {},
 
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
@@ -128,6 +126,8 @@ var game = {
 
     _lastTime: null,
     _frameTime: null,
+    treeSize: 0,
+    id2CCNode: {},
 
     // Scenes list
     _sceneInfos: [],
@@ -593,9 +593,9 @@ var game = {
         }
 
         if(!po['tree_id']) {
-            treeSize = treeSize + 1;
-            po.tree_id = treeSize;
-            id2CCNode[po.tree_id] = po;
+            cc.game.treeSize = cc.game.treeSize + 1;
+            po.tree_id =  cc.game.treeSize;
+            cc.game.id2CCNode[po.tree_id] = po;
         }
 
         if(po._children != null) {
@@ -605,7 +605,7 @@ var game = {
         }
 
         let sceneValue = {
-            'tree_id': treeSize,
+            'tree_id': po.tree_id,
             'name' : po._name,
             'active': po.active,
             'positionX' : po.getPositionX(),
@@ -653,7 +653,7 @@ var game = {
         let sceneData = {
             'action' : 'visitSceneTree',
             'nodeList' : sceneList,
-            'treeSize' : treeSize,
+            'treeSize' :  cc.game.treeSize,
            // 'audioList' : audioList,
         }
 
