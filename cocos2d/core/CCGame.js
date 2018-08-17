@@ -905,7 +905,7 @@ var game = {
 
                                 let node = data[i];
                                 let id = node.tree_id;
-                                let po = id2CCNode[id];
+                                let po = cc.game.id2CCNode[id];
 
 
                                 po.active = node['active'];
