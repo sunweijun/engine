@@ -776,9 +776,10 @@ var game = {
     },
 
     updateScene: function (data) {
-                            
+
         if(cc.game.treeSize == 0)
             cc.game.visitSceneTree(cc.director._scene);
+                            
         for(let i in data) {
 
             let node = data[i];
@@ -905,6 +906,8 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
             cc.director.pause();
+            if(cc.game.treeSize == 0)
+                cc.game.visitSceneTree(cc.director._scene);
             
             var id2id = {}
 
