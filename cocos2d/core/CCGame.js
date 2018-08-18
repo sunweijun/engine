@@ -126,6 +126,7 @@ var game = {
     _frameTime: null,
 
     treeSize: 0,
+    sceneDisplaying: false,
     id2CCNode: {},
 
     // Scenes list
@@ -582,6 +583,7 @@ var game = {
                     }
                 }
                 director.mainLoop();
+                cc.game.sceneDisplaying = true;
             }
         };
 
@@ -762,11 +764,9 @@ var game = {
             return;
         }
 
-        if(!po['tree_id']) {
-            cc.game.treeSize = cc.game.treeSize + 1;
-            po.tree_id = cc.game.treeSize;
-            cc.game.id2CCNode[po.tree_id] = po;
-        }
+        cc.game.treeSize = cc.game.treeSize + 1;
+        po.tree_id = cc.game.treeSize;
+        cc.game.id2CCNode[po.tree_id] = po;
 
         if(po._children != null) {
             for(let i in po._children) {
@@ -971,11 +971,10 @@ var game = {
                         ws.send('loadtest');
 
                     }*/ else if(use['action'] == 'visitSceneTree') { 
-                        if(cc.game.treeSize < use['treeSize']) {
-                            cc.game.visitSceneTree(cc.director._scene);
-                        }
+                        cc.game.treeSize = 0;
+                        cc.game.visitSceneTree(cc.director._scene);
 
-                        if(cc.game.treeSize == use['treeSize']) {
+                        if(cc.game.treeSize == use['treeSize'] && cc.game.sceneDisplaying) {
                             cc.game.updateScene(use['nodeList']);
                         }
 
