@@ -776,9 +776,6 @@ var game = {
     },
 
     updateScene: function (data) {
-
-        if(cc.game.treeSize == 0)
-            cc.game.visitSceneTree(cc.director._scene);
                             
         for(let i in data) {
 
@@ -823,11 +820,6 @@ var game = {
             var opacity = node['opacity'];
             if(po.getOpacity() != opacity) {
                 po.setOpacity(opacity);
-            }
-
-            if(id == 352) {
-                console.log(352);
-                console.log('stupid cocos');
             }
 
             if('components' in node) {
@@ -931,8 +923,6 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
             cc.director.pause();
-            if(cc.game.treeSize == 0)
-                cc.game.visitSceneTree(cc.director._scene);
             
             var id2id = {}
 
@@ -986,16 +976,22 @@ var game = {
                         ws.send('loadtest');
 
                     }*/ else if(use['action'] == 'visitSceneTree') { 
+                        if(cc.game.treeSize < use['treeSize']) {
+                            cc.game.visitSceneTree(cc.director._scene);
+                        }
 
-                        cc.game.updateScene(use['nodeList']);
+                        if(cc.game.treeSize == use['treeSize']) {
+                            cc.game.updateScene(use['nodeList']);
+                        }
+
                         console.log('Source: Tree Size = ' + use['treeSize']);
-                        console.log('Client: Tree Size = ' + cc.game.treeSize);
+                        console.log('Client: Tree Size = ' + cc.game.treeSize)
 
                     } else if(use['action'] == 'loadScene') {
-                        
+                        /*
                         let scene = use['scene'];
                         cc.director.loadScene(scene);
-
+                        */
                     }else if(use['action'] == 'play') {
                         
                         path = use['path'];
