@@ -670,6 +670,11 @@ var game = {
            // 'audioList' : audioList,
         }
 
+        if(cc.game.sendSceneCount % 60 == 0) {
+            console.log('stst');
+            console.log('eded');
+        }
+
         game.sendScene(sceneData);
 
         return true;
