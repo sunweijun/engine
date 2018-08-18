@@ -831,11 +831,6 @@ var game = {
                     po.components = [];
                 }
 
-                if('textureUrl' in components) {
-                    if(po.getComponent(cc.Sprite) == null)
-                        po.addComponent(cc.Sprite);
-                }
-
                 for(let i in po._components) {
                     if(po._components[i] instanceof cc.Label) {    
                         let labelString = components['label'];
