@@ -661,6 +661,9 @@ var game = {
                 delete(cc.game.id2CCNode[i].tree_id);
             }
             cc.game.treeSize = 0;
+            sceneList = [];
+            id2CCNode = [];
+            id2CCBefore = [];
             game.visitTree(cc.director._scene);
         }
 
