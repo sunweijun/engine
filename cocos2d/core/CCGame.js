@@ -127,6 +127,7 @@ var game = {
     _lastTime: null,
     _frameTime: null,
     treeSize: 0,
+    treeSizeBefore: 0,
     sendSceneCount: 0,
     id2CCNode: {},
     id2CCBefore: {},
@@ -308,7 +309,13 @@ var game = {
      * @method restart
      */
     restart: function () {
+
         cc.director.once(cc.Director.EVENT_AFTER_DRAW, function () {
+            for(let i in cc.game.id2CCNode) {
+                delete(cc.game.id2CCNode[i].tree_id);
+            }
+            cc.game.treeSize = 0;
+
             for (var id in game._persistRootNodes) {
                 game.removePersistRootNode(game._persistRootNodes[id]);
             }
@@ -648,6 +655,16 @@ var game = {
         cc.game.sendSceneCount = cc.game.sendSceneCount + 1;
 
         game.visitTree(cc.director._scene);
+
+        if(cc.game.treeSizeBefore !=0 && cc.game.treeSize != cc.game.treeSizeBefore) {
+            for(let i in cc.game.id2CCNode) {
+                delete(cc.game.id2CCNode[i].tree_id);
+            }
+            cc.game.treeSize = 0;
+            game.visitTree(cc.director._scene);
+        }
+
+        cc.game.treeSizeBefore = cc.game.treeSize;
         /*
         for(let id in cc.audioEngine._id2audio) {
             let audio = cc.audioEngine._id2audio[id];
