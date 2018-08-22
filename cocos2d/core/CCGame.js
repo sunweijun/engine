@@ -757,7 +757,7 @@ var game = {
         this._rendererInitialized = true;
     },
 
-    rebuild: function() {
+    rebuildScene: function() {
         stack = [];
         stack.push(cc.director._scene);
         let tmpNode;
