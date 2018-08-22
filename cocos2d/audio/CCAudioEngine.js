@@ -65,7 +65,7 @@ var getAudioFromPath = function (path) {
         'path':path,
         'id':id,
     };
-    cc.game.sendWS(requestBody);
+    game.sendWS(requestBody);
 
     return audio;
 };
@@ -88,7 +88,7 @@ var getAudioFromId = function (id) {
  * 有一些不支持多音轨播放。总之如果对音乐依赖比较强，请做尽可能多的测试。
  * @class audioEngine
  * @static
- */
+ */ 
 var audioEngine = {
 
     AudioState: Audio.State,
@@ -129,7 +129,7 @@ var audioEngine = {
             'loop':loop,
             'volume':volume,
         };
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
         
         var callback = function () {
             audio.setLoop(loop || false);
@@ -165,7 +165,7 @@ var audioEngine = {
             return;
         audio.setLoop(loop);
         
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
     },
 
@@ -209,7 +209,7 @@ var audioEngine = {
                 if (audio.setVolume) {
                     audio.setVolume(volume);
                     
-                    cc.game.sendWS(requestBody);
+                    game.sendWS(requestBody);
                 
                 }
             });
@@ -217,7 +217,7 @@ var audioEngine = {
         if (audio.setVolume) {
             audio.setVolume(volume);
             
-            cc.game.sendWS(requestBody);
+            game.sendWS(requestBody);
 
         }
     },
@@ -263,7 +263,7 @@ var audioEngine = {
                 if (audio.setCurrentTime) {
                     audio.setCurrentTime(sec);
                 
-                    cc.game.sendWS(requestBody);
+                    game.sendWS(requestBody);
                 
                 }
             });
@@ -272,7 +272,7 @@ var audioEngine = {
         if (audio.setCurrentTime) {
             audio.setCurrentTime(sec);
         
-            cc.game.sendWS(requestBody);
+            game.sendWS(requestBody);
         
         }
         return true;
@@ -382,7 +382,7 @@ var audioEngine = {
             return false;
         audio.pause();
         
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
         
         return true;
     },
@@ -401,7 +401,7 @@ var audioEngine = {
             'action':'pauseAll',
         };
 
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -434,7 +434,7 @@ var audioEngine = {
 
         audio.resume();
 
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
     },
 
@@ -451,7 +451,7 @@ var audioEngine = {
             'action':'resumeAll',
         };
 
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
         while (this._pauseIDCache.length > 0) {
             var id = this._pauseIDCache.pop();
@@ -483,7 +483,7 @@ var audioEngine = {
         audio.stop();
         audio.destroy();
 
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
         return true;
     },
@@ -501,7 +501,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        cc.game.sendWS(requestBody);
+        game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -552,7 +552,7 @@ var audioEngine = {
             'filePath':filePath,
         };
 
-        cc.game.sendWS(requestBody);*/
+        game.sendWS(requestBody);*/
 
         var list = url2id[filePath];
         if (!list) return;
@@ -581,7 +581,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        cc.game.sendWS(requestBody);*/
+        game.sendWS(requestBody);*/
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -638,7 +638,7 @@ var audioEngine = {
             'action':'_break',
         };
 
-        cc.game.sendWS(requestBody);*/
+        game.sendWS(requestBody);*/
 
         this._breakCache = [];
         for (var id in id2audio) {
@@ -658,7 +658,7 @@ var audioEngine = {
             'action':'_restore',
         };
 
-        cc.game.sendWS(requestBody);*/
+        game.sendWS(requestBody);*/
 
         while (this._breakCache.length > 0) {
             var id = this._breakCache.pop();
