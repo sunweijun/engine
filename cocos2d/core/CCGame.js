@@ -126,6 +126,7 @@ var game = {
     _frameTime: null,
 
     id2CCNode: {},
+    rebuildFlag: false,
 
     // Scenes list
     _sceneInfos: [],
@@ -581,12 +582,15 @@ var game = {
                     }
                 }
                 director.mainLoop();
+                if(!cc.game.rebuildFlag) {
+                    cc.game.rebuildFlag = true;
+                    game.rebuildScene();
+                }
             }
         };
 
         self._intervalId = window.requestAnimFrame(callback);
         self._paused = false;
-        game.rebuildScene();
     },
 
 //  @Game loading section
@@ -756,7 +760,7 @@ var game = {
     },
 
     rebuildScene: function() {
-        stack = [];
+        let stack = [];
         stack.push(cc.director._scene);
         let tmpNode;
         for(let i = 0; i < stack.length; ++i) {
@@ -768,11 +772,15 @@ var game = {
                 stack.push(tmpNode._children[i]);
         }
         for(let i = stack.length - 1; i >=0; --i) {
-            tmpNode = stack[i]
-            if(!tmpNode instanceof cc.Scene && !tmpNode instanceof cc.Canvas) {
-                tmpNode.removeFromParent();
-                tmpNode.destroy();
-            }
+            tmpNode = stack[i];
+            if(tmpNode instanceof cc.Scene)
+                continue;
+            if(tmpNode instanceof cc.Canvas)
+                continue;
+            if(!(tmpNode instanceof cc.Node))
+                continue;
+            tmpNode.removeFromParent();
+            tmpNode.destroy();
         }
     },
     
@@ -936,7 +944,6 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
             cc.director.pause();
-            cc.game.rebuildScene();
 
             var id2id = {}
 
