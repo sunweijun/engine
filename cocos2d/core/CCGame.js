@@ -682,7 +682,7 @@ var game = {
             console.log('eded');
         }
 
-        game.sendWS(sceneData);
+        cc.game.sendWS(sceneData);
 
         return true;
 
