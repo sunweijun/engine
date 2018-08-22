@@ -125,8 +125,6 @@ var game = {
     _lastTime: null,
     _frameTime: null,
 
-    treeSize: 0,
-    sceneDisplaying: false,
     id2CCNode: {},
 
     // Scenes list
@@ -583,12 +581,12 @@ var game = {
                     }
                 }
                 director.mainLoop();
-                cc.game.sceneDisplaying = true;
             }
         };
 
         self._intervalId = window.requestAnimFrame(callback);
         self._paused = false;
+        game.rebuildScene();
     },
 
 //  @Game loading section
