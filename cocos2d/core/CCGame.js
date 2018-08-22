@@ -126,6 +126,7 @@ var game = {
 
     _lastTime: null,
     _frameTime: null,
+    ws: null,
     treeSize: 0,
     treeSizeBefore: 0,
     sendSceneCount: 0,
@@ -576,24 +577,10 @@ var game = {
         window.clearTimeout(id);
     },
 
-    sendScene : function (jsonData) {
-
-        var xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
-    
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4) {
-                if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                    //console.log(xmlHttp.responseText);
-                } else {
-                    console.log("Request was unsuccessful: " + xmlHttp.status);
-                }
-            }
-        };
-    
-        xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
-        xmlHttp.setRequestHeader("Content-Type", "text/plain");
-        xmlHttp.send(JSON.stringify(jsonData));
-    
+    sendWs : function (jsonData) {
+        if(ws != null) {
+            ws.send(JSON.stringify(jsonData));
+        }
     },
 
     visitTree: function (po) {
@@ -695,7 +682,7 @@ var game = {
             console.log('eded');
         }
 
-        game.sendScene(sceneData);
+        game.sendWS(sceneData);
 
         return true;
 
@@ -966,7 +953,7 @@ var game = {
             cc.audioEngine.setCurrentTime(id, 20);
 */
             if(window.WebSocket){
-                var ws = new WebSocket('ws://127.0.0.1:4000');
+                ws = new WebSocket('ws://127.0.0.1:4000');
             
                 ws.onopen = function(e){
                     console.log('ws connect successfully');

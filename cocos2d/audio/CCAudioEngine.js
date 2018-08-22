@@ -30,40 +30,6 @@ var instanceId = 0;
 var id2audio = {};
 var url2id = {};
 
-let sendJsonString = function (jsonData) {
-
-    let xmlHttp = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4) {
-            if ((xmlHttp.status >= 200 && xmlHttp.status < 300) || xmlHttp.status == 304) {
-                //console.log(xmlHttp.responseText);
-            } else {
-                console.log("Request was unsuccessful: " + xmlHttp.status);
-            }
-        }
-    };
-
-    xmlHttp.open('POST', 'http://127.0.0.1:3000', true);
-    xmlHttp.setRequestHeader("Content-Type", "text/plain");
-    xmlHttp.send(JSON.stringify(jsonData));
-    
-    //console.log(JSON.stringify(jsonData));
-    /*rsmq.sendMessage();
-    var sendData = {
-        'time':new Date().getCurrentTime(),
-        'data':jsonData,
-    }
-
-    console.log(JSON.stringify(sendData));
-    fs.writeFile('./data.txt', JSON.stringify(sendData),  { 'flag': 'a' }, function(err) {
-        if(err) {
-            throw err;
-        }
-    });*/
-
-}
-
 
 var getAudioFromPath = function (path) {
     var id = instanceId++;
@@ -98,7 +64,7 @@ var getAudioFromPath = function (path) {
         'path':path,
         'id':id,
     };
-    sendJsonString(requestBody);
+    cc.game.sendWS(requestBody);
 
     return audio;
 };
@@ -160,7 +126,7 @@ var audioEngine = {
             'loop':loop,
             'volume':volume,
         };
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
         
         var callback = function () {
             audio.setLoop(loop || false);
@@ -196,7 +162,7 @@ var audioEngine = {
             return;
         audio.setLoop(loop);
         
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
     },
 
@@ -240,7 +206,7 @@ var audioEngine = {
                 if (audio.setVolume) {
                     audio.setVolume(volume);
                     
-                    sendJsonString(requestBody);
+                    cc.game.sendWS(requestBody);
                 
                 }
             });
@@ -248,7 +214,7 @@ var audioEngine = {
         if (audio.setVolume) {
             audio.setVolume(volume);
             
-            sendJsonString(requestBody);
+            cc.game.sendWS(requestBody);
 
         }
     },
@@ -294,7 +260,7 @@ var audioEngine = {
                 if (audio.setCurrentTime) {
                     audio.setCurrentTime(sec);
                 
-                    sendJsonString(requestBody);
+                    cc.game.sendWS(requestBody);
                 
                 }
             });
@@ -303,7 +269,7 @@ var audioEngine = {
         if (audio.setCurrentTime) {
             audio.setCurrentTime(sec);
         
-            sendJsonString(requestBody);
+            cc.game.sendWS(requestBody);
         
         }
         return true;
@@ -413,7 +379,7 @@ var audioEngine = {
             return false;
         audio.pause();
         
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
         
         return true;
     },
@@ -432,7 +398,7 @@ var audioEngine = {
             'action':'pauseAll',
         };
 
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -465,7 +431,7 @@ var audioEngine = {
 
         audio.resume();
 
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
     },
 
@@ -482,7 +448,7 @@ var audioEngine = {
             'action':'resumeAll',
         };
 
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
         while (this._pauseIDCache.length > 0) {
             var id = this._pauseIDCache.pop();
@@ -514,7 +480,7 @@ var audioEngine = {
         audio.stop();
         audio.destroy();
 
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
         return true;
     },
@@ -532,7 +498,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        sendJsonString(requestBody);
+        cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -583,7 +549,7 @@ var audioEngine = {
             'filePath':filePath,
         };
 
-        sendJsonString(requestBody);*/
+        cc.game.sendWS(requestBody);*/
 
         var list = url2id[filePath];
         if (!list) return;
@@ -612,7 +578,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        sendJsonString(requestBody);*/
+        cc.game.sendWS(requestBody);*/
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -669,7 +635,7 @@ var audioEngine = {
             'action':'_break',
         };
 
-        sendJsonString(requestBody);*/
+        cc.game.sendWS(requestBody);*/
 
         this._breakCache = [];
         for (var id in id2audio) {
@@ -689,7 +655,7 @@ var audioEngine = {
             'action':'_restore',
         };
 
-        sendJsonString(requestBody);*/
+        cc.game.sendWS(requestBody);*/
 
         while (this._breakCache.length > 0) {
             var id = this._breakCache.pop();

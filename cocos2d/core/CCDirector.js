@@ -717,7 +717,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
             'action' : 'loadScene',
             'scene' : sceneName,
         };
-        cc.game.sendScene(jsonData);
+        cc.game.sendWS(jsonData);
 
         var info = this._getSceneUuid(sceneName);
         if (info) {
