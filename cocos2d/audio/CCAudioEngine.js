@@ -25,6 +25,7 @@
  ****************************************************************************/
 
 var Audio = require('./CCAudio');
+var game = require('../core/CCGame');
 
 var instanceId = 0;
 var id2audio = {};
@@ -72,6 +73,8 @@ var getAudioFromPath = function (path) {
 var getAudioFromId = function (id) {
     return id2audio[id];
 };
+
+
 
 /**
  * !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
