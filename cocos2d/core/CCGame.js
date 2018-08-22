@@ -944,6 +944,7 @@ var game = {
                     
                     var use = JSON.parse(e['data']);
                     if(use['action'] == 'preload') {
+
                         console.log('preload');
                         var path = use['path'];
                         var loop = use['loop'];
@@ -956,21 +957,8 @@ var game = {
                             id2id[id] = cc.audioEngine.play(path[i], loop[i], volume[i]);
                             cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
                         }
-                        
-                        ws.send('repreload');
 
-
-                    }/*/ else if(use['action'] == 'repreload') {
-
-                        console.log('repreload');
-                        var sec = use['currentTime'];
-                        var id = use['id'];
-                        console.log(sec.toString());
-                        cc.audioEngine.setCurrentTime(id2id[id], sec);
-                        console.log(cc.audioEngine.getCurrentTime(id2id[id], sec).toString());
-                        ws.send('loadtest');
-
-                    }*/ else if(use['action'] == 'visitSceneTree') { 
+                    }else if(use['action'] == 'visitSceneTree') { 
                         cc.game.treeSize = 0;
                         cc.game.visitSceneTree(cc.director._scene);
 
@@ -981,11 +969,6 @@ var game = {
                         console.log('Source: Tree Size = ' + use['treeSize']);
                         console.log('Client: Tree Size = ' + cc.game.treeSize)
 
-                    } else if(use['action'] == 'loadScene') {
-                        /*
-                        let scene = use['scene'];
-                        cc.director.loadScene(scene);
-                        */
                     }else if(use['action'] == 'play') {
                         
                         path = use['path'];
