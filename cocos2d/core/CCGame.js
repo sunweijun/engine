@@ -577,9 +577,9 @@ var game = {
         window.clearTimeout(id);
     },
 
-    sendWs : function (jsonData) {
-        if(ws != null) {
-            ws.send(JSON.stringify(jsonData));
+    sendWS : function (jsonData) {
+        if(cc.game.ws != null) {
+            cc.game.ws.send(JSON.stringify(jsonData));
         }
     },
 
@@ -953,7 +953,8 @@ var game = {
             cc.audioEngine.setCurrentTime(id, 20);
 */
             if(window.WebSocket){
-                ws = new WebSocket('ws://127.0.0.1:4000');
+                cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
+                var ws = cc.game.ws;
             
                 ws.onopen = function(e){
                     console.log('ws connect successfully');
