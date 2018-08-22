@@ -677,7 +677,7 @@ var game = {
            // 'audioList' : audioList,
         }
 
-        //cc.game.sendWS(sceneData);
+        cc.game.sendWS(sceneData);
 
         return true;
 
