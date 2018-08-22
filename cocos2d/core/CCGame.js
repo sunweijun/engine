@@ -127,7 +127,7 @@ var game = {
     _lastTime: null,
     _frameTime: null,
     ws: null,
-    treeSize: 0,
+    treeSize: 1,
     sendSceneCount: 0,
     id2CCNode: {},
     id2CCBefore: {},
@@ -588,6 +588,16 @@ var game = {
             return false;
         }
 
+
+    },
+
+    getScene: function() {
+        let stack = [];
+        stack.push(cc.director._scene);
+        for(let i = 0; i < stack.length; ++i) {
+            
+        }
+
         let sceneValue = {
             'parent_id': (po.parent != null) ? po._parent.tree_id : null,
             'tree_id': po.tree_id,
@@ -599,11 +609,6 @@ var game = {
             'scaleX' : po.getScaleX(),
             'scaleY' : po.getScaleY(),
         }
-    },
-
-    getScene: function() {
-        return true;
-
     },
 
     //Run game.
