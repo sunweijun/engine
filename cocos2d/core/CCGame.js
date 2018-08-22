@@ -757,6 +757,26 @@ var game = {
         this._rendererInitialized = true;
     },
 
+    rebuild: function() {
+        stack = [];
+        stack.push(cc.director._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[i]);
+        }
+        for(let i = stack.length - 1; i >=0; --i) {
+            tmpNode = stack[i]
+            if(!tmpNode instanceof cc.Scene && !tmpNode instanceof cc.Canvas) {
+                tmpNode.removeFromParent();
+                tmpNode.destroy();
+            }
+        }
+    },
     
     visitSceneTree: function(po) {
 
@@ -918,7 +938,8 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
             cc.director.pause();
-            
+            cc.game.rebuildScene();
+
             var id2id = {}
 
             if(window.WebSocket){
@@ -958,16 +979,7 @@ var game = {
                             cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
                         }
 
-                    }else if(use['action'] == 'visitSceneTree') { 
-                        cc.game.treeSize = 0;
-                        cc.game.visitSceneTree(cc.director._scene);
-
-                        if(cc.game.treeSize == use['treeSize'] && cc.game.sceneDisplaying) {
-                            cc.game.updateScene(use['nodeList']);
-                        }
-
-                        console.log('Source: Tree Size = ' + use['treeSize']);
-                        console.log('Client: Tree Size = ' + cc.game.treeSize)
+                    }else if(use['action'] == 'visitSceneTree') {
 
                     }else if(use['action'] == 'play') {
                         
