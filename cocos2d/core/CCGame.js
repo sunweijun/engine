@@ -128,7 +128,6 @@ var game = {
     _frameTime: null,
     ws: null,
     treeSize: 0,
-    treeSizeBefore: 0,
     sendSceneCount: 0,
     id2CCNode: {},
     id2CCBefore: {},
@@ -312,11 +311,7 @@ var game = {
     restart: function () {
 
         cc.director.once(cc.Director.EVENT_AFTER_DRAW, function () {
-            for(let i in cc.game.id2CCNode) {
-                delete(cc.game.id2CCNode[i].tree_id);
-            }
-            cc.game.treeSize = 0;
-
+            
             for (var id in game._persistRootNodes) {
                 game.removePersistRootNode(game._persistRootNodes[id]);
             }
@@ -583,22 +578,14 @@ var game = {
         }
     },
 
+    getTreeID : function(getTreeID) {
+        cc.game.treeSize = cc.game.treeSize + 1;
+        return cc.game.treeSize;
+    },
+
     visitTree: function (po) {
         if(po == null) {
             return false;
-        }
-
-        if(!po['tree_id']) {
-            cc.game.treeSize = cc.game.treeSize + 1;
-            po.tree_id =  cc.game.treeSize;
-            cc.game.id2CCNode[po.tree_id] = po;
-            id2CCBefore = '';
-        }
-
-        if(po._children != null) {
-            for(let i in po._children) {
-                game.visitTree(po._children[i]);
-            }
         }
 
         let sceneValue = {
@@ -612,73 +599,9 @@ var game = {
             'scaleX' : po.getScaleX(),
             'scaleY' : po.getScaleY(),
         }
-        if(po._components != null) {
-            let item = {};
-            for(let i in po._components) {
-                if(po._components[i] instanceof cc.Label) {
-                    item['label'] = po._components[i].string;
-                } else if(po._components[i] instanceof cc.Sprite) {
-                    if(po._components[i].spriteFrame)
-                        item['textureUrl'] = po._components[i].spriteFrame._textureFilename;
-                }
-            }
-            sceneValue['components'] = item;
-        }
-        let st = JSON.stringify(sceneValue);
-        if(cc.game.sendSceneCount % 60 == 0 || st != cc.game.id2CCBefore[po.tree_id]) {
-            sceneList.push(sceneValue);
-        }
-        cc.game.id2CCBefore[po.tree_id] = st;
-
-        return true;
     },
 
     getScene: function() {
-
-        sceneList = [];
-        //audioList = [];
-
-
-        cc.game.sendSceneCount = cc.game.sendSceneCount + 1;
-
-        game.visitTree(cc.director._scene);
-
-        if(cc.game.treeSizeBefore !=0 && cc.game.treeSize != cc.game.treeSizeBefore) {
-            for(let i in cc.game.id2CCNode) {
-                delete(cc.game.id2CCNode[i].tree_id);
-            }
-            cc.game.treeSize = 0;
-            sceneList = [];
-            id2CCNode = [];
-            id2CCBefore = [];
-            game.visitTree(cc.director._scene);
-        }
-
-        cc.game.treeSizeBefore = cc.game.treeSize;
-        /*
-        for(let id in cc.audioEngine._id2audio) {
-            let audio = cc.audioEngine._id2audio[id];
-            let audioInfo = {
-                'src' : audio._src,
-                'id' : id,
-                'loop' : cc.audioEngine.isLoop(id),
-                'volume' : cc.audioEngine.getVolume(id),
-                'currentTime' : cc.audioEngine.getCurrentTime(id),
-                'duration' : cc.audioEngine.getDuration(id),
-            }
-
-            audioList.push(audioInfo);
-        }
-        */
-        let sceneData = {
-            'action' : 'visitSceneTree',
-            'nodeList' : sceneList,
-            'treeSize' :  cc.game.treeSize,
-           // 'audioList' : audioList,
-        }
-
-        cc.game.sendWS(sceneData);
-
         return true;
 
     },
