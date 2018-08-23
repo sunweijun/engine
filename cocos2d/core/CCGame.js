@@ -651,6 +651,10 @@ var game = {
             sceneData.push(tmpValue);
             //id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
         }
+        sendData = {
+            'action': 'visitSceneTree',
+            'scene': sceneData, 
+        }
 
         cc.game.sendWS(tmpValue);
     },
