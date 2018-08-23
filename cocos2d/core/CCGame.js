@@ -799,6 +799,33 @@ var game = {
     },
 
     updateScene: function (data) {
+        var id2CCNode = this.id2CCNode;
+
+        if(!id2CCNode[0] || !id2CCNode[1]) {
+            let stack = [];
+            stack.push(cc.director._scene);
+            let tmpNode;
+            for(let i = 0; i < stack.length; ++i) {
+                tmpNode = stack[i];
+                if(!tmpNode || tmpNode == null) {
+                    continue;
+                }
+                for(let j in tmpNode._children)
+                    stack.push(tmpNode._children[i]);
+                if(tmpNode instanceof cc.Scene)
+                    id2CCNode[0] = tmpNode;
+                if(tmpNode instanceof cc.Canvas)
+                    id2CCNode[1] = tmpNode;
+            }
+        }
+
+        for(let i in data) {
+            let node = data[i];
+            let id = node.tree_id;
+            if(!id2CCNode[id])
+                id2CCNode[id] = new cc.Node();
+        }
+        
                             
         for(let i in data) {
 
@@ -806,19 +833,7 @@ var game = {
             let id = node.tree_id;
             let po = cc.game.id2CCNode[id];
 
-
             po['active'] = node['active'];
-
-            var parentID = node['parent_id'];
-            
-            if(po._parent == null || parentID == null) {
-                console.log(id);
-                console.log(parentID);
-                console.log(po._parent);
-            } else if(po._parent.tree_id != parentID) {
-                po._mySetParent(cc.game.id2CCNode[parentID]);
-                po._onSetParent(cc.game.id2CCNode[parentID]);
-            }
 
             var positionX = node['positionX'];
             if(po.getPositionX() != positionX) {
@@ -984,7 +999,7 @@ var game = {
 
                     }else if(use['action'] == 'visitSceneTree') {
 
-                        updateScene(use);
+                        updateScene(use['scene']);
 
                     }else if(use['action'] == 'play') {
                         
