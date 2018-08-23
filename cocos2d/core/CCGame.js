@@ -127,6 +127,7 @@ var game = {
 
     id2CCNode: {},
     ws: null,
+    firstScene: true,
 
     // Scenes list
     _sceneInfos: [],
@@ -581,8 +582,14 @@ var game = {
                         return;
                     }
                 }
-                if(this.ws != null)
-                    this.ws.send('getScene');
+                if(this.ws != null) {
+                    if(this.firstScene) {
+                        this.ws.send('getFullScene');
+                        this.firstScene = false;
+                    } else {
+                        this.ws.send('getFullScene');
+                    }
+                }
                 director.mainLoop();
             }
         };
