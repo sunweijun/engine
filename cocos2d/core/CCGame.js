@@ -860,8 +860,8 @@ var game = {
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
                 let com = po.getComponent;
-                if(com._textureFilename != component['sprite']) {
-                    
+                if(com._textureFilename != components['sprite']) {
+                    com.spriteFrame = new cc.SpriteFrame(components['sprite']);
                 }
             }
             if(!components['label'])
