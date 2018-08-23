@@ -125,6 +125,7 @@ var game = {
     _lastTime: null,
     _frameTime: null,
 
+    treeSize: 1,
     id2CCNode: {},
     ws: null,
     firstScene: true,
@@ -764,6 +765,10 @@ var game = {
 
         this._rendererInitialized = true;
     },
+    getTreeID: function() {
+        this.treeSize = this.treeSize + 1;
+        return this.treeSize;
+    },
 
     rebuildScene: function() {
         let stack = [];
@@ -812,10 +817,14 @@ var game = {
                 }
                 for(let j in tmpNode._children)
                     stack.push(tmpNode._children[j]);
-                if(tmpNode instanceof cc.Scene)
+                if(tmpNode instanceof cc.Scene) {
                     id2CCNode[0] = tmpNode;
-                if(tmpNode instanceof cc.Canvas)
+                    tmpNode.tree_id = 0;
+                }
+                if(tmpNode instanceof cc.Canvas) {
                     id2CCNode[1] = tmpNode;
+                    tmpNode.tree_id = 1;
+                }
             }
         }
 
@@ -824,6 +833,7 @@ var game = {
             let id = node.tree_id;
             if(!id2CCNode[id]) {
                 id2CCNode[id] = new cc.Node();
+                id2CCNode[id].tree_id = this.getTreeID();
             }
         }
         
@@ -832,7 +842,7 @@ var game = {
 
             let node = data[i];
             let id = node.tree_id;
-            let po = cc.game.id2CCNode[id];
+            let po = this.id2CCNode[id];
             let j;
             for(j = 0; j < node.children.length; ++j) {
                 let k = node.children[j];
@@ -847,9 +857,12 @@ var game = {
             }
             for(; j < node.children; ++j) {
                 let k = node.children[j];
-                console.log(id);
-                console.log(i);
-                console.log(j);
+                if(!id2CCNode[k]) {
+                    console.log(id);
+                    console.log(i);
+                    console.log(j);
+                    console.log(k);
+                }
                 po.addChild(id2CCNode[k]);
             }
 
