@@ -768,12 +768,20 @@ var game = {
         }
         for(let i = stack.length - 1; i >=0; --i) {
             tmpNode = stack[i];
-            if(tmpNode instanceof cc.Scene)
+
+            if(tmpNode instanceof cc.Scene) {
+                tmpNode.tree_id = 0;
                 continue;
-            if(tmpNode instanceof cc.Canvas)
+            }
+
+            if(tmpNode instanceof cc.Canvas) {
+                tmpNode.tree_id = 1;
                 continue;
+            }
+
             if(!(tmpNode instanceof cc.Node))
                 continue;
+                
             tmpNode.removeFromParent();
             tmpNode.destroy();
         }
