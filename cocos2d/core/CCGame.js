@@ -582,12 +582,13 @@ var game = {
                         return;
                     }
                 }
-                if(this.ws != null) {
-                    if(this.firstScene) {
-                        this.ws.send('getFullScene');
-                        this.firstScene = false;
+                let ws = self.ws;
+                if(ws != null) {
+                    if(self.firstScene) {
+                        ws.send('getFullScene');
+                        self.firstScene = false;
                     } else {
-                        this.ws.send('getFullScene');
+                        ws.send('getFullScene');
                     }
                 }
                 director.mainLoop();
