@@ -628,6 +628,7 @@ var game = {
                 'active': po.active,
                 'positionX': po.getPositionX(),
                 'positionY': po.getPositionY(),
+                'color': po.getColor()._val,
                 'localZ': 0,
                 'opacity': po.getOpacity(),
                 'scaleX': po.getScaleX(),
