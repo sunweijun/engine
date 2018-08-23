@@ -583,7 +583,7 @@ var game = {
         return cc.game.treeSize;
     },
 
-    getScene: function() {
+    getScene: function(flag) {
         let stack = [];
         let sceneData = [];
         stack.push(cc.director._scene);
@@ -961,8 +961,8 @@ var game = {
 
                         ws.send(JSON.stringify(jsonData));
 
-                    } else if(use == 'getScene') {
-                        game.getScene();
+                    } else if(use == 'getFullScene') {
+                        game.getScene(use);
                     }
                 }
             }
