@@ -307,7 +307,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
                 continue;
             }
             if(!(tmpNode instanceof cc.Sprite) && !(tmpNode instanceof cc.Canvas) && !(tmpNode.tree_id)) {
-                tmpNode.active = false;
+                tmpNode._active = false;
                 continue;
             }
 
