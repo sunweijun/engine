@@ -126,6 +126,7 @@ var game = {
     _frameTime: null,
 
     id2CCNode: {},
+    ws: null,
 
     // Scenes list
     _sceneInfos: [],
@@ -580,6 +581,8 @@ var game = {
                         return;
                     }
                 }
+                if(this.ws != null)
+                    this.ws.send('getScene');
                 director.mainLoop();
             }
         };
@@ -934,7 +937,8 @@ var game = {
             var id2id = {}
 
             if(window.WebSocket){
-                var ws = new WebSocket('ws://127.0.0.1:4000');
+                this.ws = new WebSocket('ws://127.0.0.1:4000');
+                var ws = this.ws;
 
                 ws.onopen = function(e){
                     console.log("ws connect successfully");
