@@ -811,7 +811,7 @@ var game = {
                     continue;
                 }
                 for(let j in tmpNode._children)
-                    stack.push(tmpNode._children[i]);
+                    stack.push(tmpNode._children[j]);
                 if(tmpNode instanceof cc.Scene)
                     id2CCNode[0] = tmpNode;
                 if(tmpNode instanceof cc.Canvas)
@@ -822,8 +822,9 @@ var game = {
         for(let i in data) {
             let node = data[i];
             let id = node.tree_id;
-            if(!id2CCNode[id])
+            if(!id2CCNode[id]) {
                 id2CCNode[id] = new cc.Node();
+            }
         }
         
                             
@@ -833,18 +834,19 @@ var game = {
             let id = node.tree_id;
             let po = cc.game.id2CCNode[id];
             let j;
-            for(j = 0; j < node.cid.length; ++j) {
-                let k = node.cid[j];
-                if(!po._children[j]) {
-                    po.addChild(id2CCNode[k]);
-                    } else {
-                while(j < po._children.length)
-                po._children[j].removeFromParent(false);
+            for(j = 0; j < node.children.length; ++j) {
+                let k = node.children[j];
+                if(po._children[j].tree_id === k) {
+                    continue;
+                } 
+                else {
+                    while(j < po._children.length)
+                        po._children[j].removeFromParent(false);
                     break;
                 }
             }
-            for(; j < node.cid; ++j) {
-                let k = node.cid[j];
+            for(; j < node.children; ++j) {
+                let k = node.children[j];
                 po.addChild(id2CCNode[k]);
             }
 
@@ -982,7 +984,7 @@ var game = {
 
                     }else if(use['action'] == 'visitSceneTree') {
 
-                        updateScene(use['scene']);
+                        cc.game.updateScene(use['scene']);
 
                     }else if(use['action'] == 'play') {
                         
