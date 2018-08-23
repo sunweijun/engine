@@ -846,10 +846,7 @@ var game = {
             let j;
             for(j = 0; j < node.children.length; ++j) {
                 let k = node.children[j];
-                if(po._children[j].tree_id === k) {
-                    continue;
-                } 
-                else {
+                if(!po._children[j] || po._children[j].tree_id != k)
                     while(j < po._children.length)
                         po._children[j].removeFromParent(false);
                     break;
