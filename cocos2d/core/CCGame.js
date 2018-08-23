@@ -618,8 +618,9 @@ var game = {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
                     components['sprite'] = co._textureFilename;
+                    console.log(co.spriteFrame._textureFilename);
                 } else if(co instanceof cc.Label) {
-                    components['label'] = co.string
+                    components['label'] = co.string;
                 }
             }
             let tmpValue = {
