@@ -127,6 +127,7 @@ var game = {
 
     treeSize: 1,
     id2CCNode: {},
+    displaying: false,
     ws: null,
     firstScene: true,
 
@@ -584,12 +585,15 @@ var game = {
                     }
                 }
                 let ws = self.ws;
-                if(ws != null && ws.readyState === 1) {
-                    if(self.firstScene) {
-                        ws.send('getFullScene');
-                        self.firstScene = false;
-                    } else {
-                        ws.send('getFullScene');
+                if(cc.game.getCanvasID()) {
+                    if(ws != null && ws.readyState === 1 && self.displaying) {
+                        if(self.firstScene) {
+                            cc.game.rebuildScene();
+                            ws.send('getFullScene');
+                            self.firstScene = false;
+                        } else {
+                            ws.send('getFullScene');
+                        }
                     }
                 }
                 director.mainLoop();
@@ -803,30 +807,42 @@ var game = {
         }
     },
 
-    updateScene: function (data) {
+    getCanvasID() {
         var id2CCNode = this.id2CCNode;
 
-        if(!id2CCNode[0] || !id2CCNode[1]) {
-            let stack = [];
-            stack.push(cc.director._scene);
-            let tmpNode;
-            for(let i = 0; i < stack.length; ++i) {
-                tmpNode = stack[i];
-                if(!tmpNode || tmpNode == null) {
-                    continue;
-                }
-                for(let j in tmpNode._children)
-                    stack.push(tmpNode._children[j]);
-                if(tmpNode instanceof cc.Scene) {
-                    id2CCNode[0] = tmpNode;
-                    tmpNode.tree_id = 0;
-                }
-                if(tmpNode instanceof cc.Canvas) {
-                    id2CCNode[1] = tmpNode;
-                    tmpNode.tree_id = 1;
-                }
+        if(id2CCNode[0] && id2CCNode[1])
+            return true;
+        if(!cc.director._scene)
+            return false;
+        if(cc.director._scene == null)
+            return false;
+        let stack = [];
+        stack.push(cc.director._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
             }
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[j]);
+            if(tmpNode instanceof cc.Scene) {
+                id2CCNode[0] = tmpNode;
+                tmpNode.tree_id = 0;
+            }
+            if(tmpNode._components &&(tmpNode._components[0] instanceof cc.Canvas)) {
+                id2CCNode[1] = tmpNode;
+                tmpNode.tree_id = 1;
+            }
+            if(i > 3) break;
         }
+        return id2CCNode[0] && id2CCNode[1];
+    },
+
+    updateScene: function (data) {
+        var id2CCNode = this.id2CCNode;
+        if(!this.getCanvasID())
+            return;
 
         for(let i in data) {
             let node = data[i];
@@ -954,12 +970,13 @@ var game = {
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
             cc.director.pause();
+            cc.game.displaying = true;
 
             var id2id = {}
 
             if(window.WebSocket){
-                this.ws = new WebSocket('ws://127.0.0.1:4000');
-                var ws = this.ws;
+                cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
+                var ws = cc.game.ws;
 
                 ws.onopen = function(e){
                     console.log("ws connect successfully");
