@@ -712,12 +712,6 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
             cc.errorID(1208, sceneName, this._loadingScene);
             return false;
         }
-        
-        let jsonData = {
-            'action' : 'loadScene',
-            'scene' : sceneName,
-        };
-        cc.game.sendWS(jsonData);
 
         var info = this._getSceneUuid(sceneName);
         if (info) {
