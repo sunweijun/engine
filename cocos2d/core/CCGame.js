@@ -786,23 +786,6 @@ var game = {
             tmpNode.destroy();
         }
     },
-    
-    visitSceneTree: function(po) {
-
-        if(po == null) {
-            return;
-        }
-
-        cc.game.treeSize = cc.game.treeSize + 1;
-        po.tree_id = cc.game.treeSize;
-        cc.game.id2CCNode[po.tree_id] = po;
-
-        if(po._children != null) {
-            for(let i in po._children) {
-                cc.game.visitSceneTree(po._children[i]);
-            }
-        }
-    },
 
     updateScene: function (data) {
                             
@@ -988,6 +971,8 @@ var game = {
                         }
 
                     }else if(use['action'] == 'visitSceneTree') {
+
+                        updateScene(use);
 
                     }else if(use['action'] == 'play') {
                         
