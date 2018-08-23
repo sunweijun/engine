@@ -613,19 +613,13 @@ var game = {
             let cid = [];
             for(let ch in po._children)
                 cid.push(po._children[ch].tree_id);
-            let components = [];
+            let components = {};
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
-                    let sp = {
-                        'sprite': co._textureFilename,
-                    }
-                    components.push(co);
+                    components['sprite'] = co._textureFilename;
                 } else if(co instanceof cc.Label) {
-                    let st = {
-                        'label': co.string
-                    }
-                    components.push(st);
+                    components['label'] = co.string
                 }
             }
             let tmpValue = {
