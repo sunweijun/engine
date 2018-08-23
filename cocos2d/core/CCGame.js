@@ -832,57 +832,28 @@ var game = {
             let node = data[i];
             let id = node.tree_id;
             let po = cc.game.id2CCNode[id];
-
-            po['active'] = node['active'];
-
-            var positionX = node['positionX'];
-            if(po.getPositionX() != positionX) {
-                po.setPositionX(positionX);
-            }
-
-            var positionY = node['positionY'];
-            if(po.getPositionY() != positionY) {
-                po.setPositionY(positionY);
-            }
-
-            var scaleX = node['scaleX'];
-            if(po.getScaleX() != scaleX) {
-                po.setScaleX(scaleX);
-            }
-
-            var scaleY = node['scaleY'];
-            if(po.getScaleY() != scaleY) {
-                po.setScaleY(scaleY);
-            }
-
-            var opacity = node['opacity'];
-            if(po.getOpacity() != opacity) {
-                po.setOpacity(opacity);
-            }
-
-            if('components' in node) {
-                let components = node['components'];
-                if(!po._components) {
-                    continue;
-                }
-                if(po.components == null) {
-                    po.components = [];
-                }
-
-                for(let i in po._components) {
-                    if(po._components[i] instanceof cc.Label) {    
-                        let labelString = components['label'];
-                        po._components[i].string = labelString;
-                    } else if(po._components[i] instanceof cc.Sprite) {
-                        let url = components['textureUrl'];
-                        if(po._components[i].spriteFrame == null) {
-                            po._components[i].spriteFrame = new cc.SpriteFrame(url);
-                        } else if(url != po._components[i].spriteFrame._textureFilename) {
-                            po._components[i].spriteFrame = new cc.SpriteFrame(url);
-                        }
-                    }
+            let j;
+            for(j = 0; j < node.cid.length; ++j) {
+                let k = node.cid[j];
+                if(!po._children[j]) {
+                    po.addChild(id2CCNode[k]);
+                    } else {
+                while(j < po._children.length)
+                po._children[j].removeFromParent(false);
+                    break;
                 }
             }
+            for(; j < node.cid; ++j) {
+                let k = node.cid[j];
+                po.addChild(id2CCNode[k]);
+            }
+
+            po.active = node.active;
+            po.name = node.name;
+            po.setPositionX(node.positionX);
+            po.setPositionY(node.positionY);
+            po.opacity = node.opacity;
+            let components = node.components;
 
         }
     },
