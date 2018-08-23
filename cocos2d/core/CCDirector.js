@@ -297,7 +297,28 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         return uiPoint;
     },
 
+    checkScene: function() {
+        let stack = [];
+        stack.push(this._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            if(!(tmpNode instanceof cc.Sprite) && !(tmpNode instanceof cc.Canvas) && !(tmpNode.tree_id)) {
+                tmpNode.active = false;
+                continue;
+            }
+
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[i]);
+        }
+    },
+
     _visitScene: function () {
+
+        this.checkScene();
        
        if (this._runningScene) {
             var renderer = cc.renderer;
