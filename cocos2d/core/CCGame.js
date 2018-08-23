@@ -578,8 +578,8 @@ var game = {
     },
 
     getTreeID : function(getTreeID) {
-        cc.game.treeSize = cc.game.treeSize + 1;
-        id2CCBefore.push('');
+        this.treeSize = cc.game.treeSize + 1;
+        this.id2CCBefore.push('');
         return cc.game.treeSize;
     },
 
@@ -911,11 +911,6 @@ var game = {
         });
         this.on(game.EVENT_GAME_INITED, function () {
                 
-            // send audio data
-/*
-            let id = cc.audioEngine.play('test.mp3', true, 1.0);
-            cc.audioEngine.setCurrentTime(id, 20);
-*/
             if(window.WebSocket){
                 cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
                 var ws = cc.game.ws;
