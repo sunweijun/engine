@@ -583,7 +583,7 @@ var game = {
                     }
                 }
                 let ws = self.ws;
-                if(ws != null) {
+                if(ws != null && ws.readyState === 1) {
                     if(self.firstScene) {
                         ws.send('getFullScene');
                         self.firstScene = false;
