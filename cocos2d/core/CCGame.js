@@ -781,7 +781,7 @@ var game = {
 
             if(!(tmpNode instanceof cc.Node))
                 continue;
-                
+
             tmpNode.removeFromParent();
             tmpNode.destroy();
         }
