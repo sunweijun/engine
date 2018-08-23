@@ -854,6 +854,18 @@ var game = {
             po.setPositionY(node.positionY);
             po.opacity = node.opacity;
             let components = node.components;
+            if(!components['sprite']) {
+                po.removeComponent(cc.Sprite);
+            } else {
+                if(!po.getComponent(cc.Sprite))
+                    po.addComponent(cc.Sprite);
+                let com = po.getComponent;
+                if(com._textureFilename != component['sprite']) {
+                    
+                }
+            }
+            if(!components['label'])
+                po.removeComponent(cc.Label);
 
         }
     },
