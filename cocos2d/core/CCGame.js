@@ -583,19 +583,28 @@ var game = {
         return cc.game.treeSize;
     },
 
-    visitTree: function (po) {
-        if(po == null) {
-            return false;
-        }
-
-
-    },
-
     getScene: function() {
         let stack = [];
         stack.push(cc.director._scene);
+
         for(let i = 0; i < stack.length; ++i) {
-            
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[i]);
+        }
+
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(tmpNode instanceof cc.Scene) {
+                tmpNode.tree_id = 0;
+            } else if(tmpNode instanceof cc.Canvas) {
+                tmpNode.tree_id = 1;
+            } else if(!tmpNode.tree_id) {
+                tmpNode.tree_id = cc.game.getTreeID();
+            }
         }
 
         let sceneValue = {
