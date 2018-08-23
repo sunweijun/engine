@@ -622,6 +622,10 @@ var game = {
                 'opacity' : po.getOpacity(),
                 'scaleX' : po.getScaleX(),
                 'scaleY' : po.getScaleY(),
+                'rotationX': 0,
+                'rotationY': 0,
+                'anchorX': 0.5,
+                'anchorY': 0.5,
             }
             id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
         }
