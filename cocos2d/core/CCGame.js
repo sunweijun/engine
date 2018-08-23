@@ -594,7 +594,7 @@ var game = {
                 continue;
             }
             for(let j in tmpNode._children)
-                stack.push(tmpNode._children[i]);
+                stack.push(tmpNode._children[j]);
         }
 
         for(let i = 0; i < stack.length; ++i) {
@@ -643,7 +643,6 @@ var game = {
                 'components': components,
             }
             sceneData.push(tmpValue);
-            //id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
         }
         sendData = {
             'action': 'visitSceneTree',
