@@ -585,6 +585,7 @@ var game = {
 
     getScene: function() {
         let stack = [];
+        let sceneData = [];
         stack.push(cc.director._scene);
 
         for(let i = 0; i < stack.length; ++i) {
@@ -647,10 +648,11 @@ var game = {
                 'anchorY': 0.5,
                 'components': components,
             }
-            
-            id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
+            sceneData.push(tmpValue);
+            //id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
         }
 
+        cc.game.sendWS(tmpValue);
     },
 
     //Run game.
