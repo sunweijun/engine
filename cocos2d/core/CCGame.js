@@ -649,7 +649,7 @@ var game = {
             'scene': sceneData, 
         }
 
-        cc.game.sendWS(tmpValue);
+        cc.game.sendWS(sendData);
     },
 
     //Run game.
