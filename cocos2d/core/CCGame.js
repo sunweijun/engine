@@ -847,6 +847,9 @@ var game = {
             }
             for(; j < node.children; ++j) {
                 let k = node.children[j];
+                console.log(id);
+                console.log(i);
+                console.log(j);
                 po.addChild(id2CCNode[k]);
             }
 
