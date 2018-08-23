@@ -129,8 +129,7 @@ var game = {
     ws: null,
     treeSize: 1,
     sendSceneCount: 0,
-    id2CCNode: {},
-    id2CCBefore: {},
+    id2CCBefore: ['', ''],
 
     // Scenes list
     _sceneInfos: [],
@@ -580,6 +579,7 @@ var game = {
 
     getTreeID : function(getTreeID) {
         cc.game.treeSize = cc.game.treeSize + 1;
+        id2CCBefore.push('');
         return cc.game.treeSize;
     },
 
@@ -588,7 +588,7 @@ var game = {
         stack.push(cc.director._scene);
 
         for(let i = 0; i < stack.length; ++i) {
-            tmpNode = stack[i];
+            let tmpNode = stack[i];
             if(!tmpNode || tmpNode == null) {
                 continue;
             }
@@ -597,7 +597,7 @@ var game = {
         }
 
         for(let i = 0; i < stack.length; ++i) {
-            tmpNode = stack[i];
+            let tmpNode = stack[i];
             if(tmpNode instanceof cc.Scene) {
                 tmpNode.tree_id = 0;
             } else if(tmpNode instanceof cc.Canvas) {
@@ -607,17 +607,25 @@ var game = {
             }
         }
 
-        let sceneValue = {
-            'parent_id': (po.parent != null) ? po._parent.tree_id : null,
-            'tree_id': po.tree_id,
-            'name' : po._name,
-            'active': po.active,
-            'positionX' : po.getPositionX(),
-            'positionY' : po.getPositionY(),
-            'opacity' : po.getOpacity(),
-            'scaleX' : po.getScaleX(),
-            'scaleY' : po.getScaleY(),
+        for(let i in stack) {
+            let po = stack[i];
+            let cid = [];
+            for(let ch in po._children)
+                cid.push(po._children[ch].tree_id);
+            let tmpValue = {
+                'children': cid,
+                'tree_id': po.tree_id,
+                'name' : po._name,
+                'active': po.active,
+                'positionX' : po.getPositionX(),
+                'positionY' : po.getPositionY(),
+                'opacity' : po.getOpacity(),
+                'scaleX' : po.getScaleX(),
+                'scaleY' : po.getScaleY(),
+            }
+            id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
         }
+
     },
 
     //Run game.
