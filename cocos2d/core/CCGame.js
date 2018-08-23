@@ -614,8 +614,9 @@ var game = {
                 cid.push(po._children[ch].tree_id);
             let components = [];
             for(let j in po._components) {
-                let co = po._components[j]
+                let co = po._components[j];
                 if(co instanceof cc.Sprite) {
+
                 } else if(co instanceof cc.Label) {
 
                 }
@@ -627,6 +628,7 @@ var game = {
                 'active': po.active,
                 'positionX': po.getPositionX(),
                 'positionY': po.getPositionY(),
+                'localZ': 0,
                 'opacity': po.getOpacity(),
                 'scaleX': po.getScaleX(),
                 'scaleY': po.getScaleY(),
@@ -636,6 +638,7 @@ var game = {
                 'rotationY': 0,
                 'anchorX': 0.5,
                 'anchorY': 0.5,
+                'components': components,
             }
             
             id2CCBefore[po.tree_id] = JSON.stringify(tmpValue);
