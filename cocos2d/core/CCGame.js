@@ -616,9 +616,15 @@ var game = {
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
-
+                    let sp = {
+                        'sprite': co._textureFilename,
+                    }
+                    components.push(co);
                 } else if(co instanceof cc.Label) {
-
+                    let st = {
+                        'label': co.string
+                    }
+                    components.push(st);
                 }
             }
             let tmpValue = {
