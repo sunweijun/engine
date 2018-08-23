@@ -314,37 +314,6 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
                 renderer.transform();
             }*/
         }
-
-        /*
-        var renderer = cc.renderer;
-        if(this._scene) {
-            this._scene._updateSgNode();
-            renderer.clearRenderCommands();
-            cc.renderer.assignedZ = 0;
-            this._runningScene._renderCmd._curLevel = 0; //level start from 0;
-            this._runningScene.visit();
-            renderer.resetFlag();
-        }
-        this._scene = new cc.Scene("game");
-        this._runningScene = this._scene._sgNode;
-        var scene = this._scene;
-
-        var canvas = new cc.Node("Canvas");
-        scene.addChild(canvas, 0);
-
-        var background = new cc.Node('background');
-        canvas.addChild(background, background);
-
-        var sprite = background.addComponent(cc.Sprite);
-        sprite.spriteFrame = new cc.SpriteFrame('res/raw-assets/textures/background.jpg');
-
-        scene._updateSgNode();
-        renderer.clearRenderCommands();
-        cc.renderer.assignedZ = 0;
-        this._runningScene._renderCmd._curLevel = 0; //level start from 0;
-        this._runningScene.visit();
-        renderer.resetFlag();
-        */
     },
 
     /**
