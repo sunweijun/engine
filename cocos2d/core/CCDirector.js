@@ -154,6 +154,10 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         cc.game.on(cc.game.EVENT_SHOW, function () {
             self._lastUpdate = Date.now();
         });
+        
+        this.on(cc.Director.EVENT_AFTER_SCENE_LAUNCH, function() {
+            cc.game.rebuildScene();
+        });
     },
 
     init: function () {

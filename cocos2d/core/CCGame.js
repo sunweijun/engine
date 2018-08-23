@@ -126,7 +126,6 @@ var game = {
     _frameTime: null,
 
     id2CCNode: {},
-    rebuildFlag: false,
 
     // Scenes list
     _sceneInfos: [],
@@ -582,10 +581,6 @@ var game = {
                     }
                 }
                 director.mainLoop();
-                if(!cc.game.rebuildFlag) {
-                    cc.game.rebuildFlag = true;
-                    game.rebuildScene();
-                }
             }
         };
 
