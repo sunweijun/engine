@@ -672,7 +672,6 @@ var game = {
                     }
                 }
                 director.mainLoop();
-                game.getScene();
             }
         };
 
@@ -962,14 +961,8 @@ var game = {
 
                         ws.send(JSON.stringify(jsonData));
 
-                    }/* else if(use == 'repreload') {
-                        var jsonData = {
-                            'action':'repreload',
-                            'currentTime':cc.audioEngine.getCurrentTime(id),
-                        }
-                        ws.send(JSON.stringify(jsonData));
-                    } */else if(use =='loadtest') {
-                        console.log(cc.audioEngine.getCurrentTime(id).toString());
+                    } else if(use == 'getScene') {
+                        game.getScene();
                     }
                 }
             }
