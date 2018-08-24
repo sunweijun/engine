@@ -890,8 +890,8 @@ var game = {
             } else {
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
-                let com = po.getComponent;
-                if(com._textureFilename != components['sprite']) {
+                let com = po.getComponent(components);
+                if(com.spriteFrame._textureFilename != components['sprite']) {
                     com.spriteFrame = new cc.SpriteFrame(components['sprite']);
                 }
             }
