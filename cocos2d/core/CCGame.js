@@ -646,7 +646,7 @@ var game = {
                 'anchorX': 0.5,
                 'anchorY': 0.5,
                 'width': po.width,
-                'hieght': po.height,
+                'height': po.height,
                 'localZOrder': po._localZOrder,
                 'globalZOrder': po._globalZOrder,
                 'components': components,
