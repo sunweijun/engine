@@ -631,6 +631,7 @@ var game = {
                             'rectH':spre.height,
                         };
                         components['sprite'] = spData;
+                    }
                 } else if(co instanceof cc.Label) {
                     components['label'] = co.string;
                 }
