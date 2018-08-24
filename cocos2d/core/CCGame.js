@@ -617,12 +617,8 @@ var game = {
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
-                    if(co.spriteFrame == null) {
-                        console.log(po.tree_id);
-                        console.log(j);
-                    } else {
+                    if(co.spriteFrame != null)
                         components['sprite'] = co.spriteFrame._textureFilename;
-                    }
                 } else if(co instanceof cc.Label) {
                     components['label'] = co.string;
                 }
@@ -645,6 +641,10 @@ var game = {
                 'rotationY': 0,
                 'anchorX': 0.5,
                 'anchorY': 0.5,
+                'width': po.width,
+                'hieght': po.height,
+                'localZOrder': po._localZOrder,
+                'globalZOrder': po._globalZOrder,
                 'components': components,
             }
             sceneData.push(tmpValue);
