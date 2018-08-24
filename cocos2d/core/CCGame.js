@@ -617,7 +617,12 @@ var game = {
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
-                    components['sprite'] = co.spriteFrame._textureFilename;
+                    if(co.spriteFrame == null) {
+                        console.log(po.tree_id);
+                        console.log(j);
+                    } else {
+                        components['sprite'] = co.spriteFrame._textureFilename;
+                    }
                 } else if(co instanceof cc.Label) {
                     components['label'] = co.string;
                 }
