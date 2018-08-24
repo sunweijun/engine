@@ -588,7 +588,6 @@ var game = {
                 if(cc.game.getCanvasID()) {
                     if(ws != null && ws.readyState === 1 && self.displaying) {
                         if(self.firstScene) {
-                            cc.game.rebuildScene();
                             ws.send('getFullScene');
                             self.firstScene = false;
                         } else {
