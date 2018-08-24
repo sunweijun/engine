@@ -878,6 +878,7 @@ var game = {
             po.name = node.name;
             po.setPosition(node.positionX, node.positionY);
             po.setContentSize(node.width, node.height);
+            po.setScale(node.scaleX, node.scaleY);
             po.opacity = node.opacity;
             let components = node.components;
             if(!components['sprite']) {
