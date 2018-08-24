@@ -128,7 +128,7 @@ var game = {
     _frameTime: null,
     ws: null,
     treeSize: 1,
-    sendSceneCount: 0,
+    fullScene: false,
     id2CCBefore: ['', ''],
 
     // Scenes list
@@ -584,6 +584,10 @@ var game = {
     },
 
     getScene: function(flag) {
+        if(!cc.director._scene)
+            return;
+        if(cc.director._scene == null)
+            return;
         let stack = [];
         let sceneData = [];
         stack.push(cc.director._scene);
@@ -647,7 +651,11 @@ var game = {
                 'globalZOrder': po._globalZOrder,
                 'components': components,
             }
-            sceneData.push(tmpValue);
+            let tmpS = JSON.stringify(tmpValue);
+            if(flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
+                sceneData.push(tmpValue);
+                //this.id2CCBefore[po.tree_id] = tmpS;
+            }
         }
         sendData = {
             'action': 'visitSceneTree',
@@ -673,6 +681,11 @@ var game = {
                         return;
                     }
                 }
+                if(self.fullScene) {
+                    self.getScene('getFullScene');
+                    self.fullScene = false;
+                } else
+                    self.getScene('getScene');
                 director.mainLoop();
             }
         };
@@ -959,7 +972,7 @@ var game = {
                         ws.send(JSON.stringify(jsonData));
 
                     } else if(use == 'getFullScene') {
-                        game.getScene(use);
+                        game.fullScene = true;
                     }
                 }
             }
