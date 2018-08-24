@@ -869,12 +869,8 @@ var game = {
             }
             for(; j < node.children.length; ++j) {
                 let k = node.children[j];
-                if(!id2CCNode[k]) {
-                    console.log(id);
-                    console.log(i);
-                    console.log(j);
-                    console.log(k);
-                }
+                if(id2CCNode[k]._parent != null)
+                    id2CCNode[k].removeFromParent(false);
                 po.addChild(id2CCNode[k]);
             }
 
