@@ -895,6 +895,10 @@ var game = {
                 let com = po.getComponent(cc.Sprite);
                 if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
                     com.spriteFrame = new cc.SpriteFrame(components['sprite']);
+                    let sp = com.spriteFrame;
+                    com.spriteFrame = null;
+                    sp.setRect(node.rectX, node.rectY, node.rectW, node.rectH);
+                    com.spriteFrame = sp;
                 }
             }
             if(!components['label'])
