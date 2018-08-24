@@ -890,13 +890,14 @@ var game = {
             if(!components['sprite']) {
                 po.removeComponent(cc.Sprite);
             } else {
+                let spData = components['sprite'];
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
                 let com = po.getComponent(cc.Sprite);
                 if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
-                    let sp  = new cc.SpriteFrame(components['sprite']);
+                    let sp  = new cc.SpriteFrame(spData.name);
                     com.spriteFrame = null;
-                    sp.setRect(node.rectX, node.rectY, node.rectW, node.rectH);
+                    sp.setRect(spData.rectX, spData.rectY, spData.rectW, spData.rectH);
                     com.spriteFrame = sp;
                 }
             }
