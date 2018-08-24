@@ -878,6 +878,12 @@ var game = {
             po.name = node.name;
             po.setPosition(node.positionX, node.positionY);
             po.setContentSize(node.width, node.height);
+            let val = node.color;
+            let a = val & 255;
+            let b = (65280 & val) >> 8;
+            let g = (16711680 & val) >> 16;
+            let r = (4278190080 & val) >>> 24;
+            po.setColor(new cc.Color(r, g, b, a));
             po.setScale(node.scaleX, node.scaleY);
             po.opacity = node.opacity;
             let components = node.components;
