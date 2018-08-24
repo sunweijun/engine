@@ -621,8 +621,16 @@ var game = {
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
-                    if(co.spriteFrame != null)
-                        components['sprite'] = co.spriteFrame._textureFilename;
+                    if(co.spriteFrame != null) {
+                        let spre = co.spriteFrame.getRect();
+                        let spData = {
+                            'name':co.spriteFrame._textureFilename,
+                            'rectX':spre.x,
+                            'rectY':spre.y,
+                            'rectW':spre.width,
+                            'rectH':spre.height,
+                        };
+                        components['sprite'] = spData;
                 } else if(co instanceof cc.Label) {
                     components['label'] = co.string;
                 }
