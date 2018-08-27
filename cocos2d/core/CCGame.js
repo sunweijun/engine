@@ -876,8 +876,6 @@ var game = {
 
             po.active = node.active;
             po.name = node.name;
-            po.setPosition(node.positionX, node.positionY);
-            po.setContentSize(node.width, node.height);
             let val = node.color;
             let a = val & 255;
             let b = (65280 & val) >> 8;
@@ -903,6 +901,10 @@ var game = {
             }
             if(!components['label'])
                 po.removeComponent(cc.Label);
+
+            
+            po.setPosition(node.positionX, node.positionY);
+            po.setContentSize(node.width, node.height);
 
         }
     },
