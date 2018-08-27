@@ -641,7 +641,11 @@ var game = {
                         components['sprite'] = spData;
                     }
                 } else if(co instanceof cc.Label) {
-                    components['label'] = co.string;
+                    let spData = {
+                        'string': co.string,
+                        'fontSize': co.fontSize,
+                    }
+                    components['label'] = spData;
                 }
             }
             let tmpValue = {
