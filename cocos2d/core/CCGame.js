@@ -663,7 +663,7 @@ var game = {
             let tmpS = JSON.stringify(tmpValue);
             if(flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
                 sceneData.push(tmpValue);
-                //this.id2CCBefore[po.tree_id] = tmpS;
+                this.id2CCBefore[po.tree_id] = tmpS;
             }
         }
         sendData = {
