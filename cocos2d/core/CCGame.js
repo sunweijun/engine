@@ -905,6 +905,8 @@ var game = {
                     com.setInsetLeft(spData.insetLeft);
                     com.setInsetRight(spData.insetRight);
                 }
+
+                com.enabled = spData.enabled;
             }
             if(!components['label'])
                 po.removeComponent(cc.Label);
