@@ -624,12 +624,19 @@ var game = {
                     if(co.spriteFrame != null) {
                         let spre = co.spriteFrame.getRect();
                         let spData = {
-                            'name':co.spriteFrame._textureFilename,
-                            'rectX':spre.x,
-                            'rectY':spre.y,
-                            'rectW':spre.width,
-                            'rectH':spre.height,
+                            'name': co.spriteFrame._textureFilename,
+                            'rectX': spre.x,
+                            'rectY': spre.y,
+                            'rectW': spre.width,
+                            'rectH': spre.height,
+                            'type': co.type,
                         };
+                        if(co.type == cc.Sprite.Type.SLICED) {
+                            sp['insetTop'] = co.getInsetTop();
+                            sp['insetBottom'] = co.getInsetBottom();
+                            sp['insetLeft'] = co.getInsetLeft();
+                            sp['insetRight'] = co.getInsetRight();
+                        }
                         components['sprite'] = spData;
                     }
                 } else if(co instanceof cc.Label) {
