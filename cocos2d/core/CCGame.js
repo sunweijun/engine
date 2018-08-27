@@ -632,10 +632,10 @@ var game = {
                             'type': co.type,
                         };
                         if(co.type == cc.Sprite.Type.SLICED) {
-                            sp['insetTop'] = co.getInsetTop();
-                            sp['insetBottom'] = co.getInsetBottom();
-                            sp['insetLeft'] = co.getInsetLeft();
-                            sp['insetRight'] = co.getInsetRight();
+                            spData['insetTop'] = co.getInsetTop();
+                            spData['insetBottom'] = co.getInsetBottom();
+                            spData['insetLeft'] = co.getInsetLeft();
+                            spData['insetRight'] = co.getInsetRight();
                         }
                         components['sprite'] = spData;
                     }
