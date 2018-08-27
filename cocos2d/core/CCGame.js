@@ -890,16 +890,20 @@ var game = {
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
                 let com = po.getComponent(cc.Sprite);
-                com.setInsetTop(3);
-                com.setInsetBottom(3);
-                com.setInsetRight(4);
-                com.setInsetLeft(4);
-                com.type = cc.Sprite.Type.SLICED;
+
                 if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
                     let sp  = new cc.SpriteFrame(spData.name);
                     com.spriteFrame = null;
                     sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
                     com.spriteFrame = sp;
+                }
+
+                com.type = spData.type;
+                if(com.type == cc.Sprite.Type.SLICED) {
+                    com.setInsetTop(spData.insetTop);
+                    com.setInsetBottom(spData.insetBottom);
+                    com.setInsetLeft(spData.insetLeft);
+                    com.setInsetRight(spData.insetRight);
                 }
             }
             if(!components['label'])
