@@ -908,9 +908,18 @@ var game = {
 
                 com.enabled = spData.enabled;
             }
-            if(!components['label'])
+            if(!components['label']) {
                 po.removeComponent(cc.Label);
+            } else {
+                let spData = components['label'];
+                if(!po.getComponent(cc.Label))
+                    po.addComponent(cc.Label);
+                let com = po.getComponent(cc.Label);
+                com.string = spData.string;
+                com.fontSize = spData.fontSize;
 
+                com.enabled = spData.enabled;
+            }
             
             po.setPosition(node.positionX, node.positionY);
             po.setContentSize(node.width, node.height);
