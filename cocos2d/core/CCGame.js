@@ -897,7 +897,7 @@ var game = {
                 if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
                     let sp  = new cc.SpriteFrame(spData.name);
                     com.spriteFrame = null;
-                    sp.setRect(spData.rectX, spData.rectY, spData.rectW, spData.rectH);
+                    sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
                     com.spriteFrame = sp;
                 }
             }
