@@ -590,8 +590,6 @@ var game = {
                         if(self.firstScene) {
                             ws.send('getFullScene');
                             self.firstScene = false;
-                        } else {
-                            ws.send('getFullScene');
                         }
                     }
                 }
