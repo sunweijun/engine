@@ -630,6 +630,7 @@ var game = {
                             'rectW': spre.width,
                             'rectH': spre.height,
                             'type': co.type,
+                            'enabled': co.enabled,
                         };
                         if(co.type == cc.Sprite.Type.SLICED) {
                             spData['insetTop'] = co.getInsetTop();
