@@ -922,6 +922,11 @@ var game = {
             }
             
             po.setPosition(node.positionX, node.positionY);
+            po.setRotationX(node.rotationX);
+            po.setRotationY(node.rotationY);
+            po.setSkewX(node.skewX);
+            po.setSkewY(node.skewY);
+            po.setAnchorPoint(node.anchorX, node.anchorY);
             po.setContentSize(node.width, node.height);
 
         }
