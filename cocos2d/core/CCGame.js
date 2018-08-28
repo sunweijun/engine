@@ -917,6 +917,7 @@ var game = {
                 let com = po.getComponent(cc.Label);
                 com.string = spData.string;
                 com.fontSize = spData.fontSize;
+                com.lineHeight = spData.lineHeight;
 
                 com.enabled = spData.enabled;
             }
