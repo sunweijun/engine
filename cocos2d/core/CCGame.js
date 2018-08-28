@@ -644,6 +644,7 @@ var game = {
                     let spData = {
                         'string': co.string,
                         'fontSize': co.fontSize,
+                        'lineHeight': co.lineHeight,
                         'enabled': co.enabled,
                     }
                     components['label'] = spData;
