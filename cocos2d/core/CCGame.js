@@ -585,9 +585,9 @@ var game = {
 
     getScene: function(flag) {
         if(!cc.director._scene)
-            return;
+            return "No Scene!";
         if(cc.director._scene == null)
-            return;
+            return "No Scene!";
         let stack = [];
         let sceneData = [];
         stack.push(cc.director._scene);
@@ -685,7 +685,8 @@ var game = {
             'scene': sceneData, 
         }
 
-        cc.game.sendWS(sendData);
+        //cc.game.sendWS(sendData);
+        return sendData;
     },
 
     //Run game.
@@ -705,10 +706,10 @@ var game = {
                     }
                 }
                 if(self.fullScene) {
-                    self.getScene('getFullScene');
+                    self.sendWS(self.getScene('getFullScene'));
                     self.fullScene = false;
                 } else
-                    self.getScene('getScene');
+                    self.sendWS(self.getScene('getScene'));
                 director.mainLoop();
             }
         };
