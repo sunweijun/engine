@@ -644,6 +644,12 @@ var game = {
                     let spData = {
                         'string': co.string,
                         'fontSize': co.fontSize,
+                        'actualFontSize': co.actualFontSize,
+                        'horizontalAlign': co.horizontalAlign,
+                        'overflow': co.overflow,
+                        'spaceX': co.spaceX,
+                        'useSystemFont': co.useSystemFont,
+                        'verticalAlign': co.verticalAlign,
                         'lineHeight': co.lineHeight,
                         'enabled': co.enabled,
                     }
