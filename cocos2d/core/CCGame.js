@@ -915,9 +915,16 @@ var game = {
                 if(!po.getComponent(cc.Label))
                     po.addComponent(cc.Label);
                 let com = po.getComponent(cc.Label);
+
                 com.string = spData.string;
                 com.fontSize = spData.fontSize;
                 com.lineHeight = spData.lineHeight;
+                com.actualFontSize = spData.actualFontSize;
+                com.horizontalAlign = spData.horizontalAlign;
+                com.overflow = spData.overflow;
+                com.spaceX = spData.spaceX;
+                com.useSystemFont = spData.useSystemFont;
+                com.verticalAlign = spData.verticalAlign;
 
                 com.enabled = spData.enabled;
             }
