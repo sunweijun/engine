@@ -891,14 +891,14 @@ var game = {
                     po.addComponent(cc.Sprite);
                 let com = po.getComponent(cc.Sprite);
 
-                if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
+                //if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
                     let sp  = new cc.SpriteFrame(spData.name);
                     com.spriteFrame = null;
                     sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
+                    sp._rotated = spData.rotated;
                     com.spriteFrame = sp;
-                }
+                //}
 
-                com.spriteFrame._rotated = spData.rotated;
 
                 com.type = spData.type;
                 if(com.type == cc.Sprite.Type.SLICED) {
