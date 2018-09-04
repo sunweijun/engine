@@ -630,6 +630,7 @@ var game = {
                             'rectW': spre.width,
                             'rectH': spre.height,
                             'type': co.type,
+                            'rotated': co.spriteFrame._rotated,
                             'enabled': co.enabled,
                         };
                         if(co.type == cc.Sprite.Type.SLICED) {
