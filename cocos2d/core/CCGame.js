@@ -890,15 +890,16 @@ var game = {
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
                 let com = po.getComponent(cc.Sprite);
-
-                //if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
-                    let sp  = new cc.SpriteFrame(spData.name);
-                    com.spriteFrame = null;
-                    sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
-                    sp._rotated = spData.rotated;
-                    com.spriteFrame = sp;
-                //}
-
+                let sp = null;
+                if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
+                    sp  = new cc.SpriteFrame(spData.name);
+                } else {
+                    sp = com.spriteFrame;
+                }
+                com.spriteFrame = null;
+                sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
+                sp._rotated = spData.rotated;
+                com.spriteFrame = sp;
 
                 com.type = spData.type;
                 if(com.type == cc.Sprite.Type.SLICED) {
