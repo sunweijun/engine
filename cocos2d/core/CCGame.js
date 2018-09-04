@@ -898,6 +898,8 @@ var game = {
                     com.spriteFrame = sp;
                 }
 
+                com.spriteFrame._rotated = spData.rotated;
+
                 com.type = spData.type;
                 if(com.type == cc.Sprite.Type.SLICED) {
                     com.setInsetTop(spData.insetTop);
