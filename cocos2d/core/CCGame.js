@@ -865,11 +865,17 @@ var game = {
                     break;
                 }
             }
+
             for(; j < node.children.length; ++j) {
                 let k = node.children[j];
                 if(id2CCNode[k]._parent != null)
                     id2CCNode[k].removeFromParent(false);
                 po.addChild(id2CCNode[k]);
+            }
+
+            if(j >= node.children.length && j < po._children.length) {
+                while(j < po._children.length)
+                    po._children[j].removeFromParent(false);
             }
 
             po.active = node.active;
