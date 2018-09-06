@@ -169,7 +169,6 @@ module.exports = {
     },
 
     loadByuuid: function (uuid) {
-        var uuid = item.uuid;
         var packUuid = uuidToPack[uuid];
         if (!packUuid) {
             // Return undefined to let caller know it's not recognized.
