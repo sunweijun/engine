@@ -26,7 +26,6 @@
 var Asset = require('../assets/CCAsset');
 var callInNextTick = require('./utils').callInNextTick;
 var Loader = require('../load-pipeline/CCLoader');
-var PackDownloader = require('../load-pipeline/pack-downloader');
 var AutoReleaseUtils = require('../load-pipeline/auto-release-utils');
 var decodeUuid = require('../utils/decode-uuid');
 var MD5Pipe = require('../load-pipeline/md5-pipe');
@@ -58,6 +57,8 @@ function RawAssetEntry (url, type) {
 // publics
 
 var AssetLibrary = {
+
+    PackDownloader: require('../load-pipeline/pack-downloader'),
     /**
      * @callback loadCallback
      * @param {String} error - null or the error info
@@ -335,7 +336,7 @@ var AssetLibrary = {
         }
 
         if (options.packedAssets) {
-            PackDownloader.initPacks(options.packedAssets);
+            this.PackDownloader.initPacks(options.packedAssets);
         }
 
         // init mount paths

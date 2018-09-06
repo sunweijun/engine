@@ -166,7 +166,46 @@ module.exports = {
         }
         // Return null to let caller know it's loading asynchronously
         return null;
-    }
+    },
+
+    loadByuuid: function (uuid) {
+        var uuid = item.uuid;
+        var packUuid = uuidToPack[uuid];
+        if (!packUuid) {
+            // Return undefined to let caller know it's not recognized.
+            // We don't use false here because changing return value type may cause jit fail, 
+            // though return undefined may have the same issue.
+            return;
+        }
+
+        if (Array.isArray(packUuid)) {
+            packUuid = this._selectLoadedPack(packUuid);
+        }
+
+        var unpacker = globalUnpackers[packUuid];
+        if (unpacker && unpacker.state === PackState.Loaded) {
+            // ensure async
+            var json = unpacker.retrieve(uuid);
+            if (json) {
+                return json;
+            }
+            else {
+                return error(uuid, packUuid);
+            }
+        }
+        else {
+            if (!unpacker) {
+                if (!CC_TEST) {
+                    console.log('Create unpacker %s for %s', packUuid, uuid);
+                }
+                unpacker = globalUnpackers[packUuid] = new JsonUnpacker();
+                unpacker.state = PackState.Downloading;
+            }
+            this._loadNewPack(uuid, packUuid, callback);
+        }
+        // Return null to let caller know it's loading asynchronously
+        return null;
+    },
 };
 
 if (CC_TEST) {
