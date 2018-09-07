@@ -1017,7 +1017,7 @@ var game = {
         });
         this.on(game.EVENT_GAME_INITED, function() {
             console.log('game inited');
-            cc.director.pause();
+            //cc.director.pause();
             cc.game.displaying = true;
 
             var id2id = {}
