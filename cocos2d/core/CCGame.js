@@ -25,6 +25,7 @@
 
 var EventTarget = require('./event/event-target');
 var View;
+uuid2Com = {};
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
 }
@@ -946,10 +947,10 @@ var game = {
                     po.addComponent(sp.Skeleton);
                 let com = po.getComponent(sp.Skeleton);
                 if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
-                    let stupidback = function(err, res) {
-                        this.com.skeletonData = res;
+                    stupidback = function(err, res) {
+                        uuid2Com[res._uuid] = res;    
                     }
-                    stupidpack.com = com;
+                    uuid2Com[spData.uuid] = com;
 
                     cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                 }
