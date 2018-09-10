@@ -889,14 +889,13 @@ var game = {
             po.setScale(node.scaleX, node.scaleY);
             po.opacity = node.opacity;
             let components = node.components;
-            var com;
             if(!components['sprite']) {
                 po.removeComponent(cc.Sprite);
             } else {
                 let spData = components['sprite'];
                 if(!po.getComponent(cc.Sprite))
                     po.addComponent(cc.Sprite);
-                com = po.getComponent(cc.Sprite);
+                let com = po.getComponent(cc.Sprite);
                 let sp = null;
                 if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
                     sp  = new cc.SpriteFrame(spData.name);
@@ -924,7 +923,7 @@ var game = {
                 let spData = components['label'];
                 if(!po.getComponent(cc.Label))
                     po.addComponent(cc.Label);
-                com = po.getComponent(cc.Label);
+                let com = po.getComponent(cc.Label);
 
                 com.string = spData.string;
                 com.fontSize = spData.fontSize;
@@ -945,11 +944,13 @@ var game = {
                 let spData = components['skeleton'];
                 if(!po.getComponent(sp.Skeleton))
                     po.addComponent(sp.Skeleton);
-                var com = po.getComponent(sp.Skeleton);
+                let com = po.getComponent(sp.Skeleton);
+                let stupidback = function(err, res) {
+                    this.com.skeletonData = res;
+                }
+                stuidpack.com = com;
 
-                cc.AssetLibrary.loadAsset("e1zLddaXlAE65tWDAylyKQ", function(err, res){
-                    com.skeletonData = res;
-                })
+                cc.AssetLibrary.loadAsset("e1zLddaXlAE65tWDAylyKQ", stupidback);
             }
             
             po.setPosition(node.positionX, node.positionY);
