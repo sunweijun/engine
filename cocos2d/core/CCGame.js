@@ -955,8 +955,8 @@ var game = {
                     cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                 }
 
-                com.premultipliedAlpha = spData.premultipliedAlpha,
-                com.defaultAnimation = spData.defaultAnimation,
+                com.premultipliedAlpha = spData.premultipliedAlpha;
+                com.defaultAnimation = spData.defaultAnimation;
             }
             
             po.setPosition(node.positionX, node.positionY);
