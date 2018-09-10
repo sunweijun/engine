@@ -949,7 +949,7 @@ var game = {
                     let stupidback = function(err, res) {
                         this.com.skeletonData = res;
                     }
-                    stuidpack.com = com;
+                    stupidpack.com = com;
 
                     cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                 }
