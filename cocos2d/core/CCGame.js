@@ -950,7 +950,7 @@ var game = {
                 }
                 stuidpack.com = com;
 
-                cc.AssetLibrary.loadAsset("e1zLddaXlAE65tWDAylyKQ", stupidback);
+                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
             }
             
             po.setPosition(node.positionX, node.positionY);
