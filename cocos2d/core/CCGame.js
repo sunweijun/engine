@@ -945,12 +945,14 @@ var game = {
                 if(!po.getComponent(sp.Skeleton))
                     po.addComponent(sp.Skeleton);
                 let com = po.getComponent(sp.Skeleton);
-                let stupidback = function(err, res) {
-                    this.com.skeletonData = res;
-                }
-                stuidpack.com = com;
+                if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
+                    let stupidback = function(err, res) {
+                        this.com.skeletonData = res;
+                    }
+                    stuidpack.com = com;
 
-                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                }
             }
             
             po.setPosition(node.positionX, node.positionY);
