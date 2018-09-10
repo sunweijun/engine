@@ -659,7 +659,7 @@ var game = {
                     let spData = {
                         'uuid': co.skeletonData._uuid,
                     }
-                    components['label'] = spData;
+                    components['skeleton'] = spData;
                 }
             }
             let tmpValue = {
