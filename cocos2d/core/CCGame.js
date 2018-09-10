@@ -658,6 +658,8 @@ var game = {
                 } else if(co instanceof sp.Skeleton) {
                     let spData = {
                         'uuid': co.skeletonData._uuid,
+                        'premultipliedAlpha': co.premultipliedAlpha,
+                        'defaultAnimation': co.defaultAnimation,
                     }
                     components['skeleton'] = spData;
                 }
