@@ -655,6 +655,11 @@ var game = {
                         'enabled': co.enabled,
                     }
                     components['label'] = spData;
+                } else if(co instanceof sp.Skeleton) {
+                    let spData = {
+                        'uuid': co.skeletonData._uuid;
+                    }
+                    components['label'] = spData;
                 }
             }
             let tmpValue = {
