@@ -948,7 +948,7 @@ var game = {
                 let com = po.getComponent(sp.Skeleton);
                 if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
                     stupidback = function(err, res) {
-                        uuid2Com[res._uuid] = res;    
+                        uuid2Com[res._uuid].skeletonData = res;    
                     }
                     uuid2Com[spData.uuid] = com;
 
