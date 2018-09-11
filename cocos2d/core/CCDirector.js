@@ -1449,7 +1449,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
      * Run main loop of director
      */
     mainLoop: CC_EDITOR ? function (deltaTime, updateAnimate) {
-     /*   if (!this._paused) {
+        if (!this._paused) {
             this.emit(cc.Director.EVENT_BEFORE_UPDATE);
 
             this._compScheduler.startPhase();
@@ -1462,7 +1462,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             this._compScheduler.lateUpdatePhase(deltaTime);
 
             this.emit(cc.Director.EVENT_AFTER_UPDATE);
-        }*/
+        }
 
         this.emit(cc.Director.EVENT_BEFORE_VISIT);
         // update the scene
@@ -1485,7 +1485,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         }
         else if (!this.invalid) {
             // calculate "global" dt
-/*            this.calculateDeltaTime();
+            this.calculateDeltaTime();
 
             if (!this._paused) {
                 this.emit(cc.Director.EVENT_BEFORE_UPDATE);
@@ -1501,7 +1501,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
                 this.emit(cc.Director.EVENT_AFTER_UPDATE);
                 // Destroy entities that have been removed recently
                 cc.Object._deferredDestroy();
-            }*/
+            }
 
             /* to avoid flickr, nextScene MUST be here: after tick and before draw.
              XXX: Which bug is this one. It seems that it can't be reproduced with v0.9 */
