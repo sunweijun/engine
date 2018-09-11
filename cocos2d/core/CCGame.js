@@ -957,6 +957,7 @@ var game = {
 
                 com.premultipliedAlpha = spData.premultipliedAlpha;
                 com.defaultAnimation = spData.defaultAnimation;
+                com.animation = spData.animation;
             }
             
             po.setPosition(node.positionX, node.positionY);
