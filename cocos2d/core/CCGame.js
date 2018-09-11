@@ -660,6 +660,7 @@ var game = {
                         'uuid': co.skeletonData._uuid,
                         'premultipliedAlpha': co.premultipliedAlpha,
                         'defaultAnimation': co.defaultAnimation,
+                        'animation': co.animation,
                     }
                     components['skeleton'] = spData;
                 }
