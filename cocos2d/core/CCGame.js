@@ -661,6 +661,7 @@ var game = {
                         'premultipliedAlpha': co.premultipliedAlpha,
                         'defaultAnimation': co.defaultAnimation,
                         'animation': co.animation,
+                        'loop': co.loop,
                     }
                     components['skeleton'] = spData;
                 }
