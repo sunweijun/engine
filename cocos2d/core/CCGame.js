@@ -948,11 +948,20 @@ var game = {
                 let com = po.getComponent(sp.Skeleton);
                 if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
                     stupidback = function(err, res) {
-                        uuid2Com[res._uuid].skeletonData = res;    
+                        while(uuid2Com[res._uuid].length > 0) {
+                            let com = uuid2Com[res.uuid].shift();
+                            com.skeletonData = res;
+                        }
                     }
-                    uuid2Com[spData.uuid] = com;
+                    if(!uuid2Com.hasOwnProperty(spData.uuid)) {
+                        uuid2Com[spData.uuid] = [com];
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    } else {
+                        uuid2Com[spData.uuid].push(com);
+                        if(uuid2Com[spData.uuid].length == 1)
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    } 
 
-                    cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                 }
 
                 com.premultipliedAlpha = spData.premultipliedAlpha;
