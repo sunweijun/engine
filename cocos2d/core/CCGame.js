@@ -949,7 +949,7 @@ var game = {
                 if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
                     stupidback = function(err, res) {
                         while(uuid2Com[res._uuid].length > 0) {
-                            let com = uuid2Com[res.uuid].shift();
+                            let com = uuid2Com[res._uuid].shift();
                             com.skeletonData = res;
                         }
                     }
