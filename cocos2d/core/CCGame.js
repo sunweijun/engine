@@ -618,6 +618,8 @@ var game = {
             for(let ch in po._children)
                 cid.push(po._children[ch].tree_id);
             let components = {};
+            loopflag = false;
+
             for(let j in po._components) {
                 let co = po._components[j];
                 if(co instanceof cc.Sprite) {
@@ -663,6 +665,7 @@ var game = {
                         'animation': co.animation,
                         'loop': co.loop,
                     }
+                    loopflag = co.loop;
                     components['skeleton'] = spData;
                 }
             }
@@ -691,7 +694,7 @@ var game = {
                 'components': components,
             }
             let tmpS = JSON.stringify(tmpValue);
-            if(flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
+            if(loopflag  || flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
                 sceneData.push(tmpValue);
                 this.id2CCBefore[po.tree_id] = tmpS;
             }
