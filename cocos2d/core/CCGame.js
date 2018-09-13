@@ -954,8 +954,6 @@ var game = {
                             let com = uuid2Com[res._uuid].shift();
                             let spData = uuid2SpData[res._uuid].shift();
                             com.skeletonData = res;
-                            //if(spData.loop)
-                                //com.animation = spData.animation;
                         }
                     }
                     if(!uuid2Com.hasOwnProperty(spData.uuid)) {
@@ -969,12 +967,12 @@ var game = {
                             cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                     } 
 
-                }
+                    com.premultipliedAlpha = spData.premultipliedAlpha;
+                    com.defaultAnimation = spData.defaultAnimation;
+                    com.animation = spData.animation;
+                    com.loop = spData.loop;
 
-                com.premultipliedAlpha = spData.premultipliedAlpha;
-                com.defaultAnimation = spData.defaultAnimation;
-                com.animation = spData.animation;
-                com.loop = spData.loop;
+                }
             }
             
             po.setPosition(node.positionX, node.positionY);
