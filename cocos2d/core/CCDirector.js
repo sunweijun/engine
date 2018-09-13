@@ -105,6 +105,8 @@ cc.g_NumberOfDraws = 0;
  * @extends EventTarget
  */
 cc.Director = Class.extend(/** @lends cc.Director# */{
+
+    globalDt: 0.0,
     ctor: function () {
         var self = this;
         EventTarget.call(self);
@@ -1427,8 +1429,12 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
      * Run main loop of director
      */
     mainLoop: CC_EDITOR ? function (deltaTime, updateAnimate) {
+        
+        this.globalDt = 0.0;
+
         if (!this._paused) {
             this.emit(cc.Director.EVENT_BEFORE_UPDATE);
+            this.globalDt = deltaTime;
 
             this._compScheduler.startPhase();
             this._compScheduler.updatePhase(deltaTime);
@@ -1457,6 +1463,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         this.emit(cc.Director.EVENT_AFTER_DRAW);
 
     } : function () {
+        this.globalDt = 0.0;
         if (this._purgeDirectorInNextLoop) {
             this._purgeDirectorInNextLoop = false;
             this.purgeDirector();
@@ -1466,6 +1473,8 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             this.calculateDeltaTime();
 
             if (!this._paused) {
+                this.globalDt = this._deltaTime;
+
                 this.emit(cc.Director.EVENT_BEFORE_UPDATE);
                 // Call start for new added components
                 this._compScheduler.startPhase();

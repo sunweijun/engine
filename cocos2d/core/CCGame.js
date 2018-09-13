@@ -698,6 +698,7 @@ var game = {
         }
         sendData = {
             'action': 'visitSceneTree',
+            'dt': cc.director.globalDt,
             'scene': sceneData, 
         }
 
