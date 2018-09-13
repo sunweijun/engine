@@ -26,6 +26,7 @@
 var EventTarget = require('./event/event-target');
 var View;
 uuid2Com = {};
+uuid2SpData = {};
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
 }
@@ -950,14 +951,19 @@ var game = {
                     stupidback = function(err, res) {
                         while(uuid2Com[res._uuid].length > 0) {
                             let com = uuid2Com[res._uuid].shift();
+                            let spData = uuid2SpData[res._uuid].shift();
                             com.skeletonData = res;
+                            //if(spData.loop)
+                                //com.animation = spData.animation;
                         }
                     }
                     if(!uuid2Com.hasOwnProperty(spData.uuid)) {
                         uuid2Com[spData.uuid] = [com];
+                        uuid2SpData[spData.uuid] = [spData];
                         cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                     } else {
                         uuid2Com[spData.uuid].push(com);
+                        uuid2Com[spData.uuid].push(spData);
                         if(uuid2Com[spData.uuid].length == 1)
                             cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                     } 
