@@ -947,7 +947,8 @@ var game = {
                 if(!po.getComponent(sp.Skeleton))
                     po.addComponent(sp.Skeleton);
                 let com = po.getComponent(sp.Skeleton);
-                if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid) {
+                if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid || com.defaultAnimation != spData.defaultAnimation || com.premultipliedAlpha != spData.premultipliedAlpha || com.animation != spData.animation || com.loop != spData.loop) {
+
                     stupidback = function(err, res) {
                         while(uuid2Com[res._uuid].length > 0) {
                             let com = uuid2Com[res._uuid].shift();
