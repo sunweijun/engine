@@ -954,21 +954,33 @@ var game = {
                             let com = uuid2Com[res._uuid].shift();
                             let spData = uuid2SpData[res._uuid].shift();
                             com.skeletonData = res;
-                            if(spData.loop) {
-                                com.animation = spData.animation;
-                                com.loop = spData.loop;
-                            }
+                        }
+                    }
+
+                    uglyback = function(err, res) {
+                        while(uuid2Com[res._uuid].length > 0) {
+                            let com = uuid2Com[res._uuid].shift();
+                            let spData = uuid2SpData[res._uuid].shift();
+                            com.skeletonData = res;
+                            com.animation = spData.animation;
                         }
                     }
                     if(!uuid2Com.hasOwnProperty(spData.uuid)) {
                         uuid2Com[spData.uuid] = [com];
                         uuid2SpData[spData.uuid] = [spData];
-                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                        if(!spData.loop)
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                        else
+                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
                     } else {
                         uuid2Com[spData.uuid].push(com);
                         uuid2Com[spData.uuid].push(spData);
-                        if(uuid2Com[spData.uuid].length == 1)
-                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                        if(uuid2Com[spData.uuid].length == 1) {
+                            if(!spData.loop)
+                                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                            else
+                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
+                        }
                     } 
 
                     com.premultipliedAlpha = spData.premultipliedAlpha;
