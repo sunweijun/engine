@@ -694,7 +694,7 @@ var game = {
                 'components': components,
             }
             let tmpS = JSON.stringify(tmpValue);
-            if(loopflag  || flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
+            if(flag == 'getFullScene' || tmpS != this.id2CCBefore[po.tree_id]) {
                 sceneData.push(tmpValue);
                 this.id2CCBefore[po.tree_id] = tmpS;
             }
