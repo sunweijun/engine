@@ -1116,6 +1116,7 @@ var game = {
                     }else if(use['action'] == 'visitSceneTree') {
 
                         cc.game.updateScene(use['scene']);
+                        cc.director._totalFrames++;
 
                     }else if(use['action'] == 'play') {
                         

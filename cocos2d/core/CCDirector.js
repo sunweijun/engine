@@ -1474,7 +1474,6 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         cc.renderer.clear();
 
         cc.renderer.rendering(cc._renderContext);
-        this._totalFrames++;
 
         this.emit(cc.Director.EVENT_AFTER_DRAW);
 
@@ -1519,7 +1518,6 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             cc.renderer.clear();
 
             cc.renderer.rendering(cc._renderContext);
-            this._totalFrames++;
 
             this.emit(cc.Director.EVENT_AFTER_DRAW);
             eventManager.frameUpdateListeners();
