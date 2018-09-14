@@ -954,6 +954,9 @@ var game = {
                             let com = uuid2Com[res._uuid].shift();
                             let spData = uuid2SpData[res._uuid].shift();
                             com.skeletonData = res;
+                            if(spData.loop) {
+                                com.animation = spData.animation;
+                            }
                         }
                     }
                     if(!uuid2Com.hasOwnProperty(spData.uuid)) {
