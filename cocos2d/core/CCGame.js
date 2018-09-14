@@ -956,6 +956,7 @@ var game = {
                             com.skeletonData = res;
                             if(spData.loop) {
                                 com.animation = spData.animation;
+                                com.loop = spData.loop;
                             }
                         }
                     }
