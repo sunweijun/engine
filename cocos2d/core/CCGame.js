@@ -1117,6 +1117,7 @@ var game = {
 
                         cc.game.updateScene(use['scene']);
                         cc.director._totalFrames++;
+                        cc.director._totalBit += e['data'].length * 8;
 
                     }else if(use['action'] == 'play') {
                         
