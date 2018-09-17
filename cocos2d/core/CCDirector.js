@@ -1515,7 +1515,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             if (this._nextScene) {
                 this.setNextScene();
             }
-
+/*
             if(cc.game.getCanvasID()) {
                 let com;
                 if(!bpsNode) {
@@ -1549,7 +1549,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
                     cc.director._scene.addChild(bpsNode);
                 }
             }
-
+*/
             this.emit(cc.Director.EVENT_BEFORE_VISIT);
             // update the scene
             this._visitScene();

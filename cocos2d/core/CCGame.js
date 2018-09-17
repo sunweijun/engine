@@ -128,6 +128,7 @@ var game = {
     _frameTime: null,
 
     treeSize: 1,
+    sceneList: [],
     id2CCNode: {},
     displaying: false,
     ws: null,
@@ -594,6 +595,9 @@ var game = {
                             self.firstScene = false;
                         }
                     }
+                }
+                if(self.sceneList.length > 0) {
+                    self.updateScene(self.sceneList.shift());
                 }
                 director.mainLoop();
             }
@@ -1115,7 +1119,8 @@ var game = {
 
                     }else if(use['action'] == 'visitSceneTree') {
 
-                        cc.game.updateScene(use['scene']);
+                        //cc.game.updateScene(use['scene']);
+                        cc.game.sceneList.push(use['scene']);
                         cc.director._totalFrames++;
                         cc.director._totalBit += e['data'].length * 8;
 
