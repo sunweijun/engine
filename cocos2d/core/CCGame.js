@@ -596,7 +596,7 @@ var game = {
                         }
                     }
                 }
-                if(self.sceneList.length > 0) {
+                if(self.sceneList.length > 0 && self.checkAsset()) {
                     self.updateScene(self.sceneList.shift());
                 }
                 director.mainLoop();
@@ -842,6 +842,16 @@ var game = {
         return id2CCNode[0] && id2CCNode[1];
     },
 
+    checkAsset: function() {
+        for(let id in uuid2Com) {
+            if(uuid2Com[id].length > 0)
+                return false;
+        }
+        uuid2Com = {};
+        uuid2SpData = {};
+        return true;
+    },
+
     updateScene: function (data) {
         var id2CCNode = this.id2CCNode;
         if(!this.getCanvasID())
@@ -973,15 +983,15 @@ var game = {
                         uuid2Com[spData.uuid] = [com];
                         uuid2SpData[spData.uuid] = [spData];
                         if(!spData.loop)
-                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
                         else
                             cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
                     } else {
                         uuid2Com[spData.uuid].push(com);
-                        uuid2Com[spData.uuid].push(spData);
+                        uuid2SpData[spData.uuid].push(spData);
                         if(uuid2Com[spData.uuid].length == 1) {
                             if(!spData.loop)
-                                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                                cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
                             else
                             cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
                         }
