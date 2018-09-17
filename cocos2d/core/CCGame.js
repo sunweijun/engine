@@ -968,32 +968,25 @@ var game = {
                             let com = uuid2Com[res._uuid].shift();
                             let spData = uuid2SpData[res._uuid].shift();
                             com.skeletonData = res;
-                        }
-                    }
-
-                    uglyback = function(err, res) {
-                        while(uuid2Com[res._uuid].length > 0) {
-                            let com = uuid2Com[res._uuid].shift();
-                            let spData = uuid2SpData[res._uuid].shift();
-                            com.skeletonData = res;
                             com.animation = spData.animation;
                         }
                     }
+
                     if(!uuid2Com.hasOwnProperty(spData.uuid)) {
                         uuid2Com[spData.uuid] = [com];
                         uuid2SpData[spData.uuid] = [spData];
                         if(!spData.loop)
-                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                         else
-                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                     } else {
                         uuid2Com[spData.uuid].push(com);
                         uuid2SpData[spData.uuid].push(spData);
                         if(uuid2Com[spData.uuid].length == 1) {
                             if(!spData.loop)
-                                cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
+                                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                             else
-                            cc.AssetLibrary.loadAsset(spData.uuid, uglyback);
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                         }
                     } 
 
