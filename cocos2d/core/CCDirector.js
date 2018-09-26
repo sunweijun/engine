@@ -108,6 +108,7 @@ var bpsNode;
 cc.Director = Class.extend(/** @lends cc.Director# */{
     _totalBit: 0,
     _totalTime: 0,
+    _tempDt: 0,
 
     ctor: function () {
         var self = this;

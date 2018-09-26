@@ -129,6 +129,7 @@ var game = {
 
     treeSize: 1,
     sceneList: [],
+    dtList: [],
     id2CCNode: {},
     displaying: false,
     ws: null,
