@@ -598,6 +598,9 @@ var game = {
                 }
                 if(self.sceneList.length > 0 && self.checkAsset()) {
                     self.updateScene(self.sceneList.shift());
+                    if(self.sceneList.length > 0) {
+                        self.updateScene(self.sceneList.shift());
+                    }
                 }
                 director.mainLoop();
             }
