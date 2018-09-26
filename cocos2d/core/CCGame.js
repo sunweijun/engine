@@ -597,13 +597,17 @@ var game = {
                         }
                     }
                 }
+
                 if(self.sceneList.length > 0 && self.checkAsset()) {
                     self.updateScene(self.sceneList.shift());
+                    cc.director._tempDt = self.dtList.shift();
+                    director.mainLoop();
                     if(self.sceneList.length > 0) {
                         self.updateScene(self.sceneList.shift());
+                        cc.director._tempDt = self.dtList.shift();
+                        director.mainLoop();
                     }
                 }
-                director.mainLoop();
             }
         };
 
@@ -1128,6 +1132,7 @@ var game = {
 
                         //cc.game.updateScene(use['scene']);
                         cc.game.sceneList.push(use['scene']);
+                        cc.game.dtList.push(use['dt']);
                         cc.director._totalFrames++;
                         cc.director._totalBit += e['data'].length * 8;
 

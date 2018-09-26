@@ -1455,6 +1455,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
      */
     mainLoop: CC_EDITOR ? function (deltaTime, updateAnimate) {
 
+        deltaTime = this._tempDt;
         if (!this._paused) {
             this.emit(cc.Director.EVENT_BEFORE_UPDATE);
 
@@ -1492,6 +1493,7 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         else if (!this.invalid) {
             // calculate "global" dt
             this.calculateDeltaTime();
+            this._deltaTime = this._tempDt;
 
             this._totalTime += this._deltaTime;
 
