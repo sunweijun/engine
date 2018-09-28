@@ -1064,5 +1064,12 @@ sp.Skeleton = cc.Class({
             self._updateSkinEnum();
             Editor.Utils.refreshSelectedInspector('node', this.node.uuid);
         }
-    }
+    },
+    getSkeletonTime: function() {
+        return this._sgNode._skeleton.time;
+    },
+
+    updateTime: function(dt) {
+        this._sgNode.update(dt);
+    },
 });
