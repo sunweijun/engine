@@ -860,6 +860,145 @@ var game = {
         return true;
     },
 
+    updateNode: function(node, po) {
+        var id2CCNode = this.id2CCNode;
+
+        let j;
+        for(j = 0; j < node.children.length; ++j) {
+            let k = node.children[j];
+            if(!po._children[j] || po._children[j].tree_id != k) {
+                while(j < po._children.length)
+                    po._children[j].removeFromParent(false);
+                break;
+            }
+        }
+
+        for(; j < node.children.length; ++j) {
+            let k = node.children[j];
+            if(id2CCNode[k]._parent != null)
+                id2CCNode[k].removeFromParent(false);
+            po.addChild(id2CCNode[k]);
+        }
+
+        if(j >= node.children.length && j < po._children.length) {
+            while(j < po._children.length)
+                po._children[j].removeFromParent(false);
+        }
+
+        po.active = node.active;
+        po.name = node.name;
+        let val = node.color;
+        let a = val & 255;
+        let b = (65280 & val) >> 8;
+        let g = (16711680 & val) >> 16;
+        let r = (4278190080 & val) >>> 24;
+        po.setColor(new cc.Color(r, g, b, a));
+        po.setScale(node.scaleX, node.scaleY);
+        po.opacity = node.opacity;
+        let components = node.components;
+        if(!components['sprite']) {
+            po.removeComponent(cc.Sprite);
+        } else {
+            let spData = components['sprite'];
+            if(!po.getComponent(cc.Sprite))
+                po.addComponent(cc.Sprite);
+            let com = po.getComponent(cc.Sprite);
+            let sp = null;
+            if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
+                sp  = new cc.SpriteFrame(spData.name);
+            } else {
+                sp = com.spriteFrame;
+            }
+            com.spriteFrame = null;
+            sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
+            sp._rotated = spData.rotated;
+            com.spriteFrame = sp;
+
+            com.type = spData.type;
+            if(com.type == cc.Sprite.Type.SLICED) {
+                com.setInsetTop(spData.insetTop);
+                com.setInsetBottom(spData.insetBottom);
+                com.setInsetLeft(spData.insetLeft);
+                com.setInsetRight(spData.insetRight);
+            }
+
+            com.enabled = spData.enabled;
+        }
+        if(!components['label']) {
+            po.removeComponent(cc.Label);
+        } else {
+            let spData = components['label'];
+            if(!po.getComponent(cc.Label))
+                po.addComponent(cc.Label);
+            let com = po.getComponent(cc.Label);
+
+            com.string = spData.string;
+            com.fontSize = spData.fontSize;
+            com.lineHeight = spData.lineHeight;
+            com.actualFontSize = spData.actualFontSize;
+            com.horizontalAlign = spData.horizontalAlign;
+            com.overflow = spData.overflow;
+            com.spaceX = spData.spaceX;
+            com.useSystemFont = spData.useSystemFont;
+            com.verticalAlign = spData.verticalAlign;
+
+            com.enabled = spData.enabled;
+        }
+
+        if(!components['skeleton']) {
+            po.removeComponent(sp.Skeleton);
+        } else {
+            let spData = components['skeleton'];
+            if(!po.getComponent(sp.Skeleton))
+                po.addComponent(sp.Skeleton);
+            let com = po.getComponent(sp.Skeleton);
+            if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid || com.defaultAnimation != spData.defaultAnimation || com.premultipliedAlpha != spData.premultipliedAlpha || com.animation != spData.animation || com.loop != spData.loop) {
+
+                stupidback = function(err, res) {
+                    while(uuid2Com[res._uuid].length > 0) {
+                        let com = uuid2Com[res._uuid].shift();
+                        let spData = uuid2SpData[res._uuid].shift();
+                        com.skeletonData = res;
+                        com.animation = spData.animation;
+                    }
+                }
+
+                if(!uuid2Com.hasOwnProperty(spData.uuid)) {
+                    uuid2Com[spData.uuid] = [com];
+                    uuid2SpData[spData.uuid] = [spData];
+                    if(!spData.loop)
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    else
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                } else {
+                    uuid2Com[spData.uuid].push(com);
+                    uuid2SpData[spData.uuid].push(spData);
+                    if(uuid2Com[spData.uuid].length == 1) {
+                        if(!spData.loop)
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                        else
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    }
+                } 
+
+                com.premultipliedAlpha = spData.premultipliedAlpha;
+                com.defaultAnimation = spData.defaultAnimation;
+                com.animation = spData.animation;
+                com.loop = spData.loop;
+
+            }
+        }
+        
+        po.setPosition(node.positionX, node.positionY);
+        po.setRotationX(node.rotationX);
+        po.setRotationY(node.rotationY);
+        po.setSkewX(node.skewX);
+        po.setSkewY(node.skewY);
+        po.setAnchorPoint(node.anchorX, node.anchorY);
+        po.setContentSize(node.width, node.height);
+
+    },
+
     updateScene: function (data) {
         var id2CCNode = this.id2CCNode;
         if(!this.getCanvasID())
@@ -880,140 +1019,7 @@ var game = {
             let node = data[i];
             let id = node.tree_id;
             let po = this.id2CCNode[id];
-            let j;
-            for(j = 0; j < node.children.length; ++j) {
-                let k = node.children[j];
-                if(!po._children[j] || po._children[j].tree_id != k) {
-                    while(j < po._children.length)
-                        po._children[j].removeFromParent(false);
-                    break;
-                }
-            }
-
-            for(; j < node.children.length; ++j) {
-                let k = node.children[j];
-                if(id2CCNode[k]._parent != null)
-                    id2CCNode[k].removeFromParent(false);
-                po.addChild(id2CCNode[k]);
-            }
-
-            if(j >= node.children.length && j < po._children.length) {
-                while(j < po._children.length)
-                    po._children[j].removeFromParent(false);
-            }
-
-            po.active = node.active;
-            po.name = node.name;
-            let val = node.color;
-            let a = val & 255;
-            let b = (65280 & val) >> 8;
-            let g = (16711680 & val) >> 16;
-            let r = (4278190080 & val) >>> 24;
-            po.setColor(new cc.Color(r, g, b, a));
-            po.setScale(node.scaleX, node.scaleY);
-            po.opacity = node.opacity;
-            let components = node.components;
-            if(!components['sprite']) {
-                po.removeComponent(cc.Sprite);
-            } else {
-                let spData = components['sprite'];
-                if(!po.getComponent(cc.Sprite))
-                    po.addComponent(cc.Sprite);
-                let com = po.getComponent(cc.Sprite);
-                let sp = null;
-                if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
-                    sp  = new cc.SpriteFrame(spData.name);
-                } else {
-                    sp = com.spriteFrame;
-                }
-                com.spriteFrame = null;
-                sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
-                sp._rotated = spData.rotated;
-                com.spriteFrame = sp;
-
-                com.type = spData.type;
-                if(com.type == cc.Sprite.Type.SLICED) {
-                    com.setInsetTop(spData.insetTop);
-                    com.setInsetBottom(spData.insetBottom);
-                    com.setInsetLeft(spData.insetLeft);
-                    com.setInsetRight(spData.insetRight);
-                }
-
-                com.enabled = spData.enabled;
-            }
-            if(!components['label']) {
-                po.removeComponent(cc.Label);
-            } else {
-                let spData = components['label'];
-                if(!po.getComponent(cc.Label))
-                    po.addComponent(cc.Label);
-                let com = po.getComponent(cc.Label);
-
-                com.string = spData.string;
-                com.fontSize = spData.fontSize;
-                com.lineHeight = spData.lineHeight;
-                com.actualFontSize = spData.actualFontSize;
-                com.horizontalAlign = spData.horizontalAlign;
-                com.overflow = spData.overflow;
-                com.spaceX = spData.spaceX;
-                com.useSystemFont = spData.useSystemFont;
-                com.verticalAlign = spData.verticalAlign;
-
-                com.enabled = spData.enabled;
-            }
-
-            if(!components['skeleton']) {
-                po.removeComponent(sp.Skeleton);
-            } else {
-                let spData = components['skeleton'];
-                if(!po.getComponent(sp.Skeleton))
-                    po.addComponent(sp.Skeleton);
-                let com = po.getComponent(sp.Skeleton);
-                if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid || com.defaultAnimation != spData.defaultAnimation || com.premultipliedAlpha != spData.premultipliedAlpha || com.animation != spData.animation || com.loop != spData.loop) {
-
-                    stupidback = function(err, res) {
-                        while(uuid2Com[res._uuid].length > 0) {
-                            let com = uuid2Com[res._uuid].shift();
-                            let spData = uuid2SpData[res._uuid].shift();
-                            com.skeletonData = res;
-                            com.animation = spData.animation;
-                        }
-                    }
-
-                    if(!uuid2Com.hasOwnProperty(spData.uuid)) {
-                        uuid2Com[spData.uuid] = [com];
-                        uuid2SpData[spData.uuid] = [spData];
-                        if(!spData.loop)
-                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
-                        else
-                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
-                    } else {
-                        uuid2Com[spData.uuid].push(com);
-                        uuid2SpData[spData.uuid].push(spData);
-                        if(uuid2Com[spData.uuid].length == 1) {
-                            if(!spData.loop)
-                                cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
-                            else
-                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
-                        }
-                    } 
-
-                    com.premultipliedAlpha = spData.premultipliedAlpha;
-                    com.defaultAnimation = spData.defaultAnimation;
-                    com.animation = spData.animation;
-                    com.loop = spData.loop;
-
-                }
-            }
-            
-            po.setPosition(node.positionX, node.positionY);
-            po.setRotationX(node.rotationX);
-            po.setRotationY(node.rotationY);
-            po.setSkewX(node.skewX);
-            po.setSkewY(node.skewY);
-            po.setAnchorPoint(node.anchorX, node.anchorY);
-            po.setContentSize(node.width, node.height);
-
+            this.updateNode(node, po);
         }
     },
 
