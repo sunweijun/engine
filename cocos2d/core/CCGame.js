@@ -994,9 +994,9 @@ var game = {
     },
 
     updateSingleFrame: function() {
-        if(this.sceneList.lenght > 0) {
-            this.updateScene(self.sceneList.shift());
-            cc.director._tempDt = self.dtList.shift();
+        if(this.sceneList.length > 0) {
+            this.updateScene(this.sceneList.shift());
+            cc.director._tempDt = this.dtList.shift();
             cc.director.mainLoop();
         }
     },
