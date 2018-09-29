@@ -984,7 +984,7 @@ var game = {
                         if(!spData.loop)
                             cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                         else
-                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
                     }
                 } 
 
