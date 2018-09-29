@@ -1071,7 +1071,7 @@ sp.Skeleton = cc.Class({
             return undefined;
         if(!this._sgNode._skeleton || this._sgNode._skeleton == null)
             return undefined;
-        return this._sgNode._skeleton;
+        return this._sgNode._skeleton.time;
     },
 
     updateTime: function(dt) {
