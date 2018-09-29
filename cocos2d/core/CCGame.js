@@ -666,9 +666,10 @@ var game = {
                         'loop': co.loop,
                         'timeScale': co.timeScale,
                     }
-                    if(co.getSkeletonTime()) {
-                        spData['skeletonTime'] = co.getSkeletonTime();
-                    }
+                    /*let skt = co.getSkeletonTime();
+                    if(typeof(skt) === 'number') {
+                        spData['skeletonTime'] = skt;
+                    }*/
                     loopflag = co.loop;
                     components['skeleton'] = spData;
                 }
