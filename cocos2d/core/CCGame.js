@@ -667,7 +667,7 @@ var game = {
                         'timeScale': co.timeScale,
                     }
                     if(co.getSkeletonTime())
-                        co['skeletonTime'] = co.getSkeletonTime();
+                        spData['skeletonTime'] = co.getSkeletonTime();
                     loopflag = co.loop;
                     components['skeleton'] = spData;
                 }
