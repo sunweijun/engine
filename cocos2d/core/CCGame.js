@@ -949,7 +949,7 @@ var game = {
             let callbackFlag = false;
             let animationFlag = false;
 
-            if(com.skeleton == null || com.skeletonData._uuid != spData.uuid)
+            if(com.skeletonData == null || com.skeletonData._uuid != spData.uuid)
                 callbackFlag = true;
             
             if(com.defaultAnimation != spData.defaultAnimation)
@@ -967,7 +967,7 @@ var game = {
                         let spData = uuid2SpData[res._uuid].shift();
                         com.skeletonData = res;
                         com.animation = spData.animation;
-                        if(spData.skeletonTime)
+                        if(spData.skeletonTime && com.getSkeletonTime())
                             com.updateTime(spData.skeletonTime / com.timeScale);
                     }
                 }
