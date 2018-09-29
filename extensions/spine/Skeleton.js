@@ -1067,13 +1067,22 @@ sp.Skeleton = cc.Class({
     },
 
     getSkeletonTime: function() {
+
         if(!this._sgNode || this._sgNode == null)
-            return;
+            return undefined;
         if(!this._sgNode._skeleton || this._sgNode._skeleton == null)
-            return;
+            return undefined;
         let obj = this._sgNode._skeleton.time;
-        if(!(typeof obj === 'number' && !isNaN(obj)))
-            return;
+
+        if(obj == null)
+            return undefined;
+        if(typeof(obj) != 'number')
+            return undefined;
+        if(isNaN(obj))
+            return undefined;
+        if(!isFinite(obj))
+            return undefined;
+
         return obj;
     },
 
