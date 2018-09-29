@@ -946,7 +946,20 @@ var game = {
             if(!po.getComponent(sp.Skeleton))
                 po.addComponent(sp.Skeleton);
             let com = po.getComponent(sp.Skeleton);
-            if((com.skeletonData == null) || com.skeletonData._uuid != spData.uuid || com.defaultAnimation != spData.defaultAnimation || com.premultipliedAlpha != spData.premultipliedAlpha || com.animation != spData.animation || com.loop != spData.loop) {
+            let callbackFlag = false;
+            let animationFlag = false;
+
+            if(com.skeleton == null || com.skeletonData._uuid != spData.uuid)
+                callbackFlag = true;
+            
+            if(com.defaultAnimation != spData.defaultAnimation)
+                animationFlag = true;
+            if(com.premultipliedAlpha != spData.premultipliedAlpha)
+                animationFlag = true;
+             if(com.animation != spData.animation || com.loop != spData.loop)
+                animationFlag = true;
+
+            if(callbackFlag) {
 
                 stupidback = function(err, res) {
                     while(uuid2Com[res._uuid].length > 0) {
@@ -979,8 +992,16 @@ var game = {
                 com.defaultAnimation = spData.defaultAnimation;
                 com.animation = spData.animation;
                 com.loop = spData.loop;
+                
+            } else if(animationFlag) {
+
+                com.premultipliedAlpha = spData.premultipliedAlpha;
+                com.defaultAnimation = spData.defaultAnimation;
+                com.animation = spData.animation;
+                com.loop = spData.loop;
 
             }
+
         }
         
         po.setPosition(node.positionX, node.positionY);
