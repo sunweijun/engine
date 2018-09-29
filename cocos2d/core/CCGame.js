@@ -967,8 +967,9 @@ var game = {
                         let spData = uuid2SpData[res._uuid].shift();
                         com.skeletonData = res;
                         com.animation = spData.animation;
-                        if(spData.skeletonTime)
+                        if(spData.hasOwnProperty('skeletonTime') && com.timeScale) {
                             com.updateTime(spData.skeletonTime / com.timeScale);
+                        }
                     }
                 }
 

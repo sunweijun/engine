@@ -1068,12 +1068,10 @@ sp.Skeleton = cc.Class({
     
     getSkeletonTime: function() {
         if(!this._sgNode || this._sgNode == null)
-            return;
+            return undefined;
         if(!this._sgNode._skeleton || this._sgNode._skeleton == null)
-            return;
-        if(!this._sgNode._skeleton.time || this._sgNode._skeleton.time == null)
-            return;
-        return this._sgNode._skeleton.time;
+            return undefined;
+        return this._sgNode._skeleton;
     },
 
     updateTime: function(dt) {
