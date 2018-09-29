@@ -664,6 +664,7 @@ var game = {
                         'defaultAnimation': co.defaultAnimation,
                         'animation': co.animation,
                         'loop': co.loop,
+                        'timeScale': co.timeScale,
                     }
                     loopflag = co.loop;
                     components['skeleton'] = spData;
