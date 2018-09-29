@@ -956,7 +956,7 @@ var game = {
                 animationFlag = true;
             if(com.premultipliedAlpha != spData.premultipliedAlpha)
                 animationFlag = true;
-             if(com.animation != spData.animation || com.loop != spData.loop)
+            if(com.animation != spData.animation || com.loop != spData.loop)
                 animationFlag = true;
 
             if(callbackFlag) {
@@ -992,6 +992,7 @@ var game = {
                 com.defaultAnimation = spData.defaultAnimation;
                 com.animation = spData.animation;
                 com.loop = spData.loop;
+                com.timeScale = spData.timeScale;
                 
             } else if(animationFlag) {
 
@@ -999,7 +1000,10 @@ var game = {
                 com.defaultAnimation = spData.defaultAnimation;
                 com.animation = spData.animation;
                 com.loop = spData.loop;
+                com.timeScale = spData.timeScale;
 
+            } else if(Math.abs(com.timeScale - spData.timeScale > 0.01)) {
+                com.timeScale = spData.timeScale;
             }
 
         }
