@@ -1071,9 +1071,10 @@ sp.Skeleton = cc.Class({
             return;
         if(!this._sgNode._skeleton || this._sgNode._skeleton == null)
             return;
-        if(!this._sgNode._skeleton.time || this._sgNode._skeleton.time == null)
+        let obj = this._sgNode._skeleton.time;
+        if(!(typeof obj === 'number' && !isNaN(obj)))
             return;
-        return this._sgNode._skeleton.time;
+        return obj;
     },
 
     updateTime: function(dt) {
