@@ -671,7 +671,7 @@ var game = {
                         spData['skeletonTime'] = skt.toFixed(3);
                     } else {
                         skt = -1;
-                        soData['skeletonTime'] = skt.toFixed(3);
+                        spData['skeletonTime'] = skt.toFixed(3);
                     }
                     loopflag = co.loop;
                     components['skeleton'] = spData;
