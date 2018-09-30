@@ -577,7 +577,7 @@ var game = {
         }
     },
 
-    getTreeID : function(getTreeID) {
+    getTreeID : function() {
         this.treeSize = cc.game.treeSize + 1;
         this.id2CCBefore.push('');
         return cc.game.treeSize;
