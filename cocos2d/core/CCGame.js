@@ -666,10 +666,10 @@ var game = {
                         'loop': co.loop,
                         'timeScale': co.timeScale,
                     }
-                    /*let skt = co.getSkeletonTime();
-                    if(typeof(skt) === 'number') {
-                        spData['skeletonTime'] = skt;
-                    }*/
+                    let skt = co.getSkeletonTime();
+                    if(typeof(skt) === 'number' && isFinite(skt)) {
+                        spData['skeletonTime'] = skt.toFixed(3);
+                    }
                     loopflag = co.loop;
                     components['skeleton'] = spData;
                 }
