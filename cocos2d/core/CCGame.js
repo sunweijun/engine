@@ -668,10 +668,11 @@ var game = {
                     }
                     let skt = co.getSkeletonTime();
                     if(typeof(skt) === 'number' && isFinite(skt)) {
-                        spData['skeletonTime'] = skt.toFixed(3);
+                        spData['skeletonTime'] = Math.round(skt);
+                        spData['more'] = Math.round( skt * 1000) % 1000;
                     } else {
-                        skt = -1;
-                        spData['skeletonTime'] = skt.toFixed(3);
+                        spData['skeletonTime'] = 0;
+                        spData['more'] = 0;
                     }
                     loopflag = co.loop;
                     components['skeleton'] = spData;
