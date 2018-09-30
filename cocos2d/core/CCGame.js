@@ -584,10 +584,16 @@ var game = {
     },
 
     getScene: function(flag) {
+        sendData = new Object();
         if(!cc.director._scene)
             return "No Scene!";
         if(cc.director._scene == null)
             return "No Scene!";
+            
+        sendData['action'] = 'visitSceneTree';
+        sendData['dt'] = cc.director.globalDt;
+        sendData['flag'] = flag;
+
         let stack = [];
         let sceneData = [];
         stack.push(cc.director._scene);
@@ -708,11 +714,8 @@ var game = {
                 this.id2CCBefore[po.tree_id] = tmpS;
             }
         }
-        sendData = {
-            'action': 'visitSceneTree',
-            'dt': cc.director.globalDt,
-            'scene': sceneData, 
-        }
+
+        sendData['scene'] = sceneData;
 
         //cc.game.sendWS(sendData);
         return sendData;
