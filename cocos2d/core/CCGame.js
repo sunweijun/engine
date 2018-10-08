@@ -854,7 +854,7 @@ var game = {
         return true;
     },
 
-    updateNode: function(node, po) {
+    updateStruct: function(node, po) {
         var id2CCNode = this.id2CCNode;
 
         let j;
@@ -878,6 +878,11 @@ var game = {
             while(j < po._children.length)
                 po._children[j].removeFromParent(false);
         }
+
+    },
+
+
+    updateNode: function(node, po) {
 
         po.active = node.active;
         po.name = node.name;
@@ -1044,6 +1049,14 @@ var game = {
         }
         
                             
+        for(let i in data) {
+
+            let node = data[i];
+            let id = node.tree_id;
+            let po = this.id2CCNode[id];
+            this.updateStruct(node, po);
+        }
+
         for(let i in data) {
 
             let node = data[i];
