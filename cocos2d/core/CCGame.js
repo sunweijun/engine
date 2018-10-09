@@ -684,7 +684,7 @@ var game = {
                 'children': cid,
                 'tree_id': po.tree_id,
                 'name': po._name,
-                'active': po.active,
+                'active': po.activeInHierarchy,
                 'positionX': po.getPositionX(),
                 'positionY': po.getPositionY(),
                 'color': po.getColor()._val,
