@@ -673,9 +673,9 @@ var game = {
                         'timeScale': co.timeScale,
                     }
                     let skt = co.getSkeletonTime();
-                    /*if(typeof(skt) === 'number' && isFinite(skt)) {
+                    if(typeof(skt) === 'number' && isFinite(skt) && co.loop) {
                         spData['skeletonTime'] = skt;
-                    }*/
+                    }
                     loopflag = co.loop;
                     components['skeleton'] = spData;
                 }
