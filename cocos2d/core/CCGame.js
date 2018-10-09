@@ -1076,10 +1076,7 @@ var game = {
             let node = data[i];
             let id = node.tree_id;
             let po = this.id2CCNode[id];
-            if(id == 3) {
-                console.log('updateNode');
-                console.log('Node 3');
-            }
+            
             this.updateNode(node, po);
         }
     },
