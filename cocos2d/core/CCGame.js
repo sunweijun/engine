@@ -953,6 +953,8 @@ var game = {
             let com = po.getComponent(sp.Skeleton);
             let callbackFlag = false;
             let animationFlag = false;
+            let updateFlag = false;
+            let t1 = 0;
 
             if(com.skeletonData == null || com.skeletonData._uuid != spData.uuid)
                 callbackFlag = true;
@@ -963,6 +965,16 @@ var game = {
                 animationFlag = true;
             if(com.animation != spData.animation || com.loop != spData.loop)
                 animationFlag = true;
+
+            if(!callbackFlag && spData.hasOwnProperty('skeletonTime')){
+                t1 = com.getSkeletonTime();
+                if(typeof(t1) != 'number' || !isFinite(t1) || t1 > spData.skeletonTime + 0.02) {
+                    callbackFlag = true;
+                } else if( t1 + 0.02 < spData.skeletonTime) {
+                    updateFlag = true;
+                    t1 = spData.skeletonTime - t1;
+                }
+            }
 
             if(callbackFlag) {
 
@@ -1012,6 +1024,8 @@ var game = {
 
             } else if(Math.abs(com.timeScale - spData.timeScale > 0.01)) {
                 com.timeScale = spData.timeScale;
+            } else if(updateFlag && com.timeScale) {
+                com.updateTime(t1 / com.timeScale);
             }
 
         }
