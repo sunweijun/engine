@@ -738,7 +738,6 @@ var game = {
 
         sendData['scene'] = sceneData;
 
-        //cc.game.sendWS(sendData);
         return sendData;
     },
 
