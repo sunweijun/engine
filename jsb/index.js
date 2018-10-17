@@ -37,7 +37,6 @@ function defined (name) {
     return typeof window[name] === 'object';
 }
 
-defineMacro('CC_SOURCE', true);
 defineMacro('CC_TEST', defined('tap') || defined('QUnit'));
 defineMacro('CC_EDITOR', defined('Editor') && defined('process') && ('electron' in process.versions));
 defineMacro('CC_PREVIEW', !CC_EDITOR);

@@ -129,7 +129,7 @@ var audioEngine = {
             'volume':volume,
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
         
         var callback = function () {
@@ -166,7 +166,7 @@ var audioEngine = {
             return;
         audio.setLoop(loop);
         
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
     },
@@ -210,7 +210,7 @@ var audioEngine = {
             audio.once('load', function () {
                 if (audio.setVolume) {
                     audio.setVolume(volume);
-                    if(CC_SOURCE)
+                    if(cc.game.CC_SOURCE)
                         cc.game.sendWS(requestBody);
                 
                 }
@@ -218,7 +218,7 @@ var audioEngine = {
         }
         if (audio.setVolume) {
             audio.setVolume(volume);
-            if(CC_SOURCE)
+            if(cc.game.CC_SOURCE)
                 cc.game.sendWS(requestBody);
 
         }
@@ -265,7 +265,7 @@ var audioEngine = {
                 if (audio.setCurrentTime) {
                     audio.setCurrentTime(sec);
                     
-                    if(CC_SOURCE)
+                    if(cc.game.CC_SOURCE)
                         cc.game.sendWS(requestBody);
                 
                 }
@@ -275,7 +275,7 @@ var audioEngine = {
         if (audio.setCurrentTime) {
             audio.setCurrentTime(sec);
         
-            if(CC_SOURCE)
+            if(cc.game.CC_SOURCE)
                 cc.game.sendWS(requestBody);
         
         }
@@ -386,7 +386,7 @@ var audioEngine = {
             return false;
         audio.pause();
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
         
         return true;
@@ -406,7 +406,7 @@ var audioEngine = {
             'action':'pauseAll',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
@@ -440,7 +440,7 @@ var audioEngine = {
 
         audio.resume();
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
     },
@@ -458,7 +458,7 @@ var audioEngine = {
             'action':'resumeAll',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
         while (this._pauseIDCache.length > 0) {
@@ -491,7 +491,7 @@ var audioEngine = {
         audio.stop();
         audio.destroy();
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
         return true;
@@ -510,7 +510,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
@@ -562,7 +562,7 @@ var audioEngine = {
             'filePath':filePath,
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);*/
 
         var list = url2id[filePath];
@@ -592,7 +592,7 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);*/
 
         for (var id in id2audio) {
@@ -650,7 +650,7 @@ var audioEngine = {
             'action':'_break',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);*/
 
         this._breakCache = [];
@@ -671,7 +671,7 @@ var audioEngine = {
             'action':'_restore',
         };
 
-        if(CC_SOURCE)
+        if(cc.game.CC_SOURCE)
             cc.game.sendWS(requestBody);*/
 
         while (this._breakCache.length > 0) {

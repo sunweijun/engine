@@ -57,6 +57,7 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  * @extends EventTarget
  */
 var game = {
+    CC_SOURCE: true,
 
     /**
      * !#en Event triggered when game hide to background.
@@ -758,7 +759,7 @@ var game = {
                     }
                 }
 
-                if(CC_SOURCE) {
+                if(cc.game.CC_SOURCE) {
                     if(self.fullScene) {
                         self.sendWS(self.getScene('getFullScene'));
                         self.fullScene = false;
@@ -1327,7 +1328,7 @@ var game = {
             game.resume();
         });
 
-        if(CC_SOURCE) {
+        if(cc.game.CC_SOURCE) {
             this.on(game.EVENT_GAME_INITED, function () {
                     
                 if(window.WebSocket){
