@@ -33,6 +33,7 @@ var EventListeners = require('./event/event-listeners');
 var eventManager = require('./event-manager');
 
 cc.g_NumberOfDraws = 0;
+var bpsNode;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -105,8 +106,11 @@ cc.g_NumberOfDraws = 0;
  * @extends EventTarget
  */
 cc.Director = Class.extend(/** @lends cc.Director# */{
+    
+    _totalBit: 0,
+    _totalTime: 0,
+    _tempDt: 0,
 
-    globalDt: 0.0,
     ctor: function () {
         var self = this;
         EventTarget.call(self);
@@ -138,6 +142,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         self._scene = null;
 
         // FPS
+        self._totalBit = 0;
         self._totalFrames = 0;
         self._lastUpdate = Date.now();
         self._deltaTime = 0.0;
@@ -156,6 +161,7 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         cc.game.on(cc.game.EVENT_SHOW, function () {
             self._lastUpdate = Date.now();
         });
+
     },
 
     init: function () {
@@ -165,7 +171,6 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         this._projection = cc.Director.PROJECTION_DEFAULT;
 
         this._projectionDelegate = null;
-        this._totalFrames = 0;
         this._lastUpdate = Date.now();
         this._paused = false;
         this._purgeDirectorInNextLoop = false;
@@ -295,21 +300,43 @@ cc.Director = Class.extend(/** @lends cc.Director# */{
         return uiPoint;
     },
 
+    checkScene: function() {
+        let stack = [];
+        stack.push(this._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            if(!(tmpNode instanceof cc.Scene) && !(tmpNode instanceof cc.Canvas) && !(tmpNode.tree_id)) {
+                tmpNode.active = false;
+                continue;
+            }
+
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[i]);
+        }
+    },
+
     _visitScene: function () {
-        if (this._runningScene) {
+
+        this.checkScene();
+       
+       if (this._runningScene) {
             var renderer = cc.renderer;
-            if (renderer.childrenOrderDirty) {
+            //if (renderer.childrenOrderDirty) {
                 // update the whole scene
                 renderer.clearRenderCommands();
                 cc.renderer.assignedZ = 0;
                 this._runningScene._renderCmd._curLevel = 0; //level start from 0;
                 this._runningScene.visit();
                 renderer.resetFlag();
-            }
+            /*}
             else if (renderer.transformDirty()) {
                 // only need to update transformPool
                 renderer.transform();
-            }
+            }*/
         }
     },
 
@@ -1429,9 +1456,9 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
      * Run main loop of director
      */
     mainLoop: CC_EDITOR ? function (deltaTime, updateAnimate) {
-        
-        this.globalDt = 0.0;
-
+        if(!CC_SOURCE) {
+            deltaTime = this._tempDt;
+        }
         if (!this._paused) {
             this.emit(cc.Director.EVENT_BEFORE_UPDATE);
             this.globalDt = deltaTime;
@@ -1458,12 +1485,11 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         cc.renderer.clear();
 
         cc.renderer.rendering(cc._renderContext);
-        this._totalFrames++;
 
         this.emit(cc.Director.EVENT_AFTER_DRAW);
 
     } : function () {
-        this.globalDt = 0.0;
+
         if (this._purgeDirectorInNextLoop) {
             this._purgeDirectorInNextLoop = false;
             this.purgeDirector();
@@ -1471,6 +1497,12 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
         else if (!this.invalid) {
             // calculate "global" dt
             this.calculateDeltaTime();
+
+            if(!CC_SOURCE) {
+                this._deltaTime = this._tempDt;
+            }
+
+            this._totalTime += this._deltaTime;
 
             if (!this._paused) {
                 this.globalDt = this._deltaTime;
@@ -1495,7 +1527,41 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             if (this._nextScene) {
                 this.setNextScene();
             }
+/*
+            if(cc.game.getCanvasID()) {
+                let com;
+                if(!bpsNode) {
+                    bpsNode = new cc.Node();
+                    bpsNode.tree_id = 65536;
+                    cc.game.id2CCNode[bpsNode.tree_id] = bpsNode;
+                    bpsNode.setPosition(200, 100);
+                    bpsNode.addComponent(cc.Label);
+                    com = bpsNode.getComponent(cc.Label);
+    
+                    com.string = 'bps';
+                    com.fontSize = 50;
+                    com.lineHeight = 50;
+                    com.actualFontSize = 50;
+                    com.horizontalAlign = 50;
+                    com.useSystemFont = true;
+                } else com = bpsNode.getComponent(cc.Label);
 
+                bps = Math.floor((this._totalBit ) / (this._totalTime * 1000));
+                com.string = 'bps: ' + bps + 'Kbps';
+                if(this._totalTime > 5) {
+                    this._totalBit = 0;
+                    this._totalTime = 0;
+                }
+    
+                if(bpsNode._parent != cc.director._scene) {
+                    cc.director._scene.addChild(bpsNode);
+                }
+    
+                if(bpsNode._parent != cc.director._scene) {
+                    cc.director._scene.addChild(bpsNode);
+                }
+            }
+*/
             this.emit(cc.Director.EVENT_BEFORE_VISIT);
             // update the scene
             this._visitScene();
@@ -1506,7 +1572,6 @@ cc.DisplayLinkDirector = cc.Director.extend(/** @lends cc.Director# */{
             cc.renderer.clear();
 
             cc.renderer.rendering(cc._renderContext);
-            this._totalFrames++;
 
             this.emit(cc.Director.EVENT_AFTER_DRAW);
             eventManager.frameUpdateListeners();

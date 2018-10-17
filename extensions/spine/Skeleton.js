@@ -1065,9 +1065,8 @@ sp.Skeleton = cc.Class({
             Editor.Utils.refreshSelectedInspector('node', this.node.uuid);
         }
     },
-
+    
     getSkeletonTime: function() {
-
         if(!this._sgNode || this._sgNode == null)
             return undefined;
         if(!this._sgNode._skeleton || this._sgNode._skeleton == null)

@@ -25,6 +25,7 @@
 
 var EventTarget = require('./event/event-target');
 var View;
+
 var sceneList;
 
 onNativeMessage = function(message) {
@@ -38,6 +39,9 @@ onNativeMessage = function(message) {
     if(postMessageToNative)
         postMessageToNative(message);
 }
+
+uuid2Com = {};
+uuid2SpData = {};
 
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
@@ -142,6 +146,14 @@ var game = {
     treeSize: 1,
     fullScene: false,
     id2CCBefore: ['', ''],
+
+    treeSize: 1,
+    sceneList: [],
+    dtList: [],
+    id2CCNode: {},
+    displaying: false,
+    ws: null,
+    firstScene: true,
 
     // Scenes list
     _sceneInfos: [],
@@ -745,12 +757,30 @@ var game = {
                         return;
                     }
                 }
-                if(self.fullScene) {
-                    self.sendWS(self.getScene('getFullScene'));
-                    self.fullScene = false;
-                } else
-                    self.sendWS(self.getScene('getScene'));
-                director.mainLoop();
+
+                if(CC_SOURCE) {
+                    if(self.fullScene) {
+                        self.sendWS(self.getScene('getFullScene'));
+                        self.fullScene = false;
+                    } else
+                        self.sendWS(self.getScene('getScene'));
+                    director.mainLoop();
+                } else {
+                    let ws = self.ws;
+                    if(cc.game.getCanvasID()) {
+                        if(ws != null && ws.readyState === 1 && self.displaying) {
+                            if(self.firstScene) {
+                                ws.send('getFullScene');
+                                self.firstScene = false;
+                            }
+                        }
+                    }
+
+                    if(self.sceneList.length > 0 && self.checkAsset()) {
+                        self.updateSingleFrame();
+                        self.updateSingleFrame();
+                    }
+                }
             }
         };
 
@@ -923,6 +953,312 @@ var game = {
 
         this._rendererInitialized = true;
     },
+    getTreeID: function() {
+        this.treeSize = this.treeSize + 1;
+        return this.treeSize;
+    },
+
+    rebuildScene: function() {
+        let stack = [];
+        stack.push(cc.director._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[i]);
+        }
+        for(let i = stack.length - 1; i >=0; --i) {
+            tmpNode = stack[i];
+
+            if(tmpNode instanceof cc.Scene) {
+                tmpNode.tree_id = 0;
+                continue;
+            }
+
+            if(tmpNode instanceof cc.Canvas) {
+                tmpNode.tree_id = 1;
+                continue;
+            }
+
+            if(!(tmpNode instanceof cc.Node))
+                continue;
+
+            tmpNode.removeFromParent();
+            tmpNode.destroy();
+        }
+    },
+
+    getCanvasID() {
+        var id2CCNode = this.id2CCNode;
+
+        if(id2CCNode[0] && id2CCNode[1])
+            return true;
+        if(!cc.director._scene)
+            return false;
+        if(cc.director._scene == null)
+            return false;
+        let stack = [];
+        stack.push(cc.director._scene);
+        let tmpNode;
+        for(let i = 0; i < stack.length; ++i) {
+            tmpNode = stack[i];
+            if(!tmpNode || tmpNode == null) {
+                continue;
+            }
+            for(let j in tmpNode._children)
+                stack.push(tmpNode._children[j]);
+            if(tmpNode instanceof cc.Scene) {
+                id2CCNode[0] = tmpNode;
+                tmpNode.tree_id = 0;
+            }
+            if(tmpNode._components &&(tmpNode._components[0] instanceof cc.Canvas)) {
+                id2CCNode[1] = tmpNode;
+                tmpNode.tree_id = 1;
+            }
+            if(i > 3) break;
+        }
+        return id2CCNode[0] && id2CCNode[1];
+    },
+
+    checkAsset: function() {
+        for(let id in uuid2Com) {
+            if(uuid2Com[id].length > 0)
+                return false;
+        }
+        uuid2Com = {};
+        uuid2SpData = {};
+        return true;
+    },
+
+    updateStruct: function(node, po) {
+        var id2CCNode = this.id2CCNode;
+
+        let j;
+        for(j = 0; j < node.children.length; ++j) {
+            let k = node.children[j];
+            if(!po._children[j] || po._children[j].tree_id != k) {
+                while(j < po._children.length)
+                    po._children[j].removeFromParent(false);
+                break;
+            }
+        }
+
+        for(; j < node.children.length; ++j) {
+            let k = node.children[j];
+            if(id2CCNode[k]._parent != null)
+                id2CCNode[k].removeFromParent(false);
+            po.addChild(id2CCNode[k]);
+        }
+
+        if(j >= node.children.length && j < po._children.length) {
+            while(j < po._children.length)
+                po._children[j].removeFromParent(false);
+        }
+
+    },
+
+
+    updateNode: function(node, po) {
+
+        po.active = node.active;
+        po.name = node.name;
+        let val = node.color;
+        let a = val & 255;
+        let b = (65280 & val) >> 8;
+        let g = (16711680 & val) >> 16;
+        let r = (4278190080 & val) >>> 24;
+        po.setColor(new cc.Color(r, g, b, a));
+        po.setScale(node.scaleX, node.scaleY);
+        po.opacity = node.opacity;
+        let components = node.components;
+        if(!components['sprite']) {
+            po.removeComponent(cc.Sprite);
+        } else {
+            let spData = components['sprite'];
+            if(!po.getComponent(cc.Sprite))
+                po.addComponent(cc.Sprite);
+            let com = po.getComponent(cc.Sprite);
+            let sp = null;
+            if(com.spriteFrame == null || com.spriteFrame._textureFilename != components['sprite']) {
+                sp  = new cc.SpriteFrame(spData.name);
+            } else {
+                sp = com.spriteFrame;
+            }
+            com.spriteFrame = null;
+            sp.setRect(new cc.Rect(spData.rectX, spData.rectY, spData.rectW, spData.rectH));
+            sp._rotated = spData.rotated;
+            com.spriteFrame = sp;
+
+            com.type = spData.type;
+            if(com.type == cc.Sprite.Type.SLICED) {
+                com.setInsetTop(spData.insetTop);
+                com.setInsetBottom(spData.insetBottom);
+                com.setInsetLeft(spData.insetLeft);
+                com.setInsetRight(spData.insetRight);
+            }
+
+            com.enabled = spData.enabled;
+        }
+        if(!components['label']) {
+            po.removeComponent(cc.Label);
+        } else {
+            let spData = components['label'];
+            if(!po.getComponent(cc.Label))
+                po.addComponent(cc.Label);
+            let com = po.getComponent(cc.Label);
+
+            com.string = spData.string;
+            com.fontSize = spData.fontSize;
+            com.lineHeight = spData.lineHeight;
+            com.actualFontSize = spData.actualFontSize;
+            com.horizontalAlign = spData.horizontalAlign;
+            com.overflow = spData.overflow;
+            com.spaceX = spData.spaceX;
+            com.useSystemFont = spData.useSystemFont;
+            com.verticalAlign = spData.verticalAlign;
+
+            com.enabled = spData.enabled;
+        }
+
+        if(!components['skeleton']) {
+            po.removeComponent(sp.Skeleton);
+        } else {
+            let spData = components['skeleton'];
+            if(!po.getComponent(sp.Skeleton))
+                po.addComponent(sp.Skeleton);
+            let com = po.getComponent(sp.Skeleton);
+            let callbackFlag = false;
+            let animationFlag = false;
+            let updateFlag = false;
+            let t1 = 0;
+
+            if(com.skeletonData == null || com.skeletonData._uuid != spData.uuid)
+                callbackFlag = true;
+            
+            if(com.defaultAnimation != spData.defaultAnimation)
+                animationFlag = true;
+            if(com.premultipliedAlpha != spData.premultipliedAlpha)
+                animationFlag = true;
+            if(com.animation != spData.animation || com.loop != spData.loop)
+                animationFlag = true;
+
+            if(!callbackFlag && spData.hasOwnProperty('skeletonTime')){
+                t1 = com.getSkeletonTime();
+                if(typeof(t1) != 'number' || !isFinite(t1) || t1 > spData.skeletonTime + 0.02) {
+                    callbackFlag = true;
+                } else if( t1 + 0.02 < spData.skeletonTime) {
+                    updateFlag = true;
+                    t1 = spData.skeletonTime - t1;
+                }
+            }
+
+            if(callbackFlag) {
+
+                stupidback = function(err, res) {
+                    while(uuid2Com[res._uuid].length > 0) {
+                        let com = uuid2Com[res._uuid].shift();
+                        let spData = uuid2SpData[res._uuid].shift();
+                        com.skeletonData = res;
+                        com.animation = spData.animation;
+                        if(spData.hasOwnProperty('skeletonTime') && com.timeScale) {
+                            com.updateTime(spData.skeletonTime / com.timeScale);
+                        }
+                    }
+                }
+
+                if(!uuid2Com.hasOwnProperty(spData.uuid)) {
+                    uuid2Com[spData.uuid] = [com];
+                    uuid2SpData[spData.uuid] = [spData];
+                    if(!spData.loop)
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    else
+                        cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                } else {
+                    uuid2Com[spData.uuid].push(com);
+                    uuid2SpData[spData.uuid].push(spData);
+                    if(uuid2Com[spData.uuid].length == 1) {
+                        if(!spData.loop)
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                        else
+                            cc.AssetLibrary.loadAsset(spData.uuid, stupidback);
+                    }
+                } 
+
+                com.premultipliedAlpha = spData.premultipliedAlpha;
+                com.defaultAnimation = spData.defaultAnimation;
+                com.animation = spData.animation;
+                com.loop = spData.loop;
+                com.timeScale = spData.timeScale;
+                
+            } else if(animationFlag) {
+
+                com.premultipliedAlpha = spData.premultipliedAlpha;
+                com.defaultAnimation = spData.defaultAnimation;
+                com.animation = spData.animation;
+                com.loop = spData.loop;
+                com.timeScale = spData.timeScale;
+
+            } else if(Math.abs(com.timeScale - spData.timeScale > 0.01)) {
+                com.timeScale = spData.timeScale;
+            } else if(updateFlag && com.timeScale) {
+                com.updateTime(t1 / com.timeScale);
+            }
+
+        }
+        
+        po.setPosition(node.positionX, node.positionY);
+        po.setRotationX(node.rotationX);
+        po.setRotationY(node.rotationY);
+        po.setSkewX(node.skewX);
+        po.setSkewY(node.skewY);
+        po.setAnchorPoint(node.anchorX, node.anchorY);
+        po.setContentSize(node.width, node.height);
+
+    },
+
+    updateSingleFrame: function() {
+        if(this.sceneList.length > 0) {
+            this.updateScene(this.sceneList.shift());
+            cc.director._tempDt = this.dtList.shift();
+            cc.director.mainLoop();
+        }
+    },
+
+    updateScene: function (data) {
+        var id2CCNode = this.id2CCNode;
+        if(!this.getCanvasID())
+            return;
+
+        for(let i in data) {
+            let node = data[i];
+            let id = node.tree_id;
+            if(!id2CCNode[id]) {
+                id2CCNode[id] = new cc.Node();
+                id2CCNode[id].tree_id = this.getTreeID();
+            }
+        }
+        
+                            
+        for(let i in data) {
+
+            let node = data[i];
+            let id = node.tree_id;
+            let po = this.id2CCNode[id];
+            this.updateStruct(node, po);
+        }
+
+        for(let i in data) {
+
+            let node = data[i];
+            let id = node.tree_id;
+            let po = this.id2CCNode[id];
+            
+            this.updateNode(node, po);
+        }
+    },
 
     _initEvents: function () {
         var win = window, hidden, visibilityChange, _undef = "undefined";
@@ -985,62 +1321,173 @@ var game = {
         }
 
         this.on(game.EVENT_HIDE, function () {
-            game.pause();
+            //game.pause();
         });
         this.on(game.EVENT_SHOW, function () {
             game.resume();
         });
-        this.on(game.EVENT_GAME_INITED, function () {
+
+        if(CC_SOURCE) {
+            this.on(game.EVENT_GAME_INITED, function () {
+                    
+                if(window.WebSocket){
+                    cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
+                    var ws = cc.game.ws;
                 
-            if(window.WebSocket){
-                cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
-                var ws = cc.game.ws;
-            
-                ws.onopen = function(e){
-                    console.log('ws connect successfully');
-                    ws.send('test');
-                }
-                ws.onclose = function(e){
-                    console.log('ws connect close');
-                }
-                ws.onerror = function(){
-                    console.log('ws connect error');
-                }
-            
-                ws.onmessage = function(e) {
-                    var use = e['data'];
-                    if(use == 'preload') {
-                        var path = [];
-                        var id_list = [];
-                        var currentTime = [];
-                        var volume = [];
-                        var loop = [];
+                    ws.onopen = function(e){
+                        console.log('ws connect successfully');
+                        ws.send('test');
+                    }
+                    ws.onclose = function(e){
+                        console.log('ws connect close');
+                    }
+                    ws.onerror = function(){
+                        console.log('ws connect error');
+                    }
+                
+                    ws.onmessage = function(e) {
+                        var use = e['data'];
+                        if(use == 'preload') {
+                            var path = [];
+                            var id_list = [];
+                            var currentTime = [];
+                            var volume = [];
+                            var loop = [];
 
-                        for(let id in cc.audioEngine._id2audio) {
-                            path.push(cc.audioEngine._id2audio[id]._src);
-                            id_list.push(id);
-                            currentTime.push(cc.audioEngine.getCurrentTime(id));
-                            volume.push(cc.audioEngine.getVolume(id));
-                            loop.push(cc.audioEngine.isLoop(id));
+                            for(let id in cc.audioEngine._id2audio) {
+                                path.push(cc.audioEngine._id2audio[id]._src);
+                                id_list.push(id);
+                                currentTime.push(cc.audioEngine.getCurrentTime(id));
+                                volume.push(cc.audioEngine.getVolume(id));
+                                loop.push(cc.audioEngine.isLoop(id));
+                            }
+
+                            var jsonData = {
+                                'action':'preload',
+                                'path':path,
+                                'currentTime':currentTime,
+                                'id':id_list,
+                                'volume':volume,
+                                'loop':loop,
+                            }
+
+                            ws.send(JSON.stringify(jsonData));
+
+                        } else if(use == 'getFullScene') {
+                            game.fullScene = true;
                         }
-
-                        var jsonData = {
-                            'action':'preload',
-                            'path':path,
-                            'currentTime':currentTime,
-                            'id':id_list,
-                            'volume':volume,
-                            'loop':loop,
-                        }
-
-                        ws.send(JSON.stringify(jsonData));
-
-                    } else if(use == 'getFullScene') {
-                        game.fullScene = true;
                     }
                 }
-            }
-        });
+            });
+        } else {
+            this.on(game.EVENT_GAME_INITED, function() {
+                console.log('game inited');
+                //cc.director.pause();
+                cc.game.displaying = true;
+
+                var id2id = {}
+
+                if(window.WebSocket){
+                    cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
+                    var ws = cc.game.ws;
+
+                    ws.onopen = function(e){
+                        console.log("ws connect successfully");
+                        ws.send("client");
+                    }
+                    ws.onclose = function(e){
+                        console.log("ws connect close");
+                    }
+                    ws.onerror = function(){
+                        console.log("ws connect error");
+                    }
+
+                    ws.onmessage = function(e) {
+                        var str = e['data'];
+                        if(str == 'ready') {
+                            ws.send('preload');
+                            return;
+                        }
+                        
+                        var use = JSON.parse(e['data']);
+                        if(use['action'] == 'preload') {
+
+                            console.log('preload');
+                            var path = use['path'];
+                            var loop = use['loop'];
+                            var volume = use['volume'];
+                            var loop = use['loop'];
+                            var id_list = use['id'];
+                            var sec = use['currentTime'];
+                            for(let i = 0; i < id_list.length; ++i) {
+                                let id = id_list[i];
+                                id2id[id] = cc.audioEngine.play(path[i], loop[i], volume[i]);
+                                cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
+                            }
+
+                        }else if(use['action'] == 'visitSceneTree') {
+
+                            //cc.game.updateScene(use['scene']);
+                            cc.game.sceneList.push(use['scene']);
+                            cc.game.dtList.push(use['dt']);
+                            cc.director._totalFrames++;
+                            cc.director._totalBit += e['data'].length * 8;
+
+                        }else if(use['action'] == 'play') {
+                            
+                            path = use['path'];
+                            loop = use['loop'];
+                            path = use['path'];
+                            id = use['id'];
+                            volume = use['volume'];
+                            id2id[id] = cc.audioEngine.play(path, loop, volume);
+
+                        } else if(use['action'] == 'setLoop') {
+                            
+                            id = use['id'];
+                            loop = use['loop'];
+                            cc.audioEngine.setLoop(id2id[id], loop);
+                        
+                        } else if(use['action'] == 'setVolume') {
+
+                            id = use['id'];
+                            volume = use['volume'];
+                            cc.audioEngine.setVolume(id2id[id], volume);
+
+                        } else if(use['action'] == 'setCurrentTime') {
+
+                            id = use['id'];
+                            sec = use['sec'];
+                            cc.audioEngine.setCurrentTime(id2id[id], sec);
+
+                        } else if(use['action'] == 'stop') {
+                        
+                            id = use['id'];
+                            cc.audioEngine.stop(id2id[id]);
+                        
+                        } else if(use['action'] == 'pause') {
+                            
+                            id = use['id'];
+                            cc.audioEngine.pause(id2id[id]);
+
+                        } else if(use['action'] == 'resume') {
+
+                            id = use['id'];
+                            cc.audioEngine.resume(id2id[id]);
+
+                        }else if(use['action'] == 'pauseAll') {
+
+                            cc.audioEngine.pauseAll();
+
+                        } else if(use['action'] == 'resumeAll') {
+
+                            cc.audioEngine.resumeAll();
+
+                        }
+                    }
+                }
+            });
+        }
     }
 };
 
