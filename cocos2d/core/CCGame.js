@@ -27,6 +27,18 @@ var EventTarget = require('./event/event-target');
 var View;
 var sceneList;
 
+onNativeMessage = function(message) {
+    if(message == 'testPause') {
+        if(cc && cc.game) {
+            if(cc.game.isPaused())
+                cc.game.resume();
+            else cc.game.pause();
+        }
+    }
+    if(postMessageToNative)
+        postMessageToNative(message);
+}
+
 if (!(CC_EDITOR && Editor.isMainProcess)) {
     View = require('./platform/CCView');
 }
