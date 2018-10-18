@@ -557,14 +557,6 @@ var audioEngine = {
      */
     uncache: function (filePath) {
 
-        /*var requestBody = {
-            'action':'uncache',
-            'filePath':filePath,
-        };
-
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);*/
-
         var list = url2id[filePath];
         if (!list) return;
         while (list.length > 0) {
@@ -587,13 +579,6 @@ var audioEngine = {
      */
     uncacheAll: function () {
         this.stopAll();
-
-        /*var requestBody = {
-            'action':'stopAll',
-        };
-
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);*/
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -645,13 +630,6 @@ var audioEngine = {
 
     _breakCache: null,
     _break: function () {
-/*
-        var requestBody = {
-            'action':'_break',
-        };
-
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);*/
 
         this._breakCache = [];
         for (var id in id2audio) {
@@ -666,13 +644,6 @@ var audioEngine = {
 
     _restore: function () {
         if (!this._breakCache) return;
-/*
-        var requestBody = {
-            'action':'_restore',
-        };
-
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);*/
 
         while (this._breakCache.length > 0) {
             var id = this._breakCache.pop();
