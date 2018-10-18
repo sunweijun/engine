@@ -27,16 +27,10 @@ var EventTarget = require('./event/event-target');
 var View;
 
 onNativeMessage = function(message) {
-    if(message == 'testPause') {
-        if(cc && cc.game) {
-            if(cc.game.isPaused())
-                cc.game.resume();
-            else cc.game.pause();
-        }
-    }
+    cc.game.onMessage(message);
 }
 
-postMessage = function(message) {
+postCocosMessage = function(message) {
     if(postMessageToNative) {
         postMessageToNatime(message);
         return true;
@@ -601,9 +595,58 @@ var game = {
         window.clearTimeout(id);
     },
 
+    getAudioList: function() {
+        var path = [];
+        var id_list = [];
+        var currentTime = [];
+        var volume = [];
+        var loop = [];
+
+        for(let id in cc.audioEngine._id2audio) {
+            path.push(cc.audioEngine._id2audio[id]._src);
+            id_list.push(id);
+            currentTime.push(cc.audioEngine.getCurrentTime(id));
+            volume.push(cc.audioEngine.getVolume(id));
+            loop.push(cc.audioEngine.isLoop(id));
+        }
+
+        var audioList = {
+            'path':path,
+            'currentTime':currentTime,
+            'id':id_list,
+            'volume':volume,
+            'loop':loop,
+        }
+
+        return audioList;
+    },
+
+    onMessage: function(message) {
+        let data = JSON.stringify(message);
+        if(data['action'] == 'preload') {
+
+            game.fullScene = true;
+
+        } else if(data['action'] == 'GetFullScene') {
+
+            game.fullScene = true;
+
+        } else if(data['action'] == 'PlayTest') {
+            if(cc.game.isPaused()) {
+                cc.game.resume();
+            } else {
+                cc.game.pause();
+            }
+        } else if(data['action'] == 'PauseGame') {
+            cc.game.pause();
+        } else if(data['action'] == 'ResumeGame') {
+            cc.game.resume();
+        }
+    },
+
     sendWS : function (jsonData) {
         if(cc.game.ws != null) {
-            cc.game.ws.send(JSON.stringify(jsonData));
+            //cc.game.ws.send(JSON.stringify(jsonData));
         }
     },
 
@@ -764,11 +807,16 @@ var game = {
                 }
 
                 if(cc.game.CC_SOURCE) {
+                    let sceneData = '{}';
                     if(self.fullScene) {
-                        self.sendWS(self.getScene('getFullScene'));
+                        sceneData = self.getScene('getFullScene');
                         self.fullScene = false;
-                    } else
-                        self.sendWS(self.getScene('getScene'));
+                    } else {
+                        sceneData = self.getScene('getScene');
+                    }
+                    sceneData['audio'] = getAudioList;
+                    sceneData['action' = 'loadSceneData';
+                    postCocosMessage(sceneData);
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
@@ -1334,53 +1382,37 @@ var game = {
 
         if(cc.game.CC_SOURCE) {
             this.on(game.EVENT_GAME_INITED, function () {
-                    
-                if(window.WebSocket){
-                    cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
-                    var ws = cc.game.ws;
-                
-                    ws.onopen = function(e){
-                        console.log('ws connect successfully');
-                        ws.send('test');
-                    }
-                    ws.onclose = function(e){
-                        console.log('ws connect close');
-                    }
-                    ws.onerror = function(){
-                        console.log('ws connect error');
-                    }
-                
-                    ws.onmessage = function(e) {
-                        var use = e['data'];
-                        if(use == 'preload') {
-                            var path = [];
-                            var id_list = [];
-                            var currentTime = [];
-                            var volume = [];
-                            var loop = [];
+            
+                ws.onmessage = function(e) {
+                    var use = e['data'];
+                    if(use == 'preload') {
+                        var path = [];
+                        var id_list = [];
+                        var currentTime = [];
+                        var volume = [];
+                        var loop = [];
 
-                            for(let id in cc.audioEngine._id2audio) {
-                                path.push(cc.audioEngine._id2audio[id]._src);
-                                id_list.push(id);
-                                currentTime.push(cc.audioEngine.getCurrentTime(id));
-                                volume.push(cc.audioEngine.getVolume(id));
-                                loop.push(cc.audioEngine.isLoop(id));
-                            }
-
-                            var jsonData = {
-                                'action':'preload',
-                                'path':path,
-                                'currentTime':currentTime,
-                                'id':id_list,
-                                'volume':volume,
-                                'loop':loop,
-                            }
-
-                            ws.send(JSON.stringify(jsonData));
-
-                        } else if(use == 'getFullScene') {
-                            game.fullScene = true;
+                        for(let id in cc.audioEngine._id2audio) {
+                            path.push(cc.audioEngine._id2audio[id]._src);
+                            id_list.push(id);
+                            currentTime.push(cc.audioEngine.getCurrentTime(id));
+                            volume.push(cc.audioEngine.getVolume(id));
+                            loop.push(cc.audioEngine.isLoop(id));
                         }
+
+                        var jsonData = {
+                            'action':'preload',
+                            'path':path,
+                            'currentTime':currentTime,
+                            'id':id_list,
+                            'volume':volume,
+                            'loop':loop,
+                        }
+
+                        ws.send(JSON.stringify(jsonData));
+
+                    } else if(use == 'getFullScene') {
+                        game.fullScene = true;
                     }
                 }
             });
@@ -1392,105 +1424,104 @@ var game = {
 
                 var id2id = {}
 
-                if(window.WebSocket){
-                    cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
-                    var ws = cc.game.ws;
+                cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
+                var ws = cc.game.ws;
 
-                    ws.onopen = function(e){
-                        console.log("ws connect successfully");
-                        ws.send("client");
-                    }
-                    ws.onclose = function(e){
-                        console.log("ws connect close");
-                    }
-                    ws.onerror = function(){
-                        console.log("ws connect error");
-                    }
+                ws.onopen = function(e){
+                    console.log("ws connect successfully");
+                    ws.send("client");
+                }
+                ws.onclose = function(e){
+                    console.log("ws connect close");
+                }
+                ws.onerror = function(){
+                    console.log("ws connect error");
+                }
 
-                    ws.onmessage = function(e) {
-                        var str = e['data'];
-                        if(str == 'ready') {
-                            ws.send('preload');
-                            return;
+                ws.onmessage = function(e) {
+                    var str = e['data'];
+                    if(str == 'ready') {
+                        ws.send('preload');
+                        return;
+                    }
+                    
+                    var use = JSON.parse(e['data']);
+                    if(use['action'] == 'preload') {
+
+                        console.log('preload');
+                        var path = use['path'];
+                        var loop = use['loop'];
+                        var volume = use['volume'];
+                        var loop = use['loop'];
+                        var id_list = use['id'];
+                        var sec = use['currentTime'];
+                        for(let i = 0; i < id_list.length; ++i) {
+                            let id = id_list[i];
+                            id2id[id] = cc.audioEngine.play(path[i], loop[i], volume[i]);
+                            cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
                         }
+
+                    }else if(use['action'] == 'visitSceneTree') {
+
+                        //cc.game.updateScene(use['scene']);
+                        cc.game.sceneList.push(use['scene']);
+                        cc.game.dtList.push(use['dt']);
+                        cc.director._totalFrames++;
+                        cc.director._totalBit += e['data'].length * 8;
+
+                    }else if(use['action'] == 'play') {
                         
-                        var use = JSON.parse(e['data']);
-                        if(use['action'] == 'preload') {
+                        path = use['path'];
+                        loop = use['loop'];
+                        path = use['path'];
+                        id = use['id'];
+                        volume = use['volume'];
+                        id2id[id] = cc.audioEngine.play(path, loop, volume);
 
-                            console.log('preload');
-                            var path = use['path'];
-                            var loop = use['loop'];
-                            var volume = use['volume'];
-                            var loop = use['loop'];
-                            var id_list = use['id'];
-                            var sec = use['currentTime'];
-                            for(let i = 0; i < id_list.length; ++i) {
-                                let id = id_list[i];
-                                id2id[id] = cc.audioEngine.play(path[i], loop[i], volume[i]);
-                                cc.audioEngine.setCurrentTime(id2id[id], sec[i]);
-                            }
-
-                        }else if(use['action'] == 'visitSceneTree') {
-
-                            //cc.game.updateScene(use['scene']);
-                            cc.game.sceneList.push(use['scene']);
-                            cc.game.dtList.push(use['dt']);
-                            cc.director._totalFrames++;
-                            cc.director._totalBit += e['data'].length * 8;
-
-                        }else if(use['action'] == 'play') {
-                            
-                            path = use['path'];
-                            loop = use['loop'];
-                            path = use['path'];
-                            id = use['id'];
-                            volume = use['volume'];
-                            id2id[id] = cc.audioEngine.play(path, loop, volume);
-
-                        } else if(use['action'] == 'setLoop') {
-                            
-                            id = use['id'];
-                            loop = use['loop'];
-                            cc.audioEngine.setLoop(id2id[id], loop);
+                    } else if(use['action'] == 'setLoop') {
                         
-                        } else if(use['action'] == 'setVolume') {
+                        id = use['id'];
+                        loop = use['loop'];
+                        cc.audioEngine.setLoop(id2id[id], loop);
+                    
+                    } else if(use['action'] == 'setVolume') {
 
-                            id = use['id'];
-                            volume = use['volume'];
-                            cc.audioEngine.setVolume(id2id[id], volume);
+                        id = use['id'];
+                        volume = use['volume'];
+                        cc.audioEngine.setVolume(id2id[id], volume);
 
-                        } else if(use['action'] == 'setCurrentTime') {
+                    } else if(use['action'] == 'setCurrentTime') {
 
-                            id = use['id'];
-                            sec = use['sec'];
-                            cc.audioEngine.setCurrentTime(id2id[id], sec);
+                        id = use['id'];
+                        sec = use['sec'];
+                        cc.audioEngine.setCurrentTime(id2id[id], sec);
 
-                        } else if(use['action'] == 'stop') {
+                    } else if(use['action'] == 'stop') {
+                    
+                        id = use['id'];
+                        cc.audioEngine.stop(id2id[id]);
+                    
+                    } else if(use['action'] == 'pause') {
                         
-                            id = use['id'];
-                            cc.audioEngine.stop(id2id[id]);
-                        
-                        } else if(use['action'] == 'pause') {
-                            
-                            id = use['id'];
-                            cc.audioEngine.pause(id2id[id]);
+                        id = use['id'];
+                        cc.audioEngine.pause(id2id[id]);
 
-                        } else if(use['action'] == 'resume') {
+                    } else if(use['action'] == 'resume') {
 
-                            id = use['id'];
-                            cc.audioEngine.resume(id2id[id]);
+                        id = use['id'];
+                        cc.audioEngine.resume(id2id[id]);
 
-                        }else if(use['action'] == 'pauseAll') {
+                    }else if(use['action'] == 'pauseAll') {
 
-                            cc.audioEngine.pauseAll();
+                        cc.audioEngine.pauseAll();
 
-                        } else if(use['action'] == 'resumeAll') {
+                    } else if(use['action'] == 'resumeAll') {
 
-                            cc.audioEngine.resumeAll();
+                        cc.audioEngine.resumeAll();
 
-                        }
                     }
                 }
+
             });
         }
     }

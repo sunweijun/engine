@@ -58,13 +58,13 @@ var getAudioFromPath = function (path) {
 
     audio.instanceId = id;
     list.push(id);
-
+/*
     var requestBody = {
         'action':'getAudioFromPath',
         'path':path,
         'id':id,
     };
-    cc.game.sendWS(requestBody);
+    cc.game.sendWS(requestBody);*/
 
     return audio;
 };
@@ -121,7 +121,7 @@ var audioEngine = {
 
         var audio = getAudioFromPath(filePath);
 
-        var requestBody = {
+    /*    var requestBody = {
             'action':'play',
             'id':audio.instanceId,
             'path':filePath,
@@ -129,8 +129,8 @@ var audioEngine = {
             'volume':volume,
         };
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+       if(cc.game.CC_SOURCE)
+            cc.game.sendWS(requestBody);*/
         
         var callback = function () {
             audio.setLoop(loop || false);
@@ -156,18 +156,18 @@ var audioEngine = {
     setLoop: function (audioID, loop) {
         var audio = getAudioFromId(audioID);
 
-        var requestBody = {
+       /* var requestBody = {
             'action':'setLoop',
             'loop':loop,
             'id':audioID,
-        };
+        };*/
 
         if (!audio || !audio.setLoop)
             return;
         audio.setLoop(loop);
         
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+     //   if(cc.game.CC_SOURCE)
+      //      cc.game.sendWS(requestBody);
 
     },
 
@@ -199,27 +199,27 @@ var audioEngine = {
     setVolume: function (audioID, volume) {
         var audio = getAudioFromId(audioID);
 
-        var requestBody = {
+       /* var requestBody = {
             'action':'setVolume',
             'volume':volume,
             'id':audioID,
-        };
+        };*/
 
         if (!audio) return;
         if (!audio._loaded) {
             audio.once('load', function () {
                 if (audio.setVolume) {
                     audio.setVolume(volume);
-                    if(cc.game.CC_SOURCE)
-                        cc.game.sendWS(requestBody);
+            //        if(cc.game.CC_SOURCE)
+            //            cc.game.sendWS(requestBody);
                 
                 }
             });
         }
         if (audio.setVolume) {
             audio.setVolume(volume);
-            if(cc.game.CC_SOURCE)
-                cc.game.sendWS(requestBody);
+            //if(cc.game.CC_SOURCE)
+            //    cc.game.sendWS(requestBody);
 
         }
     },
@@ -253,11 +253,11 @@ var audioEngine = {
     setCurrentTime: function (audioID, sec) {
         var audio = getAudioFromId(audioID);
 
-        var requestBody = {
+      /*  var requestBody = {
             'action':'setCurrentTime',
             'sec':sec,
             'id':audioID,
-        };
+        };*/
 
         if (!audio) return false;
         if (!audio._loaded) {
@@ -265,8 +265,8 @@ var audioEngine = {
                 if (audio.setCurrentTime) {
                     audio.setCurrentTime(sec);
                     
-                    if(cc.game.CC_SOURCE)
-                        cc.game.sendWS(requestBody);
+             //       if(cc.game.CC_SOURCE)
+             //           cc.game.sendWS(requestBody);
                 
                 }
             });
@@ -275,8 +275,8 @@ var audioEngine = {
         if (audio.setCurrentTime) {
             audio.setCurrentTime(sec);
         
-            if(cc.game.CC_SOURCE)
-                cc.game.sendWS(requestBody);
+         //   if(cc.game.CC_SOURCE)
+         //       cc.game.sendWS(requestBody);
         
         }
         return true;
@@ -377,17 +377,17 @@ var audioEngine = {
     pause: function (audioID) {
         var audio = getAudioFromId(audioID);
 
-        var requestBody = {
+      /*  var requestBody = {
             'action':'pause',
             'id':audioID,
-        };
+        };*/
 
         if (!audio || !audio.pause)
             return false;
         audio.pause();
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+        //if(cc.game.CC_SOURCE)
+        //    cc.game.sendWS(requestBody);
         
         return true;
     },
@@ -402,12 +402,12 @@ var audioEngine = {
      */
     pauseAll: function () {
 
-        var requestBody = {
+        /*var requestBody = {
             'action':'pauseAll',
-        };
+        };*/
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+        //if(cc.game.CC_SOURCE)
+        //    cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
@@ -430,18 +430,18 @@ var audioEngine = {
     resume: function (audioID) {
         var audio = getAudioFromId(audioID);
 
-        var requestBody = {
+      /*  var requestBody = {
             'action':'resume',
             'id':audioID,
-        };
+        };*/
 
         if (!audio || !audio.resume)
             return false;
 
         audio.resume();
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+        //if(cc.game.CC_SOURCE)
+        //    cc.game.sendWS(requestBody);
 
     },
 
@@ -454,12 +454,12 @@ var audioEngine = {
      */
     resumeAll: function () {
 
-        var requestBody = {
+        /*var requestBody = {
             'action':'resumeAll',
-        };
+        };*/
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+        //if(cc.game.CC_SOURCE)
+        //    cc.game.sendWS(requestBody);
 
         while (this._pauseIDCache.length > 0) {
             var id = this._pauseIDCache.pop();
@@ -491,8 +491,8 @@ var audioEngine = {
         audio.stop();
         audio.destroy();
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+       // if(cc.game.CC_SOURCE)
+        //    cc.game.sendWS(requestBody);
 
         return true;
     },
@@ -510,8 +510,8 @@ var audioEngine = {
             'action':'stopAll',
         };
 
-        if(cc.game.CC_SOURCE)
-            cc.game.sendWS(requestBody);
+     //   if(cc.game.CC_SOURCE)
+     //       cc.game.sendWS(requestBody);
 
         for (var id in id2audio) {
             var audio = id2audio[id];
