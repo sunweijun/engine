@@ -36,8 +36,14 @@ onNativeMessage = function(message) {
             else cc.game.pause();
         }
     }
-    if(postMessageToNative)
-        postMessageToNative(message);
+}
+
+postMessage = function(message) {
+    if(postMessageToNative) {
+        postMessageToNatime(message);
+        return true;
+    }
+    return false;
 }
 
 uuid2Com = {};
