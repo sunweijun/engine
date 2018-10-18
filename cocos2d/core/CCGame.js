@@ -641,6 +641,9 @@ var game = {
             cc.game.pause();
         } else if(data['action'] == 'ResumeGame') {
             cc.game.resume();
+        } else if(data['action'] == 'loadScene') {
+            cc.game.loadScene(data);
+            cc.director._totalBit += message.length * 8;
         }
     },
 
@@ -789,6 +792,19 @@ var game = {
         return sendData;
     },
 
+    loadAudio: function(audioList) {
+
+    },
+
+    loadScene: function(data) {
+        scene = data['scene'];
+        cc.game.loadAudio(data['audioList']);
+
+        cc.game.sceneList.push(scene['scene']);
+        cc.game.dtList.push(scene['dt']);
+        cc.director._totalFrames++;
+    },
+
     //Run game.
     _runMainLoop: function () {
         var self = this, callback, config = self.config, CONFIG_KEY = self.CONFIG_KEY,
@@ -815,7 +831,7 @@ var game = {
                         sceneData = self.getScene('getScene');
                     }
                     sceneData['audio'] = getAudioList;
-                    sceneData['action'] = 'loadSceneData';
+                    sceneData['action'] = 'loadScene';
                     postCocosMessage(sceneData);
                     director.mainLoop();
                 } else {
@@ -1381,7 +1397,7 @@ var game = {
         });
 
         if(cc.game.CC_SOURCE) {
-            this.on(game.EVENT_GAME_INITED, function () {
+            /*this.on(game.EVENT_GAME_INITED, function () {
             
                 ws.onmessage = function(e) {
                     var use = e['data'];
@@ -1415,7 +1431,7 @@ var game = {
                         game.fullScene = true;
                     }
                 }
-            });
+            });*/
         } else {
             this.on(game.EVENT_GAME_INITED, function() {
                 console.log('game inited');
