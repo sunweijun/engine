@@ -26,16 +26,15 @@
 var EventTarget = require('./event/event-target');
 var View;
 
-onNativeMessage = function(message) {
+window.onNativeMessage = function(message) {
     cc.game.onMessage(message);
 }
 
-postCocosMessage = function(message) {
-    if(postMessageToNative) {
-        postMessageToNatime(message);
-        return true;
-    }
-    return false;
+window.postCocosMessage = function(message) {
+    if(!window.postMessageToNative)
+        return false;
+    window.postMessageToNative(message);
+    return true;
 }
 
 uuid2Com = {};
@@ -622,7 +621,7 @@ var game = {
     },
 
     onMessage: function(message) {
-        let data = JSON.stringify(message);
+        let data = JSON.parse(message);
         if(data['action'] == 'preload') {
 
             game.fullScene = true;
@@ -830,9 +829,9 @@ var game = {
                     } else {
                         sceneData = self.getScene('getScene');
                     }
-                    sceneData['audio'] = getAudioList;
+                    sceneData['audio'] = self.getAudioList();
                     sceneData['action'] = 'loadScene';
-                    postCocosMessage(sceneData);
+                    window.postCocosMessage(sceneData);
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
