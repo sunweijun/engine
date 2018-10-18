@@ -26,8 +26,6 @@
 var EventTarget = require('./event/event-target');
 var View;
 
-var sceneList;
-
 onNativeMessage = function(message) {
     if(message == 'testPause') {
         if(cc && cc.game) {
@@ -598,6 +596,7 @@ var game = {
         game._lastTime = currTime + timeToCall;
         return id;
     },
+    
     _ctTime: function(id){
         window.clearTimeout(id);
     },
