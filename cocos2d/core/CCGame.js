@@ -815,7 +815,7 @@ var game = {
                         sceneData = self.getScene('getScene');
                     }
                     sceneData['audio'] = getAudioList;
-                    sceneData['action' = 'loadSceneData';
+                    sceneData['action'] = 'loadSceneData';
                     postCocosMessage(sceneData);
                     director.mainLoop();
                 } else {
