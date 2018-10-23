@@ -831,12 +831,15 @@ var game = {
                     } else {
                         sceneData = self.getScene('getScene');
                     }
-                    if(sceneData != 'No Scene!') {
-                        sceneData['audio'] = self.getAudioList();
-                        sceneData['action'] = 'loadScene';
-                        if(typeof(window) != 'undefined')
-                            window.postCocosMessage(JSON.stringify(sceneData));
+                    if(sceneData == 'No Scene!') {
+                        director.mainLoop();
+                        return;
                     }
+
+                    sceneData['audio'] = self.getAudioList();
+                    sceneData['action'] = 'loadScene';
+                    if(typeof(window) != 'undefined')
+                        window.postCocosMessage(JSON.stringify(sceneData));
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
