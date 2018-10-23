@@ -26,15 +26,17 @@
 var EventTarget = require('./event/event-target');
 var View;
 
-window.onNativeMessage = function(message) {
-    cc.game.onMessage(message);
-}
+if(typeof(windows) != 'undefined') {
+    window.onNativeMessage = function(message) {
+        cc.game.onMessage(message);
+    }
 
-window.postCocosMessage = function(message) {
-    if(!window.postMessageToNative)
-        return false;
-    window.postMessageToNative(message);
-    return true;
+    window.postCocosMessage = function(message) {
+        if(!window.postMessageToNative)
+            return false;
+        window.postMessageToNative(message);
+        return true;
+    }
 }
 
 uuid2Com = {};
@@ -54,7 +56,7 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  * @extends EventTarget
  */
 var game = {
-    CC_SOURCE: true,
+    CC_SOURCE: false,
 
     /**
      * !#en Event triggered when game hide to background.
@@ -829,9 +831,12 @@ var game = {
                     } else {
                         sceneData = self.getScene('getScene');
                     }
-                    sceneData['audio'] = self.getAudioList();
-                    sceneData['action'] = 'loadScene';
-                    window.postCocosMessage(JSON.stringify(sceneData));
+                    if(sceneData != 'No Scene!') {
+                        sceneData['audio'] = self.getAudioList();
+                        sceneData['action'] = 'loadScene';
+                        if(typeof(window) != 'undefined')
+                            window.postCocosMessage(JSON.stringify(sceneData));
+                    }
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
