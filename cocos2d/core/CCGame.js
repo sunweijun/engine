@@ -630,7 +630,7 @@ var game = {
 
             game.fullScene = true;
 
-        } else if(data['action'] == 'PlayTest') {
+        } else if(cc.game.CC_Source && data['action'] == 'PlayTest') {
             if(cc.game.isPaused()) {
                 cc.game.resume();
             } else {
@@ -796,14 +796,13 @@ var game = {
     },
 
     loadScene: function(data) {
-        postCocosMessage('loadscene');
         postCocosMessage(data['action']);
-        scene = data['scene'];
         console.log(data['action']);
         cc.game.loadAudio(data['audioList']);
 
-        cc.game.sceneList.push(scene['scene']);
-        cc.game.dtList.push(scene['dt']);
+        cc.game.sceneList.push(data['scene']);
+        cc.game.dtList.push(data['dt']);
+        postCocosMessage(cc.game.sceneList.length);
         cc.director._totalFrames++;
     },
 
@@ -1298,8 +1297,8 @@ var game = {
 
     updateSingleFrame: function() {
         if(this.sceneList.length > 0) {
-            this.updateScene(this.sceneList.shift());
-            cc.director._tempDt = this.dtList.shift();
+            this.updateScene(this.sceneList[0]);
+            cc.director._tempDt = this.dtList[0];
             cc.director.mainLoop();
         }
     },
