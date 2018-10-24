@@ -26,15 +26,16 @@
 var EventTarget = require('./event/event-target');
 var View;
 
-onNativeMessage = function(message) {
-    cc.game.onMessage(message);
-}
-
 postCocosMessage = function(message) {
     if(typeof(postMessageToNative) == 'undefined')
         return false;
     postMessageToNative(message);
     return true;
+}
+
+onNativeMessage = function(message) {
+    cc.game.onMessage(message);
+    console.log('GO!');
 }
 
 uuid2Com = {};
@@ -641,6 +642,7 @@ var game = {
         } else if(data['action'] == 'ResumeGame') {
             cc.game.resume();
         } else if(data['action'] == 'loadScene') {
+            postCocosMessage("message lenth = " + message.length);
             cc.game.loadScene(data);
             cc.director._totalBit += message.length * 8;
         }
