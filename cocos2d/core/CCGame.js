@@ -26,17 +26,15 @@
 var EventTarget = require('./event/event-target');
 var View;
 
-if(typeof(windows) != 'undefined') {
-    window.onNativeMessage = function(message) {
-        cc.game.onMessage(message);
-    }
+onNativeMessage = function(message) {
+    cc.game.onMessage(message);
+}
 
-    window.postCocosMessage = function(message) {
-        if(!window.postMessageToNative)
-            return false;
-        window.postMessageToNative(message);
-        return true;
-    }
+postCocosMessage = function(message) {
+    if(typeof(postMessageToNative) == 'undefined')
+        return false;
+    postMessageToNative(message);
+    return true;
 }
 
 uuid2Com = {};
@@ -798,7 +796,10 @@ var game = {
     },
 
     loadScene: function(data) {
+        postCocosMessage('loadscene');
+        postCocosMessage(data['action']);
         scene = data['scene'];
+        console.log(data['action']);
         cc.game.loadAudio(data['audioList']);
 
         cc.game.sceneList.push(scene['scene']);
@@ -838,8 +839,8 @@ var game = {
 
                     sceneData['audio'] = self.getAudioList();
                     sceneData['action'] = 'loadScene';
-                    if(typeof(window) != 'undefined')
-                        window.postCocosMessage(JSON.stringify(sceneData));
+                    if(typeof(postCocosMessage) != 'undefined')
+                        postCocosMessage(JSON.stringify(sceneData));
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
@@ -1446,7 +1447,7 @@ var game = {
                 cc.game.displaying = true;
 
                 var id2id = {}
-
+/*
                 cc.game.ws = new WebSocket('ws://127.0.0.1:4000');
                 var ws = cc.game.ws;
 
@@ -1543,7 +1544,7 @@ var game = {
                         cc.audioEngine.resumeAll();
 
                     }
-                }
+                }*/
 
             });
         }
