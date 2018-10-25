@@ -30,7 +30,7 @@ postCocosMessage = function(message) {
     if(typeof(postMessageToNative) == 'undefined')
         return false;
     postMessageToNativeInit();
-    for(let st = 0, step = 20000; st < message.length; st += step) {
+    for(let st = 0, step = 10000; st < message.length; st += step) {
         let ed = st + step <= message.length ? st + step : message.length;
         postMessageToNative(message.slice(st, ed));
     }
