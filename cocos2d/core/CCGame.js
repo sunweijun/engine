@@ -60,7 +60,7 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  * @extends EventTarget
  */
 var game = {
-    CC_SOURCE: true,
+    CC_SOURCE: false,
 
     /**
      * !#en Event triggered when game hide to background.
@@ -628,7 +628,8 @@ var game = {
 
     onMessage: function(message) {
         let data = JSON.parse(message);
-        console.log(data['action']);
+        postCocosMessage("point 2!");
+        postCocosMessage(data['action'])
         if(data['action'] == 'preload') {
 
             game.fullScene = true;
