@@ -34,8 +34,8 @@ postCocosMessage = function(message) {
 }
 
 onNativeMessage = function(message) {
+    postCocosMessage('point 1!');
     cc.game.onMessage(message);
-    console.log('GO!');
 }
 
 uuid2Com = {};
@@ -55,7 +55,7 @@ var inputManager = CC_QQPLAY ? require('./platform/BKInputManager') : require('.
  * @extends EventTarget
  */
 var game = {
-    CC_SOURCE: false,
+    CC_SOURCE: true,
 
     /**
      * !#en Event triggered when game hide to background.
@@ -622,6 +622,10 @@ var game = {
     },
 
     onMessage: function(message) {
+        postCocosMessage('point 2!');
+        postCocosMessage(message.length);
+        postCocosMessage(JSON.parse(message)['action']);
+        postCocosMessage('point test!');
         let data = JSON.parse(message);
         if(data['action'] == 'preload') {
 
@@ -642,7 +646,8 @@ var game = {
         } else if(data['action'] == 'ResumeGame') {
             cc.game.resume();
         } else if(data['action'] == 'loadScene') {
-            postCocosMessage("message lenth = " + message.length);
+            postCocosMessage('point 3!');
+            //postCocosMessage("message lenth = " + message.length);
             cc.game.loadScene(data);
             cc.director._totalBit += message.length * 8;
         }
@@ -799,12 +804,10 @@ var game = {
 
     loadScene: function(data) {
         postCocosMessage(data['action']);
-        console.log(data['action']);
+        //postCocosMessage(cc.game.sceneList.length);
         cc.game.loadAudio(data['audioList']);
-
         cc.game.sceneList.push(data['scene']);
         cc.game.dtList.push(data['dt']);
-        postCocosMessage(cc.game.sceneList.length);
         cc.director._totalFrames++;
     },
 
@@ -1405,7 +1408,7 @@ var game = {
             game.resume();
         });
 
-        if(cc.game.CC_SOURCE) {
+        if(cc.game.false) {
             /*this.on(game.EVENT_GAME_INITED, function () {
             
                 ws.onmessage = function(e) {
