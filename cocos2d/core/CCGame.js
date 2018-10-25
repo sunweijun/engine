@@ -29,8 +29,18 @@ var View;
 postCocosMessage = function(message) {
     if(typeof(postMessageToNative) == 'undefined')
         return false;
-    postMessageToNative(message);
-    return true;
+    postMessageToNativeInit();
+    for(let st = 0, step = 1000; st < message.length; st += step) {
+        let ed = st + step <= message.length ? st + step : message.length;
+        postMessageToNative(message.slice(st, ed));
+    }
+    postMessageToNativeFinish();
+   /* if(message.length < 1000)
+        postMessageToNative(message);
+    else {
+        postMessageToNative(message.slice(message.length - 1000, message.length));
+    }
+    return true;*/
 }
 
 onNativeMessage = function(message) {
