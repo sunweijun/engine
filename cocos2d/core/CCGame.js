@@ -35,12 +35,7 @@ postCocosMessage = function(message) {
         postMessageToNative(message.slice(st, ed));
     }
     postMessageToNativeFinish();
-   /* if(message.length < 1000)
-        postMessageToNative(message);
-    else {
-        postMessageToNative(message.slice(message.length - 1000, message.length));
-    }
-    return true;*/
+
 }
 
 onNativeMessage = function(message) {
