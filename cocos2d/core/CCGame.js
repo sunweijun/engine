@@ -843,8 +843,10 @@ var game = {
 
                     sceneData['audio'] = self.getAudioList();
                     sceneData['action'] = 'loadScene';
-                    if(typeof(postCocosMessage) != 'undefined')
-                        postCocosMessage(JSON.stringify(sceneData));
+                    if(typeof(postCocosMessage) != 'undefined') {
+                        let str = JSON.stringify(sceneData)
+                        postCocosMessage(str[str.length - 1]);
+                    }
                     director.mainLoop();
                 } else {
                     let ws = self.ws;
