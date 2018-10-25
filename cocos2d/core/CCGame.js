@@ -622,11 +622,8 @@ var game = {
     },
 
     onMessage: function(message) {
-        postCocosMessage('point 2!');
-        postCocosMessage(message.length);
-        postCocosMessage(JSON.parse(message)['action']);
-        postCocosMessage('point test!');
         let data = JSON.parse(message);
+        console.log(data['action']);
         if(data['action'] == 'preload') {
 
             game.fullScene = true;
@@ -646,8 +643,6 @@ var game = {
         } else if(data['action'] == 'ResumeGame') {
             cc.game.resume();
         } else if(data['action'] == 'loadScene') {
-            postCocosMessage('point 3!');
-            //postCocosMessage("message lenth = " + message.length);
             cc.game.loadScene(data);
             cc.director._totalBit += message.length * 8;
         }
@@ -803,8 +798,6 @@ var game = {
     },
 
     loadScene: function(data) {
-        postCocosMessage(data['action']);
-        //postCocosMessage(cc.game.sceneList.length);
         cc.game.loadAudio(data['audioList']);
         cc.game.sceneList.push(data['scene']);
         cc.game.dtList.push(data['dt']);
@@ -844,8 +837,8 @@ var game = {
                     sceneData['audio'] = self.getAudioList();
                     sceneData['action'] = 'loadScene';
                     if(typeof(postCocosMessage) != 'undefined') {
-                        let str = JSON.stringify(sceneData)
-                        postCocosMessage(str[str.length - 1]);
+                        let str = JSON.stringify(sceneData);
+                        postCocosMessage(str);
                     }
                     director.mainLoop();
                 } else {
